@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrar no grupo · Placeholder</title>
+<script>try{document.documentElement.setAttribute('data-bs-theme',localStorage.getItem('ph-theme')||'dark')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+</head>
+<body class="ph-loading">
+
+<div class="ph-loader">Carregando…</div>
+
+<header class="ph-top">
+  <button type="button" class="ph-theme-toggle" data-ph-theme-toggle aria-label="Alternar tema"></button>
+  <a class="ph-brand" href="dashboard.html">
+    <span class="ph-logo"><i data-lucide="door-open" aria-hidden="true"></i></span>
+    Placeholder <small>Escape Room</small>
+  </a>
+</header>
+
+<main class="ph-shell ph-shell--narrow ph-page">
+  <section class="ph-card ph-card--accent">
+    <p class="ph-eyebrow">Convite</p>
+    <h1 class="ph-title">Entrar no grupo</h1>
+    <p class="ph-sub" id="estado">Confirmando o convite…</p>
+    <div class="d-grid gap-2 mt-3">
+      <button class="btn btn-primary d-none" type="button" id="btn-entrar">Entrar no grupo</button>
+      <a class="btn btn-outline-secondary" href="dashboard.html">Ir para o painel</a>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script type="module" src="js/entrar.js"></script>
+</body>
+</html>
