@@ -8,6 +8,7 @@ import { getDatabase } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-
 export const firebaseConfig = {
   apiKey: "AIzaSyAZS2ZgO0lZ5i3_AbW9H4DotOMGMLkkwuw",
   authDomain: "pfc-2026-f8fb8.firebaseapp.com",
+  databaseURL: "https://pfc-2026-f8fb8-default-rtdb.firebaseio.com",
   projectId: "pfc-2026-f8fb8",
   storageBucket: "pfc-2026-f8fb8.firebasestorage.app",
   messagingSenderId: "924831886283",
