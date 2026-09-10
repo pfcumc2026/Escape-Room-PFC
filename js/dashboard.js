@@ -1,8 +1,9 @@
-// Painel: perfil resumido, grupos e acesso às configurações
+// Painel: perfil resumido, grupos, convites e acesso às configurações
 
 import { db, avatarUrl } from "./firebase.js";
 import {
-  collection, doc, query, where, onSnapshot, writeBatch, serverTimestamp, getDoc
+  collection, doc, query, where, onSnapshot, writeBatch, serverTimestamp,
+  arrayUnion, increment, getDoc
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 import { exigirAutenticacao, sair } from "./guard.js";
 import { iniciarPresenca } from "./presenca.js";
@@ -86,6 +87,7 @@ formGrupo.addEventListener("submit", async (ev) => {
       ownerId: user.uid,
       members: [user.uid],
       memberCount: 1,
+      inviteCode: novoCodigo(),
       createdAt: serverTimestamp()
     });
     lote.update(doc(db, "users", user.uid), { lastGroupAt: serverTimestamp() });
@@ -99,5 +101,117 @@ formGrupo.addEventListener("submit", async (ev) => {
     carregando(btnCriar, false);
   }
 });
+
+function novoCodigo() {
+  const alfabeto = "abcdefghijkmnpqrstuvwxyz23456789";
+  const valores = crypto.getRandomValues(new Uint8Array(8));
+  return Array.from(valores, (v) => alfabeto[v % alfabeto.length]).join("");
+}
+
+// Convites recebidos
+const listaConvites = document.getElementById("lista-convites");
+
+onSnapshot(
+  query(collection(db, "invites"), where("toUid", "==", user.uid), where("status", "==", "pending")),
+  (snap) => {
+    listaConvites.textContent = "";
+    setTexto("#contador-convites", String(snap.size));
+    if (snap.empty) {
+      const vazio = document.createElement("div");
+      vazio.className = "ph-empty";
+      vazio.textContent = "Nenhum convite pendente.";
+      listaConvites.appendChild(vazio);
+      return;
+    }
+    snap.docs.forEach((d) => {
+      const c = d.data();
+      const item = document.createElement("div");
+      item.className = "ph-item";
+
+      const main = document.createElement("div");
+      main.className = "ph-item__main";
+      const nome = document.createElement("div");
+      nome.className = "ph-item__name";
+      nome.textContent = c.groupName;
+      const meta = document.createElement("div");
+      meta.className = "ph-item__meta";
+      meta.textContent = `convite de ${c.fromUsername}`;
+      main.append(nome, meta);
+
+      const aceitar = document.createElement("button");
+      aceitar.className = "btn btn-primary btn-sm";
+      aceitar.textContent = "Aceitar";
+      aceitar.addEventListener("click", () => responder(d.id, c, true, aceitar));
+
+      const recusar = document.createElement("button");
+      recusar.className = "btn btn-outline-secondary btn-sm";
+      recusar.textContent = "Recusar";
+      recusar.addEventListener("click", () => responder(d.id, c, false, recusar));
+
+      item.append(main, aceitar, recusar);
+      listaConvites.appendChild(item);
+    });
+  },
+  (e) => erro(e, "Não foi possível carregar os convites.")
+);
+
+async function responder(idConvite, convite, aceitar, botao) {
+  carregando(botao, true, "...");
+  try {
+    const lote = writeBatch(db);
+    lote.update(doc(db, "invites", idConvite), {
+      status: aceitar ? "accepted" : "declined",
+      respondedAt: serverTimestamp()
+    });
+    if (aceitar) {
+      lote.update(doc(db, "groups", convite.groupId), {
+        members: arrayUnion(user.uid),
+        memberCount: increment(1)
+      });
+    }
+    await lote.commit();
+    if (aceitar) location.href = `grupo.html?id=${encodeURIComponent(convite.groupId)}`;
+    else toast("Convite recusado.", "info");
+  } catch (e) {
+    if (e.code === "permission-denied") toast("O grupo está cheio ou o convite não é mais válido.", "err");
+    else erro(e, "Não foi possível responder ao convite.");
+    carregando(botao, false);
+  }
+}
+
+// Convites enviados
+const listaEnviados = document.getElementById("lista-enviados");
+const rotulos = { pending: "aguardando resposta", accepted: "aceito", declined: "recusado" };
+
+onSnapshot(
+  query(collection(db, "invites"), where("fromUid", "==", user.uid)),
+  (snap) => {
+    listaEnviados.textContent = "";
+    if (snap.empty) {
+      const vazio = document.createElement("div");
+      vazio.className = "ph-empty";
+      vazio.textContent = "Você ainda não enviou convites.";
+      listaEnviados.appendChild(vazio);
+      return;
+    }
+    snap.docs.slice(0, 12).forEach((d) => {
+      const c = d.data();
+      const item = document.createElement("div");
+      item.className = "ph-item";
+      const main = document.createElement("div");
+      main.className = "ph-item__main";
+      const nome = document.createElement("div");
+      nome.className = "ph-item__name";
+      nome.textContent = c.toUsername;
+      const meta = document.createElement("div");
+      meta.className = "ph-item__meta";
+      meta.textContent = `${c.groupName} · ${rotulos[c.status] || c.status}`;
+      main.append(nome, meta);
+      item.appendChild(main);
+      listaEnviados.appendChild(item);
+    });
+  },
+  () => {}
+);
 
 icones();

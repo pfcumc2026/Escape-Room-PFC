@@ -1,0 +1,282 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Base
+    function autenticado() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    function eu(uid) {
+      return autenticado() && request.auth.uid == uid;
+    }
+
+    function grupo(gid) {
+      return get(/databases/$(database)/documents/groups/$(gid)).data;
+    }
+
+    function meuUsername() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.username;
+    }
+
+    function convitePendente(gid) {
+      let caminho = /databases/$(database)/documents/invites/$(gid + '_' + request.auth.uid);
+      return exists(caminho) && get(caminho).data.status == 'pending';
+    }
+
+    // Usuários
+    match /users/{uid} {
+      function valido(d) {
+        return d.keys().hasAll(['username', 'usernameLower', 'avatarStyle', 'avatarSeed', 'profileComplete', 'createdAt'])
+          && d.keys().hasOnly(['username', 'usernameLower', 'avatarStyle', 'avatarSeed', 'profileComplete', 'createdAt', 'lastGroupAt'])
+          && d.username is string
+          && d.username.size() >= 3 && d.username.size() <= 20
+          && d.username.matches('^[a-zA-Z0-9_]+$')
+          && d.usernameLower == d.username.lower()
+          && d.avatarStyle in ['bottts', 'shapes', 'identicon', 'thumbs', 'pixel-art', 'rings', 'glass', 'icons']
+          && d.avatarSeed is string
+          && d.avatarSeed.size() > 0 && d.avatarSeed.size() <= 32
+          && d.avatarSeed.matches('^[a-zA-Z0-9_-]+$')
+          && d.profileComplete == true;
+      }
+
+      function nomeReservado(d) {
+        return getAfter(/databases/$(database)/documents/usernames/$(d.usernameLower)).data.uid == uid;
+      }
+
+      function lastGroupAtOk() {
+        return !('lastGroupAt' in request.resource.data.keys())
+          || request.resource.data.lastGroupAt == request.time
+          || request.resource.data.lastGroupAt == resource.data.get('lastGroupAt', request.time);
+      }
+
+      allow get: if autenticado();
+      allow list: if false;
+
+      allow create: if eu(uid)
+        && valido(request.resource.data)
+        && request.resource.data.createdAt == request.time
+        && nomeReservado(request.resource.data);
+
+      allow update: if eu(uid)
+        && valido(request.resource.data)
+        && request.resource.data.createdAt == resource.data.createdAt
+        && (request.resource.data.usernameLower == resource.data.usernameLower || nomeReservado(request.resource.data))
+        && lastGroupAtOk();
+
+      allow delete: if eu(uid);
+    }
+
+    // Dados pessoais visíveis somente ao próprio usuário
+    match /users/{uid}/private/{documento} {
+      allow read: if eu(uid);
+      allow create, update: if eu(uid)
+        && request.resource.data.keys().hasOnly(['name'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 60;
+      allow delete: if eu(uid);
+    }
+
+    // Unicidade de username
+    match /usernames/{nome} {
+      allow get: if autenticado();
+      allow list: if false;
+      allow create: if autenticado()
+        && request.resource.data.keys().hasOnly(['uid'])
+        && request.resource.data.uid == request.auth.uid
+        && nome.size() >= 3 && nome.size() <= 20
+        && nome.matches('^[a-z0-9_]+$');
+      allow update: if false;
+      allow delete: if autenticado() && resource.data.uid == request.auth.uid;
+    }
+
+    // Grupos
+    match /groups/{gid} {
+      function novo() { return request.resource.data; }
+      function antigo() { return resource.data; }
+      function membro() { return autenticado() && request.auth.uid in antigo().members; }
+      function dono() { return autenticado() && antigo().ownerId == request.auth.uid; }
+
+      function contagemOk() {
+        return novo().memberCount == novo().members.size()
+          && novo().members.size() >= 1;
+      }
+
+      // O código do convite é apresentado em um documento gravado na mesma transação,
+      // com carimbo de tempo do servidor, para que um código antigo não possa ser reaproveitado.
+      function codigoApresentado() {
+        let entrada = getAfter(/databases/$(database)/documents/groups/$(gid)/joins/$(request.auth.uid)).data;
+        return entrada.at == request.time && entrada.code == antigo().inviteCode;
+      }
+
+      function entrando() {
+        return autenticado()
+          && !(request.auth.uid in antigo().members)
+          && novo().members == antigo().members.concat([request.auth.uid])
+          && contagemOk()
+          && novo().diff(antigo()).affectedKeys().hasOnly(['members', 'memberCount'])
+          && (convitePendente(gid) || codigoApresentado());
+      }
+
+      function saindo() {
+        return membro() && !dono()
+          && novo().members == antigo().members.removeAll([request.auth.uid])
+          && contagemOk()
+          && novo().diff(antigo()).affectedKeys().hasOnly(['members', 'memberCount']);
+      }
+
+      function administrando() {
+        return dono()
+          && request.auth.uid in novo().members
+          && antigo().members.hasAll(novo().members)
+          && novo().ownerId == antigo().ownerId
+          && contagemOk()
+          && novo().name is string && novo().name.size() >= 3 && novo().name.size() <= 30
+          && novo().inviteCode is string && novo().inviteCode.size() == 8
+          && novo().diff(antigo()).affectedKeys().hasOnly(['name', 'members', 'memberCount', 'inviteCode']);
+      }
+
+      function transferindo() {
+        return dono()
+          && novo().ownerId in antigo().members
+          && novo().ownerId != request.auth.uid
+          && novo().members == antigo().members.removeAll([request.auth.uid])
+          && contagemOk()
+          && novo().diff(antigo()).affectedKeys().hasOnly(['ownerId', 'members', 'memberCount']);
+      }
+
+      function criacaoLiberada() {
+        let usuario = /databases/$(database)/documents/users/$(request.auth.uid);
+        return getAfter(usuario).data.lastGroupAt == request.time
+          && (!('lastGroupAt' in get(usuario).data.keys())
+              || get(usuario).data.lastGroupAt < request.time - duration.value(30, 's'));
+      }
+
+      allow get: if membro();
+      allow list: if membro();
+
+      allow create: if autenticado()
+        && novo().keys().hasAll(['name', 'ownerId', 'members', 'memberCount', 'inviteCode', 'createdAt'])
+        && novo().keys().hasOnly(['name', 'ownerId', 'members', 'memberCount', 'inviteCode', 'createdAt'])
+        && novo().ownerId == request.auth.uid
+        && novo().members == [request.auth.uid]
+        && novo().memberCount == 1
+        && novo().name is string && novo().name.size() >= 3 && novo().name.size() <= 30
+        && novo().inviteCode is string && novo().inviteCode.size() == 8
+        && novo().createdAt == request.time
+        && criacaoLiberada();
+
+      allow update: if entrando() || saindo() || administrando() || transferindo();
+      allow delete: if dono();
+    }
+
+    // Chat do grupo
+    match /groups/{gid}/messages/{mid} {
+      function membro() { return autenticado() && request.auth.uid in grupo(gid).members; }
+
+      function dentroDoLimite() {
+        let controle = getAfter(/databases/$(database)/documents/groups/$(gid)/rate/$(request.auth.uid)).data;
+        return controle.lastAt == request.time && controle.count <= 15;
+      }
+
+      allow read: if membro();
+
+      allow create: if membro()
+        && request.resource.data.keys().hasAll(['uid', 'username', 'text', 'createdAt', 'expiresAt'])
+        && request.resource.data.keys().hasOnly(['uid', 'username', 'text', 'createdAt', 'expiresAt'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.username == meuUsername()
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 300
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.expiresAt > request.time + duration.value(23, 'h')
+        && request.resource.data.expiresAt < request.time + duration.value(25, 'h')
+        && dentroDoLimite();
+
+      allow update: if false;
+      allow delete: if autenticado() && grupo(gid).ownerId == request.auth.uid;
+    }
+
+    // Controle de envio de mensagens (rate limit)
+    match /groups/{gid}/rate/{uid} {
+      allow read: if eu(uid);
+
+      allow create: if eu(uid)
+        && request.resource.data.keys().hasOnly(['windowStart', 'count', 'lastAt'])
+        && request.resource.data.count == 1
+        && request.resource.data.windowStart == request.time
+        && request.resource.data.lastAt == request.time;
+
+      allow update: if eu(uid)
+        && request.resource.data.keys().hasOnly(['windowStart', 'count', 'lastAt'])
+        && request.resource.data.lastAt == request.time
+        && resource.data.lastAt < request.time - duration.value(2, 's')
+        && (
+          (request.resource.data.windowStart == resource.data.windowStart
+            && request.resource.data.count == resource.data.count + 1
+            && request.resource.data.count <= 15)
+          ||
+          (request.resource.data.windowStart == request.time
+            && request.resource.data.count == 1
+            && resource.data.windowStart < request.time - duration.value(60, 's'))
+        );
+
+      allow delete: if eu(uid) || (autenticado() && grupo(gid).ownerId == request.auth.uid);
+    }
+
+    // Apresentação do código de convite (link/QR Code)
+    match /groups/{gid}/joins/{uid} {
+      allow read: if eu(uid);
+      allow create, update: if eu(uid)
+        && request.resource.data.keys().hasOnly(['code', 'at'])
+        && request.resource.data.code is string
+        && request.resource.data.code.size() == 8
+        && request.resource.data.at == request.time;
+      allow delete: if eu(uid) || (autenticado() && grupo(gid).ownerId == request.auth.uid);
+    }
+
+    // Convites
+    match /invites/{id} {
+      function alvo() { return resource.data.toUid == request.auth.uid; }
+      function autor() { return resource.data.fromUid == request.auth.uid; }
+
+      function conviteValido() {
+        let d = request.resource.data;
+        let g = grupo(d.groupId);
+        return id == d.groupId + '_' + d.toUid
+          && d.fromUid == request.auth.uid
+          && d.fromUsername == meuUsername()
+          && d.toUid != request.auth.uid
+          && d.status == 'pending'
+          && d.createdAt == request.time
+          && d.groupName == g.name
+          && g.ownerId == request.auth.uid
+          && !(d.toUid in g.members);
+      }
+
+      allow get: if autenticado() && (resource == null || alvo() || autor());
+      allow list: if autenticado() && (alvo() || autor());
+
+      allow create: if autenticado()
+        && request.resource.data.keys().hasAll(['groupId', 'groupName', 'fromUid', 'fromUsername', 'toUid', 'toUsername', 'status', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['groupId', 'groupName', 'fromUid', 'fromUsername', 'toUid', 'toUsername', 'status', 'createdAt'])
+        && conviteValido();
+
+      allow update: if autenticado()
+        && alvo()
+        && resource.data.status == 'pending'
+        && request.resource.data.status in ['accepted', 'declined']
+        && request.resource.data.respondedAt == request.time
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'respondedAt']);
+
+      allow delete: if autenticado() && (alvo() || autor());
+    }
+
+    // Nada além do que está declarado acima
+    match /{documento=**} {
+      allow read, write: if false;
+    }
+  }
+}

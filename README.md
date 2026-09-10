@@ -1,61 +1,87 @@
-# Escape Room Educacional — PFC
+# Placeholder — Etapa 2: RN03
 
-## Sobre o Projeto
+Continuação da base do Escape Room de Python (PFC). Esta etapa acrescenta à Etapa 1 (RN01 e RN02):
 
-Projeto Final de Curso do Bacharelado em Sistemas de Informação da Universidade de Mogi das Cruzes (UMC).
+- **RN03 — Participação em grupos**: um usuário entra em um grupo por **convite** enviado pelo
+  proprietário ou por **código de acesso** (link e QR Code).
 
-O projeto consiste no desenvolvimento de um **jogo educacional digital no formato Escape Room**, voltado ao ensino e à prática de **programação em Python**. A proposta utiliza desafios, pistas e enigmas para estimular o raciocínio lógico e a resolução de problemas de forma interativa e colaborativa.
+A próxima etapa acrescenta o limite de participantes (RN04).
 
-Os jogadores poderão criar suas contas, formar grupos e trabalhar em equipe para solucionar os desafios e avançar pelas diferentes etapas do jogo.
+Tecnologias: HTML5, CSS3, JavaScript (ES Modules, sem framework), Firebase (Authentication,
+Firestore, Realtime Database), Bootstrap 5, Lucide Icons, Google Fonts, DiceBear API e qrcodejs.
 
-## Objetivos
-
-* Desenvolver um jogo educacional baseado em Escape Room.
-* Utilizar desafios de Python como ferramenta de aprendizagem.
-* Estimular o raciocínio lógico e a resolução de problemas.
-* Permitir a formação de grupos e a resolução colaborativa dos desafios.
-* Aplicar conceitos de gamificação ao ensino de programação.
-* Avaliar a funcionalidade e a usabilidade da aplicação.
-
-## Tecnologias
-
-### Front-end
-
-* **HTML5** — estrutura das páginas e elementos da aplicação.
-* **CSS3** — estilização, layout e responsividade.
-* **JavaScript** — interatividade, validações e regras da aplicação.
-
-### Back-end e serviços
-
-* **Python** — linguagem utilizada como base dos desafios educacionais e para funcionalidades do sistema.
-* **Firebase** — suporte a recursos de autenticação e armazenamento de dados.
-* **DiceBear API** — geração de avatares para os usuários.
-
-### Organização
-
-* **GitHub** — versionamento e colaboração no código.
-* **Trello / Kanban** — organização e acompanhamento das tarefas do projeto.
-
-## Estrutura da Experiência
-
-A aplicação será organizada em diferentes salas e etapas. Durante a partida, os jogadores deverão:
-
-1. Entrar ou criar uma conta.
-2. Formar ou participar de um grupo.
-3. Explorar as salas e identificar pistas.
-4. Resolver enigmas e desafios relacionados à programação Python.
-5. Avançar conforme os desafios forem solucionados.
-6. Concluir o Escape Room.
-
-## Equipe
-
-* **Luiza Helena Tardelli Marçulli Espíndola**
-* **Munir Terranova Abou Zenni**
-* **Renan do Nascimento Martins**
-
-**Orientador:** Prof. Pedro Henrique Miho de Souza
-**Coorientador:** Prof. Alessandro Aparecido da Silva Horas
+> **Placeholder** é um nome temporário, assim como o logo (ícone `door-open` do Lucide).
 
 ---
 
-> Projeto desenvolvido como parte do Projeto Final de Curso do Bacharelado em Sistemas de Informação — Universidade de Mogi das Cruzes (UMC), 2026.
+## O que entrou nesta etapa
+
+```
+entrar.html          página de entrada por link/QR Code            [RN03]
+js/entrar.js         apresenta o código e entra no grupo           [RN03]
+grupo.html           bloco "Convidar" + modal de link e QR Code    [RN03]
+js/grupo.js          envio e cancelamento de convites, QR Code     [RN03]
+dashboard.html       cartões de convites recebidos e enviados      [RN03]
+js/dashboard.js      aceitar/recusar convite                       [RN03]
+firestore.rules      coleção invites, subcoleção joins e a regra
+                     de entrada em grupo                           [RN03]
+```
+
+O restante dos arquivos vem da Etapa 1.
+
+---
+
+## Como funciona o RN03
+
+**Por convite.** O proprietário busca o usuário pelo username (`usernames/{nome}` → uid) e cria
+`invites/{grupoId}_{uid}` com status `pending`. O ID determinístico evita convites duplicados. O
+convidado vê o convite no painel e pode aceitar ou recusar; ao aceitar, o mesmo lote de escrita
+atualiza o convite e adiciona o usuário a `members`. A regra do grupo confere o convite pendente
+antes de permitir a entrada.
+
+**Por código de acesso.** O proprietário gera um `inviteCode` de 8 caracteres, exibido como link e
+como QR Code, e pode gerar um novo código a qualquer momento — o anterior deixa de valer. Quem abre
+o link entra por `entrar.html`, que grava `groups/{gid}/joins/{uid}` com o código e o carimbo de
+tempo do servidor **na mesma transação** da entrada. A regra usa `getAfter()` e só aceita se
+`at == request.time` e o código bater com o atual, de modo que um código antigo não pode ser
+reaproveitado.
+
+---
+
+## Coleções acrescentadas
+
+| Caminho | Conteúdo |
+|---|---|
+| `invites/{gid}_{uid}` | `groupId`, `groupName`, `fromUid`, `fromUsername`, `toUid`, `toUsername`, `status`, `createdAt`, `respondedAt` |
+| `groups/{gid}/joins/{uid}` | `code`, `at` — prova de que o código foi apresentado |
+| `groups/{gid}` | ganha o campo `inviteCode` |
+
+Nenhum índice composto é necessário: as consultas de convites usam apenas filtros de igualdade.
+
+> Grupos criados na Etapa 1 não têm `inviteCode`. Para testar o convite por código, crie um grupo
+> novo depois de publicar estas regras.
+
+---
+
+## Configuração do Firebase
+
+A mesma da Etapa 1 (`firebaseConfig` em `js/firebase.js`, Authentication com E-mail/senha e Google,
+Firestore, Realtime Database). Depois de atualizar o código, republique as regras:
+
+```bash
+firebase deploy --only firestore:rules
+```
+
+---
+
+## Segurança do RN03
+
+- Só o **dono do grupo** cria convites, e a regra confere no servidor: remetente é o dono, o
+  convidado ainda não está no grupo, o nome do grupo bate com o documento e o username do remetente
+  bate com o perfil dele (não dá para se passar por outra pessoa).
+- O convidado só pode mudar o status de `pending` para `accepted`/`declined` — mais nada.
+- Ninguém lê convites de terceiros: só remetente e destinatário.
+- Entrar no grupo exige convite pendente **ou** código válido apresentado na mesma transação;
+  alterar o JavaScript no navegador não contorna nenhuma das duas condições.
+- O usuário adiciona apenas a si mesmo a `members`, e `memberCount` precisa bater com o tamanho
+  real da lista.

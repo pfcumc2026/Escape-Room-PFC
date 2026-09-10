@@ -219,6 +219,15 @@ async function limparDados() {
     await deleteDoc(g.ref);
   }
 
+  for (const campo of ["toUid", "fromUid"]) {
+    const convites = await getDocs(query(collection(db, "invites"), where(campo, "==", user.uid)));
+    if (!convites.empty) {
+      const lote = writeBatch(db);
+      convites.docs.forEach((d) => lote.delete(d.ref));
+      await lote.commit();
+    }
+  }
+
   await remove(ref(rtdb, `status/${user.uid}`)).catch(() => {});
   await deleteDoc(doc(db, "users", user.uid, "private", "profile")).catch(() => {});
   await deleteDoc(doc(db, "usernames", perfil.usernameLower)).catch(() => {});

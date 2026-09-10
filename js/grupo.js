@@ -1,13 +1,14 @@
-// Grupo: integrantes, presença e chat
+// Grupo: integrantes, presença, convites, link/QR Code e chat
 
 import { db, LIMITES, avatarUrl } from "./firebase.js";
 import {
-  doc, collection, query, orderBy, limit, onSnapshot, getDoc, getDocs,
-  deleteDoc, updateDoc, writeBatch, serverTimestamp, arrayRemove, increment, Timestamp
+  doc, collection, query, where, orderBy, limit, onSnapshot, getDoc, getDocs,
+  setDoc, deleteDoc, updateDoc, writeBatch, serverTimestamp, arrayRemove,
+  increment, Timestamp
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 import { exigirAutenticacao } from "./guard.js";
 import { iniciarPresenca, observarPresenca } from "./presenca.js";
-import { icones, toast, erro, carregando, setTexto, limparTexto, tempoRelativo } from "./ui.js";
+import { icones, toast, erro, carregando, setTexto, limparTexto, tempoRelativo, temaAtual } from "./ui.js";
 
 const { user, perfil } = await exigirAutenticacao();
 iniciarPresenca(user.uid);
@@ -21,11 +22,13 @@ if (!/^[A-Za-z0-9_-]{6,40}$/.test(idGrupo)) {
 const refGrupo = doc(db, "groups", idGrupo);
 const listaIntegrantes = document.getElementById("lista-integrantes");
 const acoes = document.getElementById("acoes-grupo");
+const blocoConvites = document.getElementById("bloco-convites");
 
 let grupo = null;
 let ehProprietario = false;
 let cancelarPresenca = [];
 let assinaturaChat = null;
+let assinaturaPendentes = null;
 
 onSnapshot(refGrupo, (snap) => {
   if (!snap.exists()) {
@@ -44,9 +47,11 @@ onSnapshot(refGrupo, (snap) => {
   setTexto("#nome-grupo", grupo.name);
   setTexto("#contagem", String(grupo.memberCount));
   setTexto("#papel", ehProprietario ? "você é o proprietário" : "integrante");
+  blocoConvites.classList.toggle("d-none", !ehProprietario);
 
   desenharAcoes();
   desenharIntegrantes();
+  if (ehProprietario && !assinaturaPendentes) ouvirPendentes();
   if (!assinaturaChat) ouvirChat();
 }, (e) => {
   erro(e, "Não foi possível abrir o grupo.");
@@ -57,6 +62,7 @@ onSnapshot(refGrupo, (snap) => {
 function desenharAcoes() {
   acoes.textContent = "";
   if (ehProprietario) {
+    acoes.appendChild(botao("Convite e QR Code", "qr-code", "btn-primary", abrirConvite));
     acoes.appendChild(botao("Excluir grupo", "trash-2", "btn-outline-secondary", excluirGrupo));
   } else {
     acoes.appendChild(botao("Sair do grupo", "log-out", "btn-outline-secondary", sairDoGrupo));
@@ -162,9 +168,15 @@ async function excluirGrupo(botaoRef) {
       msgs.docs.slice(i, i + 200).forEach((d) => lote.delete(d.ref));
       await lote.commit();
     }
-    const loteFinal = writeBatch(db);
-    for (const uid of grupo.members) loteFinal.delete(doc(db, "groups", idGrupo, "rate", uid));
-    await loteFinal.commit();
+    const convites = await getDocs(query(collection(db, "invites"),
+      where("groupId", "==", idGrupo), where("fromUid", "==", user.uid)));
+    const loteConvites = writeBatch(db);
+    convites.docs.forEach((d) => loteConvites.delete(d.ref));
+    for (const uid of grupo.members) {
+      loteConvites.delete(doc(db, "groups", idGrupo, "rate", uid));
+      loteConvites.delete(doc(db, "groups", idGrupo, "joins", uid));
+    }
+    await loteConvites.commit();
     await deleteDoc(refGrupo);
     location.replace("dashboard.html");
   } catch (e) {
@@ -172,6 +184,146 @@ async function excluirGrupo(botaoRef) {
     carregando(botaoRef, false);
   }
 }
+
+// Convites
+document.getElementById("form-convite").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const btn = document.getElementById("btn-convidar");
+  const campo = document.getElementById("convidado");
+  const alvo = limparTexto(campo.value, LIMITES.usernameMax).replace(/\s/g, "").toLowerCase();
+
+  if (!/^[a-z0-9_]{3,20}$/.test(alvo)) { toast("Username inválido.", "err"); return; }
+  if (alvo === perfil.usernameLower) { toast("Você já faz parte do grupo.", "err"); return; }
+
+  carregando(btn, true, "Enviando...");
+  try {
+    const mapa = await getDoc(doc(db, "usernames", alvo));
+    if (!mapa.exists()) { toast("Usuário não encontrado.", "err"); carregando(btn, false); return; }
+    const uidAlvo = mapa.data().uid;
+    if (grupo.members.includes(uidAlvo)) { toast("Este usuário já está no grupo.", "err"); carregando(btn, false); return; }
+
+    const perfilAlvo = await getDoc(doc(db, "users", uidAlvo));
+    const idConvite = `${idGrupo}_${uidAlvo}`;
+    const existente = await getDoc(doc(db, "invites", idConvite)).catch(() => null);
+    if (existente && existente.exists()) {
+      if (existente.data().status === "pending") {
+        toast("Já existe um convite pendente para este usuário.", "info");
+        carregando(btn, false);
+        return;
+      }
+      await deleteDoc(doc(db, "invites", idConvite));
+    }
+
+    await setDoc(doc(db, "invites", idConvite), {
+      groupId: idGrupo,
+      groupName: grupo.name,
+      fromUid: user.uid,
+      fromUsername: perfil.username,
+      toUid: uidAlvo,
+      toUsername: perfilAlvo.exists() ? perfilAlvo.data().username : alvo,
+      status: "pending",
+      createdAt: serverTimestamp()
+    });
+    campo.value = "";
+    toast("Convite enviado.", "ok");
+  } catch (e) {
+    if (e.code === "permission-denied") toast("Convite não permitido: verifique o limite de jogadores.", "err");
+    else erro(e, "Não foi possível enviar o convite.");
+  }
+  carregando(btn, false);
+});
+
+function ouvirPendentes() {
+  const lista = document.getElementById("lista-pendentes");
+  assinaturaPendentes = onSnapshot(
+    query(collection(db, "invites"),
+      where("groupId", "==", idGrupo),
+      where("fromUid", "==", user.uid),
+      where("status", "==", "pending")),
+    (snap) => {
+      lista.textContent = "";
+      snap.docs.forEach((d) => {
+        const c = d.data();
+        const item = document.createElement("div");
+        item.className = "ph-item";
+        const main = document.createElement("div");
+        main.className = "ph-item__main";
+        const nome = document.createElement("div");
+        nome.className = "ph-item__name";
+        nome.textContent = c.toUsername;
+        const meta = document.createElement("div");
+        meta.className = "ph-item__meta";
+        meta.textContent = "convite pendente";
+        main.append(nome, meta);
+        const cancelar = document.createElement("button");
+        cancelar.className = "btn btn-outline-secondary btn-sm";
+        cancelar.textContent = "Cancelar";
+        cancelar.addEventListener("click", async () => {
+          try { await deleteDoc(d.ref); } catch (e) { erro(e, "Não foi possível cancelar."); }
+        });
+        item.append(main, cancelar);
+        lista.appendChild(item);
+      });
+    },
+    () => {}
+  );
+}
+
+// Link e QR Code
+function linkConvite() {
+  const url = new URL("entrar.html", location.href);
+  url.searchParams.set("g", idGrupo);
+  url.searchParams.set("c", grupo.inviteCode);
+  return url.href;
+}
+
+function abrirConvite() {
+  const campo = document.getElementById("link-convite");
+  campo.value = linkConvite();
+  desenharQr();
+  new bootstrap.Modal(document.getElementById("modal-convite")).show();
+}
+
+function desenharQr() {
+  const alvo = document.getElementById("qrcode");
+  alvo.textContent = "";
+  if (!window.QRCode) { alvo.textContent = "QR Code indisponível."; return; }
+  new QRCode(alvo, {
+    text: linkConvite(),
+    width: 190,
+    height: 190,
+    colorDark: temaAtual() === "dark" ? "#e6ebf2" : "#10161f",
+    colorLight: temaAtual() === "dark" ? "#121721" : "#ffffff"
+  });
+}
+
+document.getElementById("btn-copiar").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(linkConvite());
+    toast("Link copiado.", "ok");
+  } catch {
+    document.getElementById("link-convite").select();
+    toast("Copie o link selecionado.", "info");
+  }
+});
+
+document.getElementById("btn-novo-codigo").addEventListener("click", async (ev) => {
+  const alvoBotao = ev.currentTarget;
+  carregando(alvoBotao, true, "Gerando...");
+  try {
+    const alfabeto = "abcdefghijkmnpqrstuvwxyz23456789";
+    const valores = crypto.getRandomValues(new Uint8Array(8));
+    const codigo = Array.from(valores, (v) => alfabeto[v % alfabeto.length]).join("");
+    await updateDoc(refGrupo, { inviteCode: codigo });
+    grupo.inviteCode = codigo;
+    document.getElementById("link-convite").value = linkConvite();
+    desenharQr();
+    toast("Novo código gerado. O link anterior deixou de valer.", "ok");
+  } catch (e) {
+    erro(e, "Não foi possível gerar um novo código.");
+  }
+  carregando(alvoBotao, false);
+});
 
 // Chat
 const chat = document.getElementById("chat");

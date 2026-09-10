@@ -64,16 +64,52 @@
       <div class="form-text" id="aviso-msg">Até 15 mensagens por minuto, com 2 segundos entre elas.</div>
     </section>
 
-    <section class="ph-card">
-      <p class="ph-eyebrow mb-1">Equipe</p>
-      <h2 class="ph-title">Integrantes</h2>
-      <div class="ph-list" id="lista-integrantes"></div>
-    </section>
+    <div class="d-grid gap-3">
+      <section class="ph-card">
+        <p class="ph-eyebrow mb-1">Equipe</p>
+        <h2 class="ph-title">Integrantes</h2>
+        <div class="ph-list" id="lista-integrantes"></div>
+      </section>
+
+      <section class="ph-card" id="bloco-convites">
+        <p class="ph-eyebrow mb-1">Somente o proprietário</p>
+        <h2 class="ph-title">Convidar</h2>
+        <form class="d-flex gap-2" id="form-convite" novalidate>
+          <label class="visually-hidden" for="convidado">Username</label>
+          <input class="form-control ph-mono" id="convidado" maxlength="20" placeholder="username">
+          <button class="btn btn-primary" type="submit" id="btn-convidar">Convidar</button>
+        </form>
+        <div class="ph-list mt-3" id="lista-pendentes"></div>
+      </section>
+    </div>
   </div>
 </main>
 
+<!-- Convite por link e QR Code -->
+<div class="modal fade" id="modal-convite" tabindex="-1" aria-labelledby="titulo-modal-convite" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="titulo-modal-convite">Convite do grupo</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label" for="link-convite">Link de entrada</label>
+        <div class="d-flex gap-2">
+          <input class="form-control ph-mono" id="link-convite" readonly>
+          <button class="btn btn-outline-secondary" type="button" id="btn-copiar">Copiar</button>
+        </div>
+        <div class="d-flex justify-content-center my-3" id="qrcode" aria-label="QR Code do convite"></div>
+        <p class="ph-muted mb-0" style="font-size:.82rem">Quem abrir o link entra no grupo apenas se ainda houver vaga. Gere um novo código a qualquer momento para invalidar o anterior.</p>
+        <button class="btn btn-outline-secondary w-100 mt-3" type="button" id="btn-novo-codigo">Gerar novo código</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@master/qrcode.min.js"></script>
 <script type="module" src="js/grupo.js"></script>
 </body>
 </html>
