@@ -100,7 +100,8 @@ service cloud.firestore {
 
       function contagemOk() {
         return novo().memberCount == novo().members.size()
-          && novo().members.size() >= 1;
+          && novo().members.size() >= 1
+          && novo().members.size() <= antigo().maxMembers;
       }
 
       // O código do convite é apresentado em um documento gravado na mesma transação,
@@ -157,11 +158,12 @@ service cloud.firestore {
       allow list: if membro();
 
       allow create: if autenticado()
-        && novo().keys().hasAll(['name', 'ownerId', 'members', 'memberCount', 'inviteCode', 'createdAt'])
-        && novo().keys().hasOnly(['name', 'ownerId', 'members', 'memberCount', 'inviteCode', 'createdAt'])
+        && novo().keys().hasAll(['name', 'ownerId', 'members', 'memberCount', 'maxMembers', 'inviteCode', 'createdAt'])
+        && novo().keys().hasOnly(['name', 'ownerId', 'members', 'memberCount', 'maxMembers', 'inviteCode', 'createdAt'])
         && novo().ownerId == request.auth.uid
         && novo().members == [request.auth.uid]
         && novo().memberCount == 1
+        && novo().maxMembers == 4
         && novo().name is string && novo().name.size() >= 3 && novo().name.size() <= 30
         && novo().inviteCode is string && novo().inviteCode.size() == 8
         && novo().createdAt == request.time
@@ -253,7 +255,8 @@ service cloud.firestore {
           && d.createdAt == request.time
           && d.groupName == g.name
           && g.ownerId == request.auth.uid
-          && !(d.toUid in g.members);
+          && !(d.toUid in g.members)
+          && g.members.size() < g.maxMembers;
       }
 
       allow get: if autenticado() && (resource == null || alvo() || autor());

@@ -194,6 +194,7 @@ document.getElementById("form-convite").addEventListener("submit", async (ev) =>
 
   if (!/^[a-z0-9_]{3,20}$/.test(alvo)) { toast("Username inválido.", "err"); return; }
   if (alvo === perfil.usernameLower) { toast("Você já faz parte do grupo.", "err"); return; }
+  if (grupo.memberCount >= LIMITES.maxIntegrantes) { toast("O grupo já está cheio.", "err"); return; }
 
   carregando(btn, true, "Enviando...");
   try {
@@ -204,8 +205,8 @@ document.getElementById("form-convite").addEventListener("submit", async (ev) =>
 
     const perfilAlvo = await getDoc(doc(db, "users", uidAlvo));
     const idConvite = `${idGrupo}_${uidAlvo}`;
-    const existente = await getDoc(doc(db, "invites", idConvite)).catch(() => null);
-    if (existente && existente.exists()) {
+    const existente = await getDoc(doc(db, "invites", idConvite));
+    if (existente.exists()) {
       if (existente.data().status === "pending") {
         toast("Já existe um convite pendente para este usuário.", "info");
         carregando(btn, false);

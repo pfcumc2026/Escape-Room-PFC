@@ -1,4 +1,4 @@
-// Configuração do Firebase (único ponto de configuração do projeto)
+// Configuração do Firebase 
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth, GoogleAuthProvider, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
@@ -6,13 +6,13 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/11.0.2/firebase
 import { getDatabase } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
 export const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_PROJETO.firebaseapp.com",
-  databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
-  projectId: "SEU_PROJETO",
-  storageBucket: "SEU_PROJETO.appspot.com",
-  messagingSenderId: "000000000000",
-  appId: "1:000000000000:web:0000000000000000000000"
+  apiKey: "AIzaSyAZS2ZgO0lZ5i3_AbW9H4DotOMGMLkkwuw",
+  authDomain: "pfc-2026-f8fb8.firebaseapp.com",
+  databaseURL: "https://pfc-2026-f8fb8-default-rtdb.firebaseio.com",
+  projectId: "pfc-2026-f8fb8",
+  storageBucket: "pfc-2026-f8fb8.firebasestorage.app",
+  messagingSenderId: "924831886283",
+  appId: "1:924831886283:web:05f8edc6b4e14ac41ce44e"
 };
 
 export const app = initializeApp(firebaseConfig);
@@ -27,6 +27,7 @@ await setPersistence(auth, browserLocalPersistence);
 
 // Regras de negócio compartilhadas (espelhadas nas Security Rules)
 export const LIMITES = {
+  maxIntegrantes: 4,
   usernameMin: 3,
   usernameMax: 20,
   senhaMin: 8,

@@ -1,6 +1,6 @@
 // Painel: perfil resumido, grupos, convites e acesso às configurações
 
-import { db, avatarUrl } from "./firebase.js";
+import { db, LIMITES, avatarUrl } from "./firebase.js";
 import {
   collection, doc, query, where, onSnapshot, writeBatch, serverTimestamp,
   arrayUnion, increment, getDoc
@@ -54,7 +54,7 @@ onSnapshot(
         nome.textContent = g.name;
         const meta = document.createElement("div");
         meta.className = "ph-item__meta";
-        meta.textContent = `${g.memberCount} jogadores · ${g.ownerId === user.uid ? "você é o proprietário" : "integrante"}`;
+        meta.textContent = `${g.memberCount} de ${LIMITES.maxIntegrantes} jogadores · ${g.ownerId === user.uid ? "você é o proprietário" : "integrante"}`;
         main.append(nome, meta);
 
         const link = document.createElement("a");
@@ -87,6 +87,7 @@ formGrupo.addEventListener("submit", async (ev) => {
       ownerId: user.uid,
       members: [user.uid],
       memberCount: 1,
+      maxMembers: LIMITES.maxIntegrantes,
       inviteCode: novoCodigo(),
       createdAt: serverTimestamp()
     });

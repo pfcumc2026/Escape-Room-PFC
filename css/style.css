@@ -341,6 +341,21 @@ hr.ph-sep { border-color: var(--ph-line); opacity: 1; margin: 22px 0; }
 
 .ph-grid-2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; align-items: start; }
 
+/* Google Sign-In Button */
+.gsi-material-button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px !important;
+}
+
+.gsi-material-button-icon {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+
 @media (max-width: 860px) {
   .ph-grid-2 { grid-template-columns: 1fr; }
   .ph-shell { padding: 0 14px 48px; }
@@ -358,3 +373,4 @@ hr.ph-sep { border-color: var(--ph-line); opacity: 1; margin: 22px 0; }
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
+
