@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Entrar no grupo · Escape.py</title>
+<title>Auditoria · Escape.py</title>
 <script>try{document.documentElement.setAttribute('data-bs-theme',localStorage.getItem('ph-theme')||'dark')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +11,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
 </head>
-<body class="ph-loading" data-pagina="entrar">
+<body class="ph-loading" data-pagina="auditoria">
 
 <div class="ph-loader">Carregando…</div>
 
@@ -21,17 +21,28 @@
     <span class="ph-logo"><i data-lucide="door-open" aria-hidden="true"></i></span>
     Escape.py <small>Escape Room</small>
   </a>
+  <div class="ms-auto">
+    <a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2" href="dashboard.html">
+      <i data-lucide="arrow-left" aria-hidden="true"></i> Painel
+    </a>
+  </div>
 </header>
 
-<main class="ph-shell ph-shell--narrow ph-page">
+<main class="ph-shell ph-shell--mid ph-page">
   <section class="ph-card ph-card--accent">
-    <p class="ph-eyebrow">Convite</p>
-    <h1 class="ph-title">Entrar no grupo</h1>
-    <p class="ph-sub" id="estado">Confirmando o convite…</p>
-    <div class="d-grid gap-2 mt-3">
-      <button class="btn btn-primary d-none" type="button" id="btn-entrar">Entrar no grupo</button>
-      <a class="btn btn-outline-secondary" href="dashboard.html">Ir para o painel</a>
+    <p class="ph-eyebrow mb-1">Somente administradores</p>
+    <h1 class="ph-title">Logs de auditoria</h1>
+    <p class="ph-sub">Ações dos usuários e operações realizadas no sistema, da mais recente para a mais antiga. Os registros não podem ser alterados nem apagados.</p>
+
+    <div class="d-flex gap-2 flex-wrap">
+      <label class="visually-hidden" for="filtro-auditoria">Filtrar registros</label>
+      <input class="form-control" id="filtro-auditoria" style="max-width:360px" autocomplete="off"
+             placeholder="Filtrar por e-mail, uid, ação ou detalhe">
+      <button class="btn btn-outline-secondary" type="button" id="btn-atualizar">Atualizar</button>
     </div>
+    <p class="ph-muted mt-2 mb-3" style="font-size:.8rem" id="total-auditoria"></p>
+
+    <div class="ph-list" id="lista-auditoria"></div>
   </section>
 </main>
 

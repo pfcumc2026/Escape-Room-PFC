@@ -20,6 +20,10 @@ service cloud.firestore {
       return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.username;
     }
 
+    function administrador() {
+      return autenticado() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
     function convitePendente(gid) {
       let caminho = /databases/$(database)/documents/invites/$(gid + '_' + request.auth.uid);
       return exists(caminho) && get(caminho).data.status == 'pending';
@@ -275,6 +279,30 @@ service cloud.firestore {
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'respondedAt']);
 
       allow delete: if autenticado() && (alvo() || autor());
+    }
+
+    // Perfil de administrador: concedido apenas pelo console do Firebase
+    match /admins/{uid} {
+      allow get: if eu(uid);
+      allow list, write: if false;
+    }
+
+    // Logs de auditoria: cada usuário só grava as próprias ações; ninguém altera ou apaga
+    match /auditLogs/{id} {
+      allow read: if administrador();
+
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasAll(['uid', 'email', 'action', 'detail', 'at'])
+        && request.resource.data.keys().hasOnly(['uid', 'email', 'action', 'detail', 'at'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email == request.auth.token.get('email', '')
+        && request.resource.data.action is string
+        && request.resource.data.action.size() > 0 && request.resource.data.action.size() <= 40
+        && request.resource.data.detail is string
+        && request.resource.data.detail.size() <= 200
+        && request.resource.data.at == request.time;
+
+      allow update, delete: if false;
     }
 
     // Nada além do que está declarado acima
