@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de Privacidade · Escape.py</title>
+<script>try{document.documentElement.setAttribute('data-bs-theme',localStorage.getItem('ph-theme')||'dark')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+</head>
+<body data-pagina="privacidade">
+
+<header class="ph-top">
+  <button type="button" class="ph-theme-toggle" data-ph-theme-toggle aria-label="Alternar tema"></button>
+  <a class="ph-brand" href="index.html">
+    <span class="ph-logo"><i data-lucide="door-open" aria-hidden="true"></i></span>
+    Escape.py <small>Escape Room</small>
+  </a>
+</header>
+
+<main class="ph-shell ph-shell--mid ph-page">
+  <article class="ph-card ph-card--accent ph-doc">
+    <p class="ph-eyebrow">LGPD · Lei nº 13.709/2018</p>
+    <h1 class="ph-title">Política de Privacidade</h1>
+    <p class="ph-sub">Versão 1.0 · atualizada em 25/09/2026</p>
+
+    <p>
+      Esta política explica quais dados pessoais o <strong>Escape.py</strong> — jogo educacional em formato Escape Room
+      para o ensino de Python, desenvolvido como Projeto Final de Curso — coleta, para que os utiliza, com quem os
+      compartilha, por quanto tempo os guarda e como você exerce seus direitos como titular.
+    </p>
+
+    <h2>1. Controlador e contato</h2>
+    <p>
+      O controlador dos dados é a equipe do projeto Escape.py. Para dúvidas ou para exercer seus direitos, escreva para
+      <span class="ph-mono">[e-mail de contato da equipe]</span>. Grande parte dos direitos também pode ser exercida
+      diretamente no sistema, em <a href="configuracoes.html">Configurações</a>.
+    </p>
+
+    <h2>2. Dados pessoais coletados</h2>
+    <ul>
+      <li><strong>Cadastro por e-mail:</strong> nome, e-mail e senha. A senha é guardada pelo Firebase Authentication apenas na forma de hash — nem a equipe tem acesso a ela.</li>
+      <li><strong>Login com Google:</strong> nome, e-mail e o identificador da conta Google, fornecidos pelo próprio Google.</li>
+      <li><strong>Perfil de jogador:</strong> username, estilo e semente do avatar e data de criação do perfil.</li>
+      <li><strong>Verificação em duas etapas (opcional):</strong> a chave secreta do aplicativo autenticador, guardada pelo Firebase Authentication.</li>
+      <li><strong>Grupos e convites:</strong> grupos de que você participa, quem é o proprietário, convites enviados e recebidos, com status e datas.</li>
+      <li><strong>Chat do grupo:</strong> texto das mensagens, autor e horário de envio.</li>
+      <li><strong>Presença:</strong> se você está online ou offline e o horário da última mudança.</li>
+      <li><strong>Logs de auditoria:</strong> identificador da conta (uid), e-mail, ação realizada, detalhe da ação e data/hora do servidor. O conteúdo das mensagens do chat não entra nos logs.</li>
+      <li><strong>Dados no seu navegador:</strong> a preferência de tema claro/escuro (localStorage) e a sessão de login do Firebase. Não usamos cookies de publicidade nem ferramentas de rastreamento.</li>
+    </ul>
+
+    <h2>3. Finalidades e bases legais</h2>
+    <ul>
+      <li><strong>Criar a conta, autenticar e manter você conectado</strong> — execução do serviço solicitado por você (art. 7º, V).</li>
+      <li><strong>Identificar você para os outros jogadores</strong> pelo username e avatar, formar grupos de até 4 jogadores, enviar convites e permitir o chat — execução do serviço (art. 7º, V).</li>
+      <li><strong>Proteger a conta e o sistema</strong> (verificação de e-mail, 2FA, limite de envio de mensagens e de criação de grupos) — legítimo interesse e segurança (art. 7º, IX, e art. 46).</li>
+      <li><strong>Registrar logs de auditoria</strong> para rastrear ações, investigar incidentes e comprovar o aceite dos termos — legítimo interesse (art. 7º, IX, e art. 10).</li>
+      <li><strong>Aceite do Termo de Aceite e desta política</strong> — consentimento registrado no cadastro (art. 7º, I, e art. 8º).</li>
+    </ul>
+    <p>Os dados não são vendidos, não são usados para publicidade e não passam por decisões automatizadas.</p>
+
+    <h2>4. Quem pode ver seus dados</h2>
+    <ul>
+      <li><strong>Outros jogadores autenticados:</strong> apenas seu username, seu avatar e seu status online/offline.</li>
+      <li><strong>Integrantes dos seus grupos:</strong> as mensagens do chat do grupo.</li>
+      <li><strong>Somente você:</strong> seu nome e seu e-mail, exibidos em Configurações.</li>
+      <li><strong>Administradores do sistema:</strong> os logs de auditoria, que incluem uid e e-mail.</li>
+    </ul>
+    <p>Essas regras são aplicadas no servidor pelas Security Rules do Firebase, e não apenas na interface.</p>
+
+    <h2>5. Compartilhamento com terceiros</h2>
+    <ul>
+      <li><strong>Google Firebase</strong> (Authentication, Firestore, Realtime Database e Hosting): operador que armazena e processa os dados em nome do projeto. Os servidores podem ficar fora do Brasil; a transferência internacional ocorre com as garantias contratuais do Google Cloud (art. 33).</li>
+      <li><strong>DiceBear API</strong> (avatares): recebe apenas o estilo e uma semente aleatória. Nenhum dado pessoal é enviado.</li>
+      <li><strong>CDNs</strong> (jsDelivr, unpkg e Google Fonts): recebem, como em qualquer acesso à web, o endereço IP e dados técnicos do navegador ao carregar bibliotecas e fontes.</li>
+    </ul>
+
+    <h2>6. Por quanto tempo guardamos</h2>
+    <ul>
+      <li><strong>Mensagens do chat:</strong> apagadas automaticamente 24 horas após o envio.</li>
+      <li><strong>Conta, perfil, grupos e convites:</strong> até você excluir a conta.</li>
+      <li><strong>Logs de auditoria:</strong> mantidos por 6 meses, prazo de referência do art. 15 do Marco Civil da Internet (Lei nº 12.965/2014), e depois excluídos pelos administradores. Eles permanecem após a exclusão da conta para garantir a rastreabilidade.</li>
+    </ul>
+
+    <h2>7. Seus direitos (art. 18) e como exercê-los</h2>
+    <ul>
+      <li><strong>Confirmação e acesso:</strong> veja seus dados em <a href="configuracoes.html">Configurações → Seus dados</a>.</li>
+      <li><strong>Correção:</strong> altere username e avatar em <a href="perfil.html">Perfil</a>; troque a senha em Configurações.</li>
+      <li><strong>Eliminação e revogação do consentimento:</strong> use <strong>Excluir minha conta</strong> em Configurações. Isso apaga perfil, nome, username, convites, presença e participação nos grupos, e remove a conta do Firebase Authentication.</li>
+      <li><strong>Portabilidade, informação sobre compartilhamento, oposição e revisão:</strong> pelo contato da seção 1.</li>
+      <li>Você também pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD).</li>
+    </ul>
+
+    <h2>8. Segurança e criptografia</h2>
+    <ul>
+      <li>Toda a comunicação com o sistema é criptografada por HTTPS/TLS.</li>
+      <li>As senhas são guardadas pelo Firebase Authentication com hash (algoritmo scrypt) e nunca são copiadas para o banco de dados.</li>
+      <li>Os dados armazenados pelo Google Cloud são criptografados em repouso (AES-256).</li>
+      <li>O acesso exige e-mail verificado, e a verificação em duas etapas pode ser ativada.</li>
+      <li>As permissões de leitura e escrita são validadas no servidor, conforme o perfil de cada usuário.</li>
+    </ul>
+
+    <h2>9. Crianças e adolescentes</h2>
+    <p>
+      O público do jogo são estudantes. Menores de 18 anos só devem usar o sistema com o conhecimento e o
+      consentimento de um responsável legal (art. 14).
+    </p>
+
+    <h2>10. Alterações nesta política</h2>
+    <p>
+      Mudanças relevantes geram uma nova versão, com data atualizada no topo desta página. Esta página fica sempre
+      disponível pelo rodapé de todas as telas do sistema.
+    </p>
+
+    <hr class="ph-sep">
+    <p class="mb-0">Leia também o <a href="termos.html">Termo de Aceite</a>.</p>
+  </article>
+</main>
+
+<footer class="ph-footer">
+  <a href="termos.html">Termo de Aceite</a>
+  <a href="privacidade.html">Política de Privacidade</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
