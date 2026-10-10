@@ -38,7 +38,11 @@ export class PaginaDashboard extends PaginaProtegida {
       .then((nome) => Dom.texto("#nome", nome))
       .catch(() => {});
     this.perfis.ehAdministrador(this.sessao.uid)
-      .then((admin) => { if (admin) this.el("link-auditoria").classList.replace("d-none", "d-inline-flex"); })
+      .then((admin) => {
+        if (!admin) return;
+        this.el("link-auditoria").classList.replace("d-none", "d-inline-flex");
+        this.el("link-editor").classList.replace("d-none", "d-inline-flex");
+      })
       .catch(() => {});
 
     new InterruptorTema(this.el("switch-tema"));

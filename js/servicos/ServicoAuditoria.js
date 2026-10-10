@@ -27,7 +27,7 @@ export class ServicoAuditoria {
         at: serverTimestamp()
       });
     } catch (e) {
-      console.warn("[Placeholder] auditoria", e);
+      console.warn("[Escape.py] auditoria", e);
     }
   }
 

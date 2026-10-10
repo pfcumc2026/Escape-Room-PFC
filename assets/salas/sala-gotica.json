@@ -1,0 +1,4086 @@
+{
+ "id": "sala-gotica",
+ "nome": "Estudo Gótico",
+ "descricao": "Um estúdio e quarto medieval de madeira escura, cheio de mecanismos esquecidos.",
+ "renders": [
+  {
+   "id": "r01",
+   "arquivo": "assets/renders/01.png",
+   "titulo": "Entrada do estúdio",
+   "destaque": false,
+   "mapa": {
+    "x": 0.78,
+    "y": 0.55,
+    "angulo": 270
+   },
+   "ligacoes": [
+    {
+     "id": "s_01_frente",
+     "destino": "r08",
+     "direcao": "frente",
+     "x": 0.5,
+     "y": 0.64
+    },
+    {
+     "id": "s_01_esquerda",
+     "destino": "r03",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.55
+    },
+    {
+     "id": "s_01_direita",
+     "destino": "r02",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.55
+    },
+    {
+     "id": "s_01_tras",
+     "destino": "r12",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r02",
+   "arquivo": "assets/renders/02.png",
+   "titulo": "Estante e esfera de cristal",
+   "destaque": false,
+   "mapa": {
+    "x": 0.78,
+    "y": 0.38,
+    "angulo": 185
+   },
+   "ligacoes": [
+    {
+     "id": "s_02_frente",
+     "destino": "r09",
+     "direcao": "frente",
+     "x": 0.72,
+     "y": 0.72
+    },
+    {
+     "id": "s_02_esquerda",
+     "destino": "r10",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.6
+    },
+    {
+     "id": "s_02_direita",
+     "destino": "r03",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.6
+    },
+    {
+     "id": "s_02_tras",
+     "destino": "r01",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r03",
+   "arquivo": "assets/renders/03.png",
+   "titulo": "Relógio e quadros",
+   "destaque": true,
+   "mapa": {
+    "x": 0.6,
+    "y": 0.36,
+    "angulo": 220
+   },
+   "ligacoes": [
+    {
+     "id": "s_03_esquerda",
+     "destino": "r09",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.6
+    },
+    {
+     "id": "s_03_direita",
+     "destino": "r08",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.6
+    },
+    {
+     "id": "s_03_tras",
+     "destino": "r01",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r04",
+   "arquivo": "assets/renders/04.png",
+   "titulo": "Parede de mecanismos",
+   "destaque": true,
+   "mapa": {
+    "x": 0.55,
+    "y": 0.8,
+    "angulo": 355
+   },
+   "ligacoes": [
+    {
+     "id": "s_04_frente",
+     "destino": "r17",
+     "direcao": "frente",
+     "x": 0.5,
+     "y": 0.72
+    },
+    {
+     "id": "s_04_direita",
+     "destino": "r05",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.6
+    },
+    {
+     "id": "s_04_esquerda",
+     "destino": "r08",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.6
+    },
+    {
+     "id": "s_04_tras",
+     "destino": "r12",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r05",
+   "arquivo": "assets/renders/05.png",
+   "titulo": "Cama de dossel",
+   "destaque": true,
+   "mapa": {
+    "x": 0.3,
+    "y": 0.45,
+    "angulo": 50
+   },
+   "ligacoes": [
+    {
+     "id": "s_05_frente",
+     "destino": "r06",
+     "direcao": "frente",
+     "x": 0.5,
+     "y": 0.82
+    },
+    {
+     "id": "s_05_esquerda",
+     "destino": "r17",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.6
+    },
+    {
+     "id": "s_05_direita",
+     "destino": "r07",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.6
+    },
+    {
+     "id": "s_05_tras",
+     "destino": "r04",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r06",
+   "arquivo": "assets/renders/06.png",
+   "titulo": "Cama e baú",
+   "destaque": true,
+   "mapa": {
+    "x": 0.6,
+    "y": 0.5,
+    "angulo": 35
+   },
+   "ligacoes": [
+    {
+     "id": "s_06_frente",
+     "destino": "r07",
+     "direcao": "frente",
+     "x": 0.5,
+     "y": 0.35
+    },
+    {
+     "id": "s_06_direita",
+     "destino": "r13",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.6
+    },
+    {
+     "id": "s_06_tras",
+     "destino": "r05",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r07",
+   "arquivo": "assets/renders/07.png",
+   "titulo": "Aos pés da cama",
+   "destaque": true,
+   "mapa": {
+    "x": 0.4,
+    "y": 0.32,
+    "angulo": 90
+   },
+   "ligacoes": [
+    {
+     "id": "s_07_direita",
+     "destino": "r14",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.6
+    },
+    {
+     "id": "s_07_esquerda",
+     "destino": "r17",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.6
+    },
+    {
+     "id": "s_07_tras",
+     "destino": "r06",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r08",
+   "arquivo": "assets/renders/08.png",
+   "titulo": "Mesa de trabalho",
+   "destaque": true,
+   "mapa": {
+    "x": 0.3,
+    "y": 0.42,
+    "angulo": 270
+   },
+   "ligacoes": [
+    {
+     "id": "s_08_frente",
+     "destino": "r11",
+     "direcao": "frente",
+     "x": 0.45,
+     "y": 0.72
+    },
+    {
+     "id": "s_08_esquerda",
+     "destino": "r04",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.6
+    },
+    {
+     "id": "s_08_direita",
+     "destino": "r03",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.6
+    },
+    {
+     "id": "s_08_tras",
+     "destino": "r01",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r09",
+   "arquivo": "assets/renders/09.png",
+   "titulo": "Armário da parede",
+   "destaque": true,
+   "mapa": {
+    "x": 0.47,
+    "y": 0.8,
+    "angulo": 180
+   },
+   "ligacoes": [
+    {
+     "id": "s_09_esquerda",
+     "destino": "r10",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.6
+    },
+    {
+     "id": "s_09_direita",
+     "destino": "r03",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.6
+    },
+    {
+     "id": "s_09_tras",
+     "destino": "r02",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r10",
+   "arquivo": "assets/renders/10.png",
+   "titulo": "Canto da esfera",
+   "destaque": true,
+   "mapa": {
+    "x": 0.84,
+    "y": 0.52,
+    "angulo": 150
+   },
+   "ligacoes": [
+    {
+     "id": "s_10_direita",
+     "destino": "r09",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.6
+    },
+    {
+     "id": "s_10_esquerda",
+     "destino": "r14",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.6
+    },
+    {
+     "id": "s_10_tras",
+     "destino": "r02",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r11",
+   "arquivo": "assets/renders/11.png",
+   "titulo": "Escrivaninha vista do alto",
+   "destaque": true,
+   "mapa": {
+    "x": 0.3,
+    "y": 0.12,
+    "angulo": 190
+   },
+   "ligacoes": [
+    {
+     "id": "s_11_direita",
+     "destino": "r14",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.6
+    },
+    {
+     "id": "s_11_esquerda",
+     "destino": "r03",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.6
+    },
+    {
+     "id": "s_11_tras",
+     "destino": "r08",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r12",
+   "arquivo": "assets/renders/12.png",
+   "titulo": "Panorâmica do quarto",
+   "destaque": false,
+   "mapa": {
+    "x": 0.14,
+    "y": 0.88,
+    "angulo": 45
+   },
+   "ligacoes": [
+    {
+     "id": "s_12_frente",
+     "destino": "r05",
+     "direcao": "frente",
+     "x": 0.58,
+     "y": 0.58
+    },
+    {
+     "id": "s_12_esquerda",
+     "destino": "r04",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.55
+    },
+    {
+     "id": "s_12_direita",
+     "destino": "r14",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.55
+    },
+    {
+     "id": "s_12_tras",
+     "destino": "r01",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r13",
+   "arquivo": "assets/renders/13.png",
+   "titulo": "Da cama para a mesa",
+   "destaque": false,
+   "mapa": {
+    "x": 0.7,
+    "y": 0.22,
+    "angulo": 235
+   },
+   "ligacoes": [
+    {
+     "id": "s_13_frente",
+     "destino": "r08",
+     "direcao": "frente",
+     "x": 0.3,
+     "y": 0.6
+    },
+    {
+     "id": "s_13_esquerda",
+     "destino": "r16",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.55
+    },
+    {
+     "id": "s_13_direita",
+     "destino": "r15",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.55
+    },
+    {
+     "id": "s_13_tras",
+     "destino": "r06",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r14",
+   "arquivo": "assets/renders/14.png",
+   "titulo": "Janela e pedestal",
+   "destaque": true,
+   "mapa": {
+    "x": 0.66,
+    "y": 0.62,
+    "angulo": 155
+   },
+   "ligacoes": [
+    {
+     "id": "s_14_esquerda",
+     "destino": "r10",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.6
+    },
+    {
+     "id": "s_14_direita",
+     "destino": "r07",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.6
+    },
+    {
+     "id": "s_14_tras",
+     "destino": "r02",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r15",
+   "arquivo": "assets/renders/15.png",
+   "titulo": "Canto da cama",
+   "destaque": false,
+   "mapa": {
+    "x": 0.88,
+    "y": 0.12,
+    "angulo": 225
+   },
+   "ligacoes": [
+    {
+     "id": "s_15_frente",
+     "destino": "r01",
+     "direcao": "frente",
+     "x": 0.45,
+     "y": 0.6
+    },
+    {
+     "id": "s_15_esquerda",
+     "destino": "r12",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.55
+    },
+    {
+     "id": "s_15_direita",
+     "destino": "r13",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.55
+    },
+    {
+     "id": "s_15_tras",
+     "destino": "r16",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r16",
+   "arquivo": "assets/renders/16.png",
+   "titulo": "Cama e estante",
+   "destaque": false,
+   "mapa": {
+    "x": 0.15,
+    "y": 0.15,
+    "angulo": 100
+   },
+   "ligacoes": [
+    {
+     "id": "s_16_frente",
+     "destino": "r05",
+     "direcao": "frente",
+     "x": 0.3,
+     "y": 0.6
+    },
+    {
+     "id": "s_16_direita",
+     "destino": "r12",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.55
+    },
+    {
+     "id": "s_16_esquerda",
+     "destino": "r15",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.55
+    },
+    {
+     "id": "s_16_tras",
+     "destino": "r15",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  },
+  {
+   "id": "r17",
+   "arquivo": "assets/renders/17.png",
+   "titulo": "Engrenagens e tubulações",
+   "destaque": true,
+   "mapa": {
+    "x": 0.5,
+    "y": 0.5,
+    "angulo": 0
+   },
+   "ligacoes": [
+    {
+     "id": "s_17_esquerda",
+     "destino": "r04",
+     "direcao": "esquerda",
+     "x": 0.06,
+     "y": 0.6
+    },
+    {
+     "id": "s_17_direita",
+     "destino": "r05",
+     "direcao": "direita",
+     "x": 0.94,
+     "y": 0.6
+    },
+    {
+     "id": "s_17_tras",
+     "destino": "r12",
+     "direcao": "tras",
+     "x": 0.5,
+     "y": 0.92
+    }
+   ]
+  }
+ ],
+ "hotspots": [
+  {
+   "id": "h_escrivaninha_01",
+   "roomId": "sala-gotica",
+   "renderId": "r01",
+   "objectId": "escrivaninha",
+   "name": "Escrivaninha",
+   "shape": "rect",
+   "coordinates": [
+    0.2854,
+    0.4074,
+    0.7865,
+    0.9167
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma escrivaninha de madeira escura, coberta de painéis, livros e pequenos mecanismos.",
+   "enabled": true
+  },
+  {
+   "id": "h_escrivaninha_03",
+   "roomId": "sala-gotica",
+   "renderId": "r03",
+   "objectId": "escrivaninha",
+   "name": "Escrivaninha",
+   "shape": "rect",
+   "coordinates": [
+    0.6042,
+    0.4444,
+    1.0,
+    1.0
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma escrivaninha de madeira escura, coberta de painéis, livros e pequenos mecanismos.",
+   "enabled": true
+  },
+  {
+   "id": "h_escrivaninha_08",
+   "roomId": "sala-gotica",
+   "renderId": "r08",
+   "objectId": "escrivaninha",
+   "name": "Escrivaninha",
+   "shape": "rect",
+   "coordinates": [
+    0.3073,
+    0.2222,
+    0.9375,
+    0.9352
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma escrivaninha de madeira escura, coberta de painéis, livros e pequenos mecanismos.",
+   "enabled": true
+  },
+  {
+   "id": "h_janela_01",
+   "roomId": "sala-gotica",
+   "renderId": "r01",
+   "objectId": "janela",
+   "name": "Janela gótica",
+   "shape": "rect",
+   "coordinates": [
+    0.6875,
+    0.1019,
+    0.7943,
+    0.5556
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Grades de ferro e escuridão do outro lado. Não há por onde sair.",
+   "enabled": true
+  },
+  {
+   "id": "h_gaveteiro_01",
+   "roomId": "sala-gotica",
+   "renderId": "r01",
+   "objectId": "gaveteiro",
+   "name": "Gaveteiro",
+   "shape": "rect",
+   "coordinates": [
+    0.0667,
+    0.5648,
+    0.2552,
+    0.9259
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Dezenas de gavetinhas com puxadores de latão. Algumas parecem emperradas.",
+   "enabled": true
+  },
+  {
+   "id": "h_gaveteiro_01_2",
+   "roomId": "sala-gotica",
+   "renderId": "r01",
+   "objectId": "gaveteiro",
+   "name": "Gaveteiro",
+   "shape": "rect",
+   "coordinates": [
+    0.8802,
+    0.4352,
+    1.0,
+    0.8611
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Dezenas de gavetinhas com puxadores de latão. Algumas parecem emperradas.",
+   "enabled": true
+  },
+  {
+   "id": "h_relogio_01",
+   "roomId": "sala-gotica",
+   "renderId": "r01",
+   "objectId": "relogio",
+   "name": "Relógio de pêndulo",
+   "shape": "rect",
+   "coordinates": [
+    0.0781,
+    0.037,
+    0.1719,
+    0.3889
+   ],
+   "interactionType": "OBJECT",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "O pêndulo balança sem pressa, mas os ponteiros marcam uma hora que não parece ser a verdadeira.",
+   "enabled": true
+  },
+  {
+   "id": "h_brasao_flor_01",
+   "roomId": "sala-gotica",
+   "renderId": "r01",
+   "objectId": "brasao_flor",
+   "name": "Brasão de flor-de-lis",
+   "shape": "rect",
+   "coordinates": [
+    0.3151,
+    0.1204,
+    0.3854,
+    0.3472
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "A flor-de-lis bordada em dourado parece esconder algo atrás do tecido.",
+   "enabled": true
+  },
+  {
+   "id": "h_brasao_leao_01",
+   "roomId": "sala-gotica",
+   "renderId": "r01",
+   "objectId": "brasao_leao",
+   "name": "Brasão do leão",
+   "shape": "rect",
+   "coordinates": [
+    0.4323,
+    0.1204,
+    0.4922,
+    0.3519
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um leão rampante bordado num estandarte de franjas desfiadas.",
+   "enabled": true
+  },
+  {
+   "id": "h_brasao_leao_01_2",
+   "roomId": "sala-gotica",
+   "renderId": "r01",
+   "objectId": "brasao_leao",
+   "name": "Brasão do leão",
+   "shape": "rect",
+   "coordinates": [
+    0.5365,
+    0.1204,
+    0.5964,
+    0.3519
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um leão rampante bordado num estandarte de franjas desfiadas.",
+   "enabled": true
+  },
+  {
+   "id": "h_painel_01",
+   "roomId": "sala-gotica",
+   "renderId": "r01",
+   "objectId": "painel",
+   "name": "Painel de placas",
+   "shape": "rect",
+   "coordinates": [
+    0.3177,
+    0.3935,
+    0.5964,
+    0.5185
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Placas de madeira gravadas com símbolos estão encaixadas no tampo da escrivaninha.",
+   "enabled": true
+  },
+  {
+   "id": "h_cadeado_01",
+   "roomId": "sala-gotica",
+   "renderId": "r01",
+   "objectId": "cadeado",
+   "name": "Cadeado da escrivaninha",
+   "shape": "rect",
+   "coordinates": [
+    0.2854,
+    0.6389,
+    0.5651,
+    0.8148
+   ],
+   "interactionType": "LOCKED",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um cadeado de latão prende a porta central da escrivaninha.",
+   "enabled": true
+  },
+  {
+   "id": "h_livro_01",
+   "roomId": "sala-gotica",
+   "renderId": "r01",
+   "objectId": "livro",
+   "name": "Livro aberto",
+   "shape": "rect",
+   "coordinates": [
+    0.4167,
+    0.5352,
+    0.5042,
+    0.5926
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "As páginas amareladas estão cobertas de anotações de alguém que tinha pressa.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixa_01",
+   "roomId": "sala-gotica",
+   "renderId": "r01",
+   "objectId": "caixa",
+   "name": "Caixa de madeira e latão",
+   "shape": "rect",
+   "coordinates": [
+    0.6396,
+    0.512,
+    0.7161,
+    0.6296
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma caixa pequena com uma alça no topo. Está fechada com firmeza.",
+   "enabled": true
+  },
+  {
+   "id": "h_pergaminhos_01",
+   "roomId": "sala-gotica",
+   "renderId": "r01",
+   "objectId": "pergaminhos",
+   "name": "Rolos de pergaminho",
+   "shape": "rect",
+   "coordinates": [
+    0.9115,
+    0.3194,
+    0.9635,
+    0.4213
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "pergaminho",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Pergaminhos enrolados e amarrados, alguns desbotados pelo tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_janela_02",
+   "roomId": "sala-gotica",
+   "renderId": "r02",
+   "objectId": "janela",
+   "name": "Janela gótica",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.0417,
+    0.1562,
+    0.5648
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Grades de ferro e escuridão do outro lado. Não há por onde sair.",
+   "enabled": true
+  },
+  {
+   "id": "h_estante_02",
+   "roomId": "sala-gotica",
+   "renderId": "r02",
+   "objectId": "estante",
+   "name": "Estante de livros",
+   "shape": "rect",
+   "coordinates": [
+    0.3083,
+    0.0648,
+    0.5312,
+    0.8472
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lombadas de couro, globos e um busto vigilante. Há anotações entre os volumes.",
+   "enabled": true
+  },
+  {
+   "id": "h_busto_02",
+   "roomId": "sala-gotica",
+   "renderId": "r02",
+   "objectId": "busto",
+   "name": "Busto de mármore",
+   "shape": "rect",
+   "coordinates": [
+    0.4323,
+    0.1898,
+    0.4792,
+    0.3444
+   ],
+   "interactionType": "INSPECT",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "O mármore branco contrasta com a madeira escura. A base tem uma pequena gaveta.",
+   "enabled": true
+  },
+  {
+   "id": "h_quadro_02",
+   "roomId": "sala-gotica",
+   "renderId": "r02",
+   "objectId": "quadro",
+   "name": "Quadro da paisagem",
+   "shape": "rect",
+   "coordinates": [
+    0.6094,
+    0.0,
+    0.8698,
+    0.2944
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "marca",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma paisagem enluarada de picos pontiagudos. No canto da moldura, marcas foram riscadas às pressas.",
+   "enabled": true
+  },
+  {
+   "id": "h_armario_02",
+   "roomId": "sala-gotica",
+   "renderId": "r02",
+   "objectId": "armario",
+   "name": "Armário trancado",
+   "shape": "rect",
+   "coordinates": [
+    0.5703,
+    0.4213,
+    0.8255,
+    0.963
+   ],
+   "interactionType": "LOCKED",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um armário de portas entalhadas com fechadura de latão. Ninguém o abre há muito tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_vaso_02",
+   "roomId": "sala-gotica",
+   "renderId": "r02",
+   "objectId": "vaso",
+   "name": "Vaso de cerâmica",
+   "shape": "rect",
+   "coordinates": [
+    0.5953,
+    0.2917,
+    0.6469,
+    0.4139
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um vaso de cerâmica manchada. Está vazio.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixa_02",
+   "roomId": "sala-gotica",
+   "renderId": "r02",
+   "objectId": "caixa",
+   "name": "Caixa de madeira e latão",
+   "shape": "rect",
+   "coordinates": [
+    0.6682,
+    0.3333,
+    0.7354,
+    0.4167
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma caixa pequena com uma alça no topo. Está fechada com firmeza.",
+   "enabled": true
+  },
+  {
+   "id": "h_esfera_02",
+   "roomId": "sala-gotica",
+   "renderId": "r02",
+   "objectId": "esfera",
+   "name": "Esfera de cristal",
+   "shape": "poly",
+   "coordinates": [
+    [
+     0.2344,
+     0.4537
+    ],
+    [
+     0.2526,
+     0.4426
+    ],
+    [
+     0.2719,
+     0.4556
+    ],
+    [
+     0.275,
+     0.5
+    ],
+    [
+     0.2604,
+     0.5204
+    ],
+    [
+     0.2917,
+     0.5417
+    ],
+    [
+     0.2948,
+     0.7037
+    ],
+    [
+     0.2854,
+     0.7519
+    ],
+    [
+     0.2333,
+     0.7519
+    ],
+    [
+     0.224,
+     0.7083
+    ],
+    [
+     0.225,
+     0.5463
+    ],
+    [
+     0.2448,
+     0.5204
+    ],
+    [
+     0.2318,
+     0.4954
+    ]
+   ],
+   "interactionType": "DOOR",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "A esfera pulsa em tons de violeta sobre o pedestal. Parece reagir à sua presença.",
+   "enabled": true
+  },
+  {
+   "id": "h_quadro_03",
+   "roomId": "sala-gotica",
+   "renderId": "r03",
+   "objectId": "quadro",
+   "name": "Quadro da paisagem",
+   "shape": "rect",
+   "coordinates": [
+    0.1172,
+    0.0741,
+    0.3448,
+    0.375
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "marca",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma paisagem enluarada de picos pontiagudos. No canto da moldura, marcas foram riscadas às pressas.",
+   "enabled": true
+  },
+  {
+   "id": "h_armario_03",
+   "roomId": "sala-gotica",
+   "renderId": "r03",
+   "objectId": "armario",
+   "name": "Armário trancado",
+   "shape": "rect",
+   "coordinates": [
+    0.0729,
+    0.4861,
+    0.3255,
+    0.963
+   ],
+   "interactionType": "LOCKED",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um armário de portas entalhadas com fechadura de latão. Ninguém o abre há muito tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_vaso_03",
+   "roomId": "sala-gotica",
+   "renderId": "r03",
+   "objectId": "vaso",
+   "name": "Vaso de cerâmica",
+   "shape": "rect",
+   "coordinates": [
+    0.1016,
+    0.3704,
+    0.1589,
+    0.4861
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um vaso de cerâmica manchada. Está vazio.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixa_03",
+   "roomId": "sala-gotica",
+   "renderId": "r03",
+   "objectId": "caixa",
+   "name": "Caixa de madeira e latão",
+   "shape": "rect",
+   "coordinates": [
+    0.1781,
+    0.4139,
+    0.2422,
+    0.4861
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma caixa pequena com uma alça no topo. Está fechada com firmeza.",
+   "enabled": true
+  },
+  {
+   "id": "h_relogio_03",
+   "roomId": "sala-gotica",
+   "renderId": "r03",
+   "objectId": "relogio",
+   "name": "Relógio de pêndulo",
+   "shape": "rect",
+   "coordinates": [
+    0.4583,
+    0.0509,
+    0.5563,
+    0.5093
+   ],
+   "interactionType": "OBJECT",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "O pêndulo balança sem pressa, mas os ponteiros marcam uma hora que não parece ser a verdadeira.",
+   "enabled": true
+  },
+  {
+   "id": "h_brasao_flor_03",
+   "roomId": "sala-gotica",
+   "renderId": "r03",
+   "objectId": "brasao_flor",
+   "name": "Brasão de flor-de-lis",
+   "shape": "rect",
+   "coordinates": [
+    0.5859,
+    0.1713,
+    0.6536,
+    0.4444
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "A flor-de-lis bordada em dourado parece esconder algo atrás do tecido.",
+   "enabled": true
+  },
+  {
+   "id": "h_comoda_03",
+   "roomId": "sala-gotica",
+   "renderId": "r03",
+   "objectId": "comoda",
+   "name": "Cômoda de gavetas",
+   "shape": "rect",
+   "coordinates": [
+    0.4297,
+    0.6435,
+    0.6667,
+    0.9537
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma cômoda baixa, com puxadores gastos pelo uso.",
+   "enabled": true
+  },
+  {
+   "id": "h_volante_03",
+   "roomId": "sala-gotica",
+   "renderId": "r03",
+   "objectId": "volante",
+   "name": "Volante de bronze",
+   "shape": "rect",
+   "coordinates": [
+    0.4818,
+    0.5417,
+    0.5417,
+    0.6593
+   ],
+   "interactionType": "OBJECT",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um pequeno volante de bronze, frio ao toque. Gira com dificuldade.",
+   "enabled": true
+  },
+  {
+   "id": "h_candelabro_03",
+   "roomId": "sala-gotica",
+   "renderId": "r03",
+   "objectId": "candelabro",
+   "name": "Candelabro",
+   "shape": "rect",
+   "coordinates": [
+    0.5771,
+    0.4611,
+    0.6521,
+    0.662
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "As velas ainda queimam. Alguém esteve aqui há pouco.",
+   "enabled": true
+  },
+  {
+   "id": "h_painel_03",
+   "roomId": "sala-gotica",
+   "renderId": "r03",
+   "objectId": "painel",
+   "name": "Painel de placas",
+   "shape": "rect",
+   "coordinates": [
+    0.763,
+    0.4676,
+    0.9167,
+    0.6852
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Placas de madeira gravadas com símbolos estão encaixadas no tampo da escrivaninha.",
+   "enabled": true
+  },
+  {
+   "id": "h_livro_03",
+   "roomId": "sala-gotica",
+   "renderId": "r03",
+   "objectId": "livro",
+   "name": "Livro aberto",
+   "shape": "rect",
+   "coordinates": [
+    0.6693,
+    0.7222,
+    0.8464,
+    0.8657
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "As páginas amareladas estão cobertas de anotações de alguém que tinha pressa.",
+   "enabled": true
+  },
+  {
+   "id": "h_estante_gotica_04",
+   "roomId": "sala-gotica",
+   "renderId": "r04",
+   "objectId": "estante_gotica",
+   "name": "Estante gótica",
+   "shape": "rect",
+   "coordinates": [
+    0.3047,
+    0.0093,
+    0.6328,
+    0.8611
+   ],
+   "interactionType": "INSPECT",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Arcos pontiagudos abrigam pergaminhos, troncos de madeira e pequenos mecanismos.",
+   "enabled": true
+  },
+  {
+   "id": "h_pergaminhos_04",
+   "roomId": "sala-gotica",
+   "renderId": "r04",
+   "objectId": "pergaminhos",
+   "name": "Rolos de pergaminho",
+   "shape": "rect",
+   "coordinates": [
+    0.3229,
+    0.3148,
+    0.376,
+    0.4028
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "pergaminho",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Pergaminhos enrolados e amarrados, alguns desbotados pelo tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_discos_04",
+   "roomId": "sala-gotica",
+   "renderId": "r04",
+   "objectId": "discos",
+   "name": "Discos de bronze",
+   "shape": "rect",
+   "coordinates": [
+    0.3948,
+    0.4278,
+    0.4938,
+    0.5046
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Três discos de bronze giram sobre um painel embutido na estante.",
+   "enabled": true
+  },
+  {
+   "id": "h_gaveteiro_04",
+   "roomId": "sala-gotica",
+   "renderId": "r04",
+   "objectId": "gaveteiro",
+   "name": "Gaveteiro",
+   "shape": "rect",
+   "coordinates": [
+    0.3125,
+    0.588,
+    0.625,
+    0.8565
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Dezenas de gavetinhas com puxadores de latão. Algumas parecem emperradas.",
+   "enabled": true
+  },
+  {
+   "id": "h_engrenagens_04",
+   "roomId": "sala-gotica",
+   "renderId": "r04",
+   "objectId": "engrenagens",
+   "name": "Engrenagens e tubulações",
+   "shape": "rect",
+   "coordinates": [
+    0.6823,
+    0.0,
+    0.8333,
+    0.2519
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Canos de bronze sobem pela parede até engrenagens que parecem aguardar um movimento.",
+   "enabled": true
+  },
+  {
+   "id": "h_engrenagens_04_2",
+   "roomId": "sala-gotica",
+   "renderId": "r04",
+   "objectId": "engrenagens",
+   "name": "Engrenagens e tubulações",
+   "shape": "rect",
+   "coordinates": [
+    0.8646,
+    0.0574,
+    1.0,
+    0.2481
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Canos de bronze sobem pela parede até engrenagens que parecem aguardar um movimento.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixinhas_04",
+   "roomId": "sala-gotica",
+   "renderId": "r04",
+   "objectId": "caixinhas",
+   "name": "Caixinhas de bronze",
+   "shape": "rect",
+   "coordinates": [
+    0.7005,
+    0.2639,
+    0.9844,
+    0.3519
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Duas fileiras de caixinhas de bronze presas à parede, cada uma com um rosto esculpido.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixinhas_04_2",
+   "roomId": "sala-gotica",
+   "renderId": "r04",
+   "objectId": "caixinhas",
+   "name": "Caixinhas de bronze",
+   "shape": "rect",
+   "coordinates": [
+    0.6786,
+    0.4444,
+    0.9844,
+    0.5417
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Duas fileiras de caixinhas de bronze presas à parede, cada uma com um rosto esculpido.",
+   "enabled": true
+  },
+  {
+   "id": "h_teclas_04",
+   "roomId": "sala-gotica",
+   "renderId": "r04",
+   "objectId": "teclas",
+   "name": "Teclas de pedra",
+   "shape": "rect",
+   "coordinates": [
+    0.6604,
+    0.6,
+    0.9323,
+    0.7083
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Seis placas de pedra gravadas, alinhadas como as teclas de um instrumento esquecido.",
+   "enabled": true
+  },
+  {
+   "id": "h_bau_04",
+   "roomId": "sala-gotica",
+   "renderId": "r04",
+   "objectId": "bau",
+   "name": "Baú aos pés da cama",
+   "shape": "rect",
+   "coordinates": [
+    0.8229,
+    0.7481,
+    1.0,
+    1.0
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Madeira cintada de ferro e um grande fecho de latão. O que quer que esteja dentro, está bem guardado.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixa_04",
+   "roomId": "sala-gotica",
+   "renderId": "r04",
+   "objectId": "caixa",
+   "name": "Caixa de madeira e latão",
+   "shape": "rect",
+   "coordinates": [
+    0.0703,
+    0.5,
+    0.1771,
+    0.6296
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma caixa pequena com uma alça no topo. Está fechada com firmeza.",
+   "enabled": true
+  },
+  {
+   "id": "h_engrenagens_05",
+   "roomId": "sala-gotica",
+   "renderId": "r05",
+   "objectId": "engrenagens",
+   "name": "Engrenagens e tubulações",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.0,
+    0.2969,
+    0.2315
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Canos de bronze sobem pela parede até engrenagens que parecem aguardar um movimento.",
+   "enabled": true
+  },
+  {
+   "id": "h_estante_05",
+   "roomId": "sala-gotica",
+   "renderId": "r05",
+   "objectId": "estante",
+   "name": "Estante de livros",
+   "shape": "rect",
+   "coordinates": [
+    0.3984,
+    0.0556,
+    0.5,
+    0.5185
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lombadas de couro, globos e um busto vigilante. Há anotações entre os volumes.",
+   "enabled": true
+  },
+  {
+   "id": "h_cama_05",
+   "roomId": "sala-gotica",
+   "renderId": "r05",
+   "objectId": "cama",
+   "name": "Cama de dossel",
+   "shape": "rect",
+   "coordinates": [
+    0.4089,
+    0.3056,
+    0.7708,
+    0.838
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lençóis vinho e cortinas pesadas. Ninguém dorme aqui há muito tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixinhas_05",
+   "roomId": "sala-gotica",
+   "renderId": "r05",
+   "objectId": "caixinhas",
+   "name": "Caixinhas de bronze",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.2546,
+    0.3047,
+    0.6157
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Duas fileiras de caixinhas de bronze presas à parede, cada uma com um rosto esculpido.",
+   "enabled": true
+  },
+  {
+   "id": "h_teclas_05",
+   "roomId": "sala-gotica",
+   "renderId": "r05",
+   "objectId": "teclas",
+   "name": "Teclas de pedra",
+   "shape": "rect",
+   "coordinates": [
+    0.0104,
+    0.5787,
+    0.3073,
+    0.8148
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Seis placas de pedra gravadas, alinhadas como as teclas de um instrumento esquecido.",
+   "enabled": true
+  },
+  {
+   "id": "h_bilhete_05",
+   "roomId": "sala-gotica",
+   "renderId": "r05",
+   "objectId": "bilhete",
+   "name": "Bilhete dobrado",
+   "shape": "rect",
+   "coordinates": [
+    0.3385,
+    0.6111,
+    0.4115,
+    0.6593
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "pergaminho",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um bilhete dobrado ao meio, deixado de propósito à vista.",
+   "enabled": true
+  },
+  {
+   "id": "h_bau_05",
+   "roomId": "sala-gotica",
+   "renderId": "r05",
+   "objectId": "bau",
+   "name": "Baú aos pés da cama",
+   "shape": "rect",
+   "coordinates": [
+    0.3448,
+    0.6574,
+    0.6,
+    0.9648
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Madeira cintada de ferro e um grande fecho de latão. O que quer que esteja dentro, está bem guardado.",
+   "enabled": true
+  },
+  {
+   "id": "h_criado_05",
+   "roomId": "sala-gotica",
+   "renderId": "r05",
+   "objectId": "criado",
+   "name": "Criado-mudo",
+   "shape": "rect",
+   "coordinates": [
+    0.7969,
+    0.5185,
+    0.9089,
+    0.7917
+   ],
+   "interactionType": "INSPECT",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma gaveta e um armarinho ao lado da cama, com um castiçal por cima.",
+   "enabled": true
+  },
+  {
+   "id": "h_busto_09",
+   "roomId": "sala-gotica",
+   "renderId": "r09",
+   "objectId": "busto",
+   "name": "Busto de mármore",
+   "shape": "rect",
+   "coordinates": [
+    0.0208,
+    0.0,
+    0.1406,
+    0.2778
+   ],
+   "interactionType": "INSPECT",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "O mármore branco contrasta com a madeira escura. A base tem uma pequena gaveta.",
+   "enabled": true
+  },
+  {
+   "id": "h_estante_09",
+   "roomId": "sala-gotica",
+   "renderId": "r09",
+   "objectId": "estante",
+   "name": "Estante de livros",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.2778,
+    0.2188,
+    0.8796
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lombadas de couro, globos e um busto vigilante. Há anotações entre os volumes.",
+   "enabled": true
+  },
+  {
+   "id": "h_quadro_09",
+   "roomId": "sala-gotica",
+   "renderId": "r09",
+   "objectId": "quadro",
+   "name": "Quadro da paisagem",
+   "shape": "rect",
+   "coordinates": [
+    0.3594,
+    0.0,
+    0.7292,
+    0.1296
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "marca",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma paisagem enluarada de picos pontiagudos. No canto da moldura, marcas foram riscadas às pressas.",
+   "enabled": true
+  },
+  {
+   "id": "h_armario_09",
+   "roomId": "sala-gotica",
+   "renderId": "r09",
+   "objectId": "armario",
+   "name": "Armário trancado",
+   "shape": "rect",
+   "coordinates": [
+    0.3203,
+    0.3981,
+    0.7057,
+    0.912
+   ],
+   "interactionType": "LOCKED",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um armário de portas entalhadas com fechadura de latão. Ninguém o abre há muito tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_vaso_09",
+   "roomId": "sala-gotica",
+   "renderId": "r09",
+   "objectId": "vaso",
+   "name": "Vaso de cerâmica",
+   "shape": "rect",
+   "coordinates": [
+    0.362,
+    0.1435,
+    0.4453,
+    0.3426
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um vaso de cerâmica manchada. Está vazio.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixa_09",
+   "roomId": "sala-gotica",
+   "renderId": "r09",
+   "objectId": "caixa",
+   "name": "Caixa de madeira e latão",
+   "shape": "rect",
+   "coordinates": [
+    0.4818,
+    0.2037,
+    0.5703,
+    0.3426
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma caixa pequena com uma alça no topo. Está fechada com firmeza.",
+   "enabled": true
+  },
+  {
+   "id": "h_comoda_09",
+   "roomId": "sala-gotica",
+   "renderId": "r09",
+   "objectId": "comoda",
+   "name": "Cômoda de gavetas",
+   "shape": "rect",
+   "coordinates": [
+    0.8047,
+    0.5185,
+    1.0,
+    0.9815
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma cômoda baixa, com puxadores gastos pelo uso.",
+   "enabled": true
+  },
+  {
+   "id": "h_janela_10",
+   "roomId": "sala-gotica",
+   "renderId": "r10",
+   "objectId": "janela",
+   "name": "Janela gótica",
+   "shape": "rect",
+   "coordinates": [
+    0.1198,
+    0.0,
+    0.4167,
+    0.5926
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Grades de ferro e escuridão do outro lado. Não há por onde sair.",
+   "enabled": true
+  },
+  {
+   "id": "h_candelabro_10",
+   "roomId": "sala-gotica",
+   "renderId": "r10",
+   "objectId": "candelabro",
+   "name": "Candelabro",
+   "shape": "rect",
+   "coordinates": [
+    0.0286,
+    0.4907,
+    0.0885,
+    0.7222
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "As velas ainda queimam. Alguém esteve aqui há pouco.",
+   "enabled": true
+  },
+  {
+   "id": "h_criado_10",
+   "roomId": "sala-gotica",
+   "renderId": "r10",
+   "objectId": "criado",
+   "name": "Criado-mudo",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.6852,
+    0.1562,
+    0.9815
+   ],
+   "interactionType": "INSPECT",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma gaveta e um armarinho ao lado da cama, com um castiçal por cima.",
+   "enabled": true
+  },
+  {
+   "id": "h_estante_10",
+   "roomId": "sala-gotica",
+   "renderId": "r10",
+   "objectId": "estante",
+   "name": "Estante de livros",
+   "shape": "rect",
+   "coordinates": [
+    0.5417,
+    0.0,
+    0.9375,
+    0.9259
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lombadas de couro, globos e um busto vigilante. Há anotações entre os volumes.",
+   "enabled": true
+  },
+  {
+   "id": "h_busto_10",
+   "roomId": "sala-gotica",
+   "renderId": "r10",
+   "objectId": "busto",
+   "name": "Busto de mármore",
+   "shape": "rect",
+   "coordinates": [
+    0.7786,
+    0.0815,
+    0.8906,
+    0.3796
+   ],
+   "interactionType": "INSPECT",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "O mármore branco contrasta com a madeira escura. A base tem uma pequena gaveta.",
+   "enabled": true
+  },
+  {
+   "id": "h_esfera_10",
+   "roomId": "sala-gotica",
+   "renderId": "r10",
+   "objectId": "esfera",
+   "name": "Esfera de cristal",
+   "shape": "poly",
+   "coordinates": [
+    [
+     0.4531,
+     0.4352
+    ],
+    [
+     0.4766,
+     0.4213
+    ],
+    [
+     0.501,
+     0.4398
+    ],
+    [
+     0.5031,
+     0.4954
+    ],
+    [
+     0.487,
+     0.5231
+    ],
+    [
+     0.525,
+     0.5417
+    ],
+    [
+     0.526,
+     0.7037
+    ],
+    [
+     0.513,
+     0.8148
+    ],
+    [
+     0.4479,
+     0.8148
+    ],
+    [
+     0.4401,
+     0.713
+    ],
+    [
+     0.4401,
+     0.5463
+    ],
+    [
+     0.4661,
+     0.5231
+    ],
+    [
+     0.4521,
+     0.4954
+    ]
+   ],
+   "interactionType": "DOOR",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "A esfera pulsa em tons de violeta sobre o pedestal. Parece reagir à sua presença.",
+   "enabled": true
+  },
+  {
+   "id": "h_estante_gotica_17",
+   "roomId": "sala-gotica",
+   "renderId": "r17",
+   "objectId": "estante_gotica",
+   "name": "Estante gótica",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.0,
+    0.2865,
+    0.9259
+   ],
+   "interactionType": "INSPECT",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Arcos pontiagudos abrigam pergaminhos, troncos de madeira e pequenos mecanismos.",
+   "enabled": true
+  },
+  {
+   "id": "h_cama_17",
+   "roomId": "sala-gotica",
+   "renderId": "r17",
+   "objectId": "cama",
+   "name": "Cama de dossel",
+   "shape": "rect",
+   "coordinates": [
+    0.7448,
+    0.0,
+    1.0,
+    1.0
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lençóis vinho e cortinas pesadas. Ninguém dorme aqui há muito tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_engrenagens_17",
+   "roomId": "sala-gotica",
+   "renderId": "r17",
+   "objectId": "engrenagens",
+   "name": "Engrenagens e tubulações",
+   "shape": "rect",
+   "coordinates": [
+    0.3385,
+    0.0972,
+    0.625,
+    0.4444
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Canos de bronze sobem pela parede até engrenagens que parecem aguardar um movimento.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixinhas_17",
+   "roomId": "sala-gotica",
+   "renderId": "r17",
+   "objectId": "caixinhas",
+   "name": "Caixinhas de bronze",
+   "shape": "rect",
+   "coordinates": [
+    0.3594,
+    0.4796,
+    0.6016,
+    0.5481
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Duas fileiras de caixinhas de bronze presas à parede, cada uma com um rosto esculpido.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixinhas_17_2",
+   "roomId": "sala-gotica",
+   "renderId": "r17",
+   "objectId": "caixinhas",
+   "name": "Caixinhas de bronze",
+   "shape": "rect",
+   "coordinates": [
+    0.3385,
+    0.6324,
+    0.6042,
+    0.7269
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Duas fileiras de caixinhas de bronze presas à parede, cada uma com um rosto esculpido.",
+   "enabled": true
+  },
+  {
+   "id": "h_discos_17",
+   "roomId": "sala-gotica",
+   "renderId": "r17",
+   "objectId": "discos",
+   "name": "Discos de bronze",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.6296,
+    0.099,
+    0.7361
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Três discos de bronze giram sobre um painel embutido na estante.",
+   "enabled": true
+  },
+  {
+   "id": "h_teclas_17",
+   "roomId": "sala-gotica",
+   "renderId": "r17",
+   "objectId": "teclas",
+   "name": "Teclas de pedra",
+   "shape": "rect",
+   "coordinates": [
+    0.3167,
+    0.8037,
+    0.5755,
+    0.8907
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Seis placas de pedra gravadas, alinhadas como as teclas de um instrumento esquecido.",
+   "enabled": true
+  },
+  {
+   "id": "h_bilhete_17",
+   "roomId": "sala-gotica",
+   "renderId": "r17",
+   "objectId": "bilhete",
+   "name": "Bilhete dobrado",
+   "shape": "rect",
+   "coordinates": [
+    0.599,
+    0.8907,
+    0.6615,
+    0.937
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "pergaminho",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um bilhete dobrado ao meio, deixado de propósito à vista.",
+   "enabled": true
+  },
+  {
+   "id": "h_janela_07",
+   "roomId": "sala-gotica",
+   "renderId": "r07",
+   "objectId": "janela",
+   "name": "Janela gótica",
+   "shape": "rect",
+   "coordinates": [
+    0.7969,
+    0.0,
+    0.9896,
+    0.2778
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Grades de ferro e escuridão do outro lado. Não há por onde sair.",
+   "enabled": true
+  },
+  {
+   "id": "h_teclas_07",
+   "roomId": "sala-gotica",
+   "renderId": "r07",
+   "objectId": "teclas",
+   "name": "Teclas de pedra",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.4815,
+    0.1198,
+    0.7593
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Seis placas de pedra gravadas, alinhadas como as teclas de um instrumento esquecido.",
+   "enabled": true
+  },
+  {
+   "id": "h_cama_07",
+   "roomId": "sala-gotica",
+   "renderId": "r07",
+   "objectId": "cama",
+   "name": "Cama de dossel",
+   "shape": "rect",
+   "coordinates": [
+    0.2734,
+    0.287,
+    0.7344,
+    0.463
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lençóis vinho e cortinas pesadas. Ninguém dorme aqui há muito tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_bilhete_07",
+   "roomId": "sala-gotica",
+   "renderId": "r07",
+   "objectId": "bilhete",
+   "name": "Bilhete dobrado",
+   "shape": "rect",
+   "coordinates": [
+    0.1771,
+    0.5046,
+    0.3255,
+    0.5972
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "pergaminho",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um bilhete dobrado ao meio, deixado de propósito à vista.",
+   "enabled": true
+  },
+  {
+   "id": "h_bau_07",
+   "roomId": "sala-gotica",
+   "renderId": "r07",
+   "objectId": "bau",
+   "name": "Baú aos pés da cama",
+   "shape": "rect",
+   "coordinates": [
+    0.2865,
+    0.5324,
+    0.7031,
+    0.9815
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Madeira cintada de ferro e um grande fecho de latão. O que quer que esteja dentro, está bem guardado.",
+   "enabled": true
+  },
+  {
+   "id": "h_brasao_flor_08",
+   "roomId": "sala-gotica",
+   "renderId": "r08",
+   "objectId": "brasao_flor",
+   "name": "Brasão de flor-de-lis",
+   "shape": "rect",
+   "coordinates": [
+    0.1042,
+    0.0,
+    0.2031,
+    0.2222
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "A flor-de-lis bordada em dourado parece esconder algo atrás do tecido.",
+   "enabled": true
+  },
+  {
+   "id": "h_brasao_leao_08",
+   "roomId": "sala-gotica",
+   "renderId": "r08",
+   "objectId": "brasao_leao",
+   "name": "Brasão do leão",
+   "shape": "rect",
+   "coordinates": [
+    0.4245,
+    0.0,
+    0.5156,
+    0.1481
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um leão rampante bordado num estandarte de franjas desfiadas.",
+   "enabled": true
+  },
+  {
+   "id": "h_brasao_leao_08_2",
+   "roomId": "sala-gotica",
+   "renderId": "r08",
+   "objectId": "brasao_leao",
+   "name": "Brasão do leão",
+   "shape": "rect",
+   "coordinates": [
+    0.6068,
+    0.0,
+    0.7214,
+    0.1667
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um leão rampante bordado num estandarte de franjas desfiadas.",
+   "enabled": true
+  },
+  {
+   "id": "h_brasao_leao_08_3",
+   "roomId": "sala-gotica",
+   "renderId": "r08",
+   "objectId": "brasao_leao",
+   "name": "Brasão do leão",
+   "shape": "rect",
+   "coordinates": [
+    0.8229,
+    0.0,
+    0.974,
+    0.1852
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um leão rampante bordado num estandarte de franjas desfiadas.",
+   "enabled": true
+  },
+  {
+   "id": "h_comoda_08",
+   "roomId": "sala-gotica",
+   "renderId": "r08",
+   "objectId": "comoda",
+   "name": "Cômoda de gavetas",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.5185,
+    0.3125,
+    1.0
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma cômoda baixa, com puxadores gastos pelo uso.",
+   "enabled": true
+  },
+  {
+   "id": "h_candelabro_08",
+   "roomId": "sala-gotica",
+   "renderId": "r08",
+   "objectId": "candelabro",
+   "name": "Candelabro",
+   "shape": "rect",
+   "coordinates": [
+    0.1458,
+    0.2454,
+    0.25,
+    0.5556
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "As velas ainda queimam. Alguém esteve aqui há pouco.",
+   "enabled": true
+  },
+  {
+   "id": "h_volante_08",
+   "roomId": "sala-gotica",
+   "renderId": "r08",
+   "objectId": "volante",
+   "name": "Volante de bronze",
+   "shape": "rect",
+   "coordinates": [
+    0.0469,
+    0.4537,
+    0.1458,
+    0.6481
+   ],
+   "interactionType": "OBJECT",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um pequeno volante de bronze, frio ao toque. Gira com dificuldade.",
+   "enabled": true
+  },
+  {
+   "id": "h_painel_08",
+   "roomId": "sala-gotica",
+   "renderId": "r08",
+   "objectId": "painel",
+   "name": "Painel de placas",
+   "shape": "rect",
+   "coordinates": [
+    0.4167,
+    0.2315,
+    0.6562,
+    0.4815
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Placas de madeira gravadas com símbolos estão encaixadas no tampo da escrivaninha.",
+   "enabled": true
+  },
+  {
+   "id": "h_pergaminhos_08",
+   "roomId": "sala-gotica",
+   "renderId": "r08",
+   "objectId": "pergaminhos",
+   "name": "Rolos de pergaminho",
+   "shape": "rect",
+   "coordinates": [
+    0.763,
+    0.3102,
+    0.8984,
+    0.5185
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "pergaminho",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Pergaminhos enrolados e amarrados, alguns desbotados pelo tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_livro_08",
+   "roomId": "sala-gotica",
+   "renderId": "r08",
+   "objectId": "livro",
+   "name": "Livro aberto",
+   "shape": "rect",
+   "coordinates": [
+    0.513,
+    0.5463,
+    0.6823,
+    0.7315
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "As páginas amareladas estão cobertas de anotações de alguém que tinha pressa.",
+   "enabled": true
+  },
+  {
+   "id": "h_cadeado_08",
+   "roomId": "sala-gotica",
+   "renderId": "r08",
+   "objectId": "cadeado",
+   "name": "Cadeado da escrivaninha",
+   "shape": "rect",
+   "coordinates": [
+    0.5417,
+    0.8148,
+    0.5885,
+    0.9259
+   ],
+   "interactionType": "LOCKED",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um cadeado de latão prende a porta central da escrivaninha.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixa_08",
+   "roomId": "sala-gotica",
+   "renderId": "r08",
+   "objectId": "caixa",
+   "name": "Caixa de madeira e latão",
+   "shape": "rect",
+   "coordinates": [
+    0.75,
+    0.838,
+    0.901,
+    1.0
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma caixa pequena com uma alça no topo. Está fechada com firmeza.",
+   "enabled": true
+  },
+  {
+   "id": "h_engrenagens_06",
+   "roomId": "sala-gotica",
+   "renderId": "r06",
+   "objectId": "engrenagens",
+   "name": "Engrenagens e tubulações",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.0,
+    0.2448,
+    0.25
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Canos de bronze sobem pela parede até engrenagens que parecem aguardar um movimento.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixinhas_06",
+   "roomId": "sala-gotica",
+   "renderId": "r06",
+   "objectId": "caixinhas",
+   "name": "Caixinhas de bronze",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.2731,
+    0.2292,
+    0.5556
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Duas fileiras de caixinhas de bronze presas à parede, cada uma com um rosto esculpido.",
+   "enabled": true
+  },
+  {
+   "id": "h_teclas_06",
+   "roomId": "sala-gotica",
+   "renderId": "r06",
+   "objectId": "teclas",
+   "name": "Teclas de pedra",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.5741,
+    0.2344,
+    0.7315
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Seis placas de pedra gravadas, alinhadas como as teclas de um instrumento esquecido.",
+   "enabled": true
+  },
+  {
+   "id": "h_estante_06",
+   "roomId": "sala-gotica",
+   "renderId": "r06",
+   "objectId": "estante",
+   "name": "Estante de livros",
+   "shape": "rect",
+   "coordinates": [
+    0.3594,
+    0.1019,
+    0.5,
+    0.5556
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lombadas de couro, globos e um busto vigilante. Há anotações entre os volumes.",
+   "enabled": true
+  },
+  {
+   "id": "h_cama_06",
+   "roomId": "sala-gotica",
+   "renderId": "r06",
+   "objectId": "cama",
+   "name": "Cama de dossel",
+   "shape": "rect",
+   "coordinates": [
+    0.3229,
+    0.5278,
+    0.7292,
+    1.0
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lençóis vinho e cortinas pesadas. Ninguém dorme aqui há muito tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_criado_06",
+   "roomId": "sala-gotica",
+   "renderId": "r06",
+   "objectId": "criado",
+   "name": "Criado-mudo",
+   "shape": "rect",
+   "coordinates": [
+    0.7708,
+    0.6389,
+    0.9323,
+    0.963
+   ],
+   "interactionType": "INSPECT",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma gaveta e um armarinho ao lado da cama, com um castiçal por cima.",
+   "enabled": true
+  },
+  {
+   "id": "h_candelabro_06",
+   "roomId": "sala-gotica",
+   "renderId": "r06",
+   "objectId": "candelabro",
+   "name": "Candelabro",
+   "shape": "rect",
+   "coordinates": [
+    0.8542,
+    0.4815,
+    0.9115,
+    0.6481
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "As velas ainda queimam. Alguém esteve aqui há pouco.",
+   "enabled": true
+  },
+  {
+   "id": "h_bilhete_06",
+   "roomId": "sala-gotica",
+   "renderId": "r06",
+   "objectId": "bilhete",
+   "name": "Bilhete dobrado",
+   "shape": "rect",
+   "coordinates": [
+    0.2474,
+    0.6389,
+    0.3125,
+    0.6713
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "pergaminho",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um bilhete dobrado ao meio, deixado de propósito à vista.",
+   "enabled": true
+  },
+  {
+   "id": "h_bau_06",
+   "roomId": "sala-gotica",
+   "renderId": "r06",
+   "objectId": "bau",
+   "name": "Baú aos pés da cama",
+   "shape": "rect",
+   "coordinates": [
+    0.2083,
+    0.6944,
+    0.4219,
+    1.0
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Madeira cintada de ferro e um grande fecho de latão. O que quer que esteja dentro, está bem guardado.",
+   "enabled": true
+  },
+  {
+   "id": "h_escrivaninha_11",
+   "roomId": "sala-gotica",
+   "renderId": "r11",
+   "objectId": "escrivaninha",
+   "name": "Escrivaninha",
+   "shape": "rect",
+   "coordinates": [
+    0.0781,
+    0.0,
+    0.7083,
+    0.8889
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma escrivaninha de madeira escura, coberta de painéis, livros e pequenos mecanismos.",
+   "enabled": true
+  },
+  {
+   "id": "h_comoda_11",
+   "roomId": "sala-gotica",
+   "renderId": "r11",
+   "objectId": "comoda",
+   "name": "Cômoda de gavetas",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.0,
+    0.1719,
+    0.3519
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma cômoda baixa, com puxadores gastos pelo uso.",
+   "enabled": true
+  },
+  {
+   "id": "h_janela_11",
+   "roomId": "sala-gotica",
+   "renderId": "r11",
+   "objectId": "janela",
+   "name": "Janela gótica",
+   "shape": "rect",
+   "coordinates": [
+    0.6927,
+    0.0,
+    1.0,
+    0.463
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Grades de ferro e escuridão do outro lado. Não há por onde sair.",
+   "enabled": true
+  },
+  {
+   "id": "h_painel_11",
+   "roomId": "sala-gotica",
+   "renderId": "r11",
+   "objectId": "painel",
+   "name": "Painel de placas",
+   "shape": "rect",
+   "coordinates": [
+    0.1172,
+    0.0,
+    0.5365,
+    0.1019
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Placas de madeira gravadas com símbolos estão encaixadas no tampo da escrivaninha.",
+   "enabled": true
+  },
+  {
+   "id": "h_livro_11",
+   "roomId": "sala-gotica",
+   "renderId": "r11",
+   "objectId": "livro",
+   "name": "Livro aberto",
+   "shape": "rect",
+   "coordinates": [
+    0.4245,
+    0.2824,
+    0.6276,
+    0.5139
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "As páginas amareladas estão cobertas de anotações de alguém que tinha pressa.",
+   "enabled": true
+  },
+  {
+   "id": "h_livro_11_2",
+   "roomId": "sala-gotica",
+   "renderId": "r11",
+   "objectId": "livro",
+   "name": "Livro aberto",
+   "shape": "rect",
+   "coordinates": [
+    0.1979,
+    0.0509,
+    0.3333,
+    0.2037
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "As páginas amareladas estão cobertas de anotações de alguém que tinha pressa.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixa_11",
+   "roomId": "sala-gotica",
+   "renderId": "r11",
+   "objectId": "caixa",
+   "name": "Caixa de madeira e latão",
+   "shape": "rect",
+   "coordinates": [
+    0.2474,
+    0.3148,
+    0.4297,
+    0.6065
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma caixa pequena com uma alça no topo. Está fechada com firmeza.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixa_11_2",
+   "roomId": "sala-gotica",
+   "renderId": "r11",
+   "objectId": "caixa",
+   "name": "Caixa de madeira e latão",
+   "shape": "rect",
+   "coordinates": [
+    0.1562,
+    0.2778,
+    0.2526,
+    0.4259
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma caixa pequena com uma alça no topo. Está fechada com firmeza.",
+   "enabled": true
+  },
+  {
+   "id": "h_estante_gotica_12",
+   "roomId": "sala-gotica",
+   "renderId": "r12",
+   "objectId": "estante_gotica",
+   "name": "Estante gótica",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.0,
+    0.3125,
+    0.7037
+   ],
+   "interactionType": "INSPECT",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Arcos pontiagudos abrigam pergaminhos, troncos de madeira e pequenos mecanismos.",
+   "enabled": true
+  },
+  {
+   "id": "h_escrivaninha_12",
+   "roomId": "sala-gotica",
+   "renderId": "r12",
+   "objectId": "escrivaninha",
+   "name": "Escrivaninha",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.5926,
+    0.2708,
+    1.0
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma escrivaninha de madeira escura, coberta de painéis, livros e pequenos mecanismos.",
+   "enabled": true
+  },
+  {
+   "id": "h_engrenagens_12",
+   "roomId": "sala-gotica",
+   "renderId": "r12",
+   "objectId": "engrenagens",
+   "name": "Engrenagens e tubulações",
+   "shape": "rect",
+   "coordinates": [
+    0.2812,
+    0.0278,
+    0.4375,
+    0.2778
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Canos de bronze sobem pela parede até engrenagens que parecem aguardar um movimento.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixinhas_12",
+   "roomId": "sala-gotica",
+   "renderId": "r12",
+   "objectId": "caixinhas",
+   "name": "Caixinhas de bronze",
+   "shape": "rect",
+   "coordinates": [
+    0.3021,
+    0.287,
+    0.4375,
+    0.4444
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Duas fileiras de caixinhas de bronze presas à parede, cada uma com um rosto esculpido.",
+   "enabled": true
+  },
+  {
+   "id": "h_teclas_12",
+   "roomId": "sala-gotica",
+   "renderId": "r12",
+   "objectId": "teclas",
+   "name": "Teclas de pedra",
+   "shape": "rect",
+   "coordinates": [
+    0.3099,
+    0.4861,
+    0.4375,
+    0.5324
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Seis placas de pedra gravadas, alinhadas como as teclas de um instrumento esquecido.",
+   "enabled": true
+  },
+  {
+   "id": "h_cama_12",
+   "roomId": "sala-gotica",
+   "renderId": "r12",
+   "objectId": "cama",
+   "name": "Cama de dossel",
+   "shape": "rect",
+   "coordinates": [
+    0.4844,
+    0.037,
+    0.7292,
+    0.6481
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lençóis vinho e cortinas pesadas. Ninguém dorme aqui há muito tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_bau_12",
+   "roomId": "sala-gotica",
+   "renderId": "r12",
+   "objectId": "bau",
+   "name": "Baú aos pés da cama",
+   "shape": "rect",
+   "coordinates": [
+    0.4531,
+    0.5046,
+    0.5859,
+    0.6806
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Madeira cintada de ferro e um grande fecho de latão. O que quer que esteja dentro, está bem guardado.",
+   "enabled": true
+  },
+  {
+   "id": "h_criado_12",
+   "roomId": "sala-gotica",
+   "renderId": "r12",
+   "objectId": "criado",
+   "name": "Criado-mudo",
+   "shape": "rect",
+   "coordinates": [
+    0.7214,
+    0.463,
+    0.7917,
+    0.6296
+   ],
+   "interactionType": "INSPECT",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma gaveta e um armarinho ao lado da cama, com um castiçal por cima.",
+   "enabled": true
+  },
+  {
+   "id": "h_janela_12",
+   "roomId": "sala-gotica",
+   "renderId": "r12",
+   "objectId": "janela",
+   "name": "Janela gótica",
+   "shape": "rect",
+   "coordinates": [
+    0.8385,
+    0.0,
+    1.0,
+    0.6389
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Grades de ferro e escuridão do outro lado. Não há por onde sair.",
+   "enabled": true
+  },
+  {
+   "id": "h_estante_13",
+   "roomId": "sala-gotica",
+   "renderId": "r13",
+   "objectId": "estante",
+   "name": "Estante de livros",
+   "shape": "rect",
+   "coordinates": [
+    0.0417,
+    0.2315,
+    0.2839,
+    0.8611
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lombadas de couro, globos e um busto vigilante. Há anotações entre os volumes.",
+   "enabled": true
+  },
+  {
+   "id": "h_busto_13",
+   "roomId": "sala-gotica",
+   "renderId": "r13",
+   "objectId": "busto",
+   "name": "Busto de mármore",
+   "shape": "rect",
+   "coordinates": [
+    0.1823,
+    0.2315,
+    0.224,
+    0.3796
+   ],
+   "interactionType": "INSPECT",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "O mármore branco contrasta com a madeira escura. A base tem uma pequena gaveta.",
+   "enabled": true
+  },
+  {
+   "id": "h_quadro_13",
+   "roomId": "sala-gotica",
+   "renderId": "r13",
+   "objectId": "quadro",
+   "name": "Quadro da paisagem",
+   "shape": "rect",
+   "coordinates": [
+    0.3229,
+    0.1111,
+    0.4141,
+    0.3102
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "marca",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma paisagem enluarada de picos pontiagudos. No canto da moldura, marcas foram riscadas às pressas.",
+   "enabled": true
+  },
+  {
+   "id": "h_vaso_13",
+   "roomId": "sala-gotica",
+   "renderId": "r13",
+   "objectId": "vaso",
+   "name": "Vaso de cerâmica",
+   "shape": "rect",
+   "coordinates": [
+    0.3229,
+    0.3102,
+    0.3464,
+    0.3889
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um vaso de cerâmica manchada. Está vazio.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixa_13",
+   "roomId": "sala-gotica",
+   "renderId": "r13",
+   "objectId": "caixa",
+   "name": "Caixa de madeira e latão",
+   "shape": "rect",
+   "coordinates": [
+    0.3464,
+    0.3333,
+    0.388,
+    0.3843
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma caixa pequena com uma alça no topo. Está fechada com firmeza.",
+   "enabled": true
+  },
+  {
+   "id": "h_armario_13",
+   "roomId": "sala-gotica",
+   "renderId": "r13",
+   "objectId": "armario",
+   "name": "Armário trancado",
+   "shape": "rect",
+   "coordinates": [
+    0.3229,
+    0.3704,
+    0.4349,
+    0.6667
+   ],
+   "interactionType": "LOCKED",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um armário de portas entalhadas com fechadura de latão. Ninguém o abre há muito tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_relogio_13",
+   "roomId": "sala-gotica",
+   "renderId": "r13",
+   "objectId": "relogio",
+   "name": "Relógio de pêndulo",
+   "shape": "rect",
+   "coordinates": [
+    0.4557,
+    0.1667,
+    0.5469,
+    0.3889
+   ],
+   "interactionType": "OBJECT",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "O pêndulo balança sem pressa, mas os ponteiros marcam uma hora que não parece ser a verdadeira.",
+   "enabled": true
+  },
+  {
+   "id": "h_brasao_flor_13",
+   "roomId": "sala-gotica",
+   "renderId": "r13",
+   "objectId": "brasao_flor",
+   "name": "Brasão de flor-de-lis",
+   "shape": "rect",
+   "coordinates": [
+    0.5026,
+    0.1852,
+    0.5339,
+    0.3287
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "A flor-de-lis bordada em dourado parece esconder algo atrás do tecido.",
+   "enabled": true
+  },
+  {
+   "id": "h_comoda_13",
+   "roomId": "sala-gotica",
+   "renderId": "r13",
+   "objectId": "comoda",
+   "name": "Cômoda de gavetas",
+   "shape": "rect",
+   "coordinates": [
+    0.4479,
+    0.4398,
+    0.5521,
+    0.6019
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma cômoda baixa, com puxadores gastos pelo uso.",
+   "enabled": true
+  },
+  {
+   "id": "h_brasao_leao_13",
+   "roomId": "sala-gotica",
+   "renderId": "r13",
+   "objectId": "brasao_leao",
+   "name": "Brasão do leão",
+   "shape": "rect",
+   "coordinates": [
+    0.6693,
+    0.1574,
+    0.7109,
+    0.3194
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um leão rampante bordado num estandarte de franjas desfiadas.",
+   "enabled": true
+  },
+  {
+   "id": "h_escrivaninha_13",
+   "roomId": "sala-gotica",
+   "renderId": "r13",
+   "objectId": "escrivaninha",
+   "name": "Escrivaninha",
+   "shape": "rect",
+   "coordinates": [
+    0.5521,
+    0.3333,
+    0.8333,
+    0.7037
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma escrivaninha de madeira escura, coberta de painéis, livros e pequenos mecanismos.",
+   "enabled": true
+  },
+  {
+   "id": "h_janela_13",
+   "roomId": "sala-gotica",
+   "renderId": "r13",
+   "objectId": "janela",
+   "name": "Janela gótica",
+   "shape": "rect",
+   "coordinates": [
+    0.8594,
+    0.0278,
+    1.0,
+    0.5185
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Grades de ferro e escuridão do outro lado. Não há por onde sair.",
+   "enabled": true
+  },
+  {
+   "id": "h_brasao_flor_15",
+   "roomId": "sala-gotica",
+   "renderId": "r15",
+   "objectId": "brasao_flor",
+   "name": "Brasão de flor-de-lis",
+   "shape": "rect",
+   "coordinates": [
+    0.0833,
+    0.037,
+    0.1432,
+    0.2685
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "A flor-de-lis bordada em dourado parece esconder algo atrás do tecido.",
+   "enabled": true
+  },
+  {
+   "id": "h_brasao_leao_15",
+   "roomId": "sala-gotica",
+   "renderId": "r15",
+   "objectId": "brasao_leao",
+   "name": "Brasão do leão",
+   "shape": "rect",
+   "coordinates": [
+    0.1693,
+    0.0833,
+    0.2344,
+    0.2685
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um leão rampante bordado num estandarte de franjas desfiadas.",
+   "enabled": true
+  },
+  {
+   "id": "h_brasao_leao_15_2",
+   "roomId": "sala-gotica",
+   "renderId": "r15",
+   "objectId": "brasao_leao",
+   "name": "Brasão do leão",
+   "shape": "rect",
+   "coordinates": [
+    0.2552,
+    0.0648,
+    0.3125,
+    0.2639
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um leão rampante bordado num estandarte de franjas desfiadas.",
+   "enabled": true
+  },
+  {
+   "id": "h_escrivaninha_15",
+   "roomId": "sala-gotica",
+   "renderId": "r15",
+   "objectId": "escrivaninha",
+   "name": "Escrivaninha",
+   "shape": "rect",
+   "coordinates": [
+    0.1042,
+    0.2963,
+    0.4583,
+    0.6389
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma escrivaninha de madeira escura, coberta de painéis, livros e pequenos mecanismos.",
+   "enabled": true
+  },
+  {
+   "id": "h_janela_15",
+   "roomId": "sala-gotica",
+   "renderId": "r15",
+   "objectId": "janela",
+   "name": "Janela gótica",
+   "shape": "rect",
+   "coordinates": [
+    0.3542,
+    0.0833,
+    0.4583,
+    0.4167
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Grades de ferro e escuridão do outro lado. Não há por onde sair.",
+   "enabled": true
+  },
+  {
+   "id": "h_estante_gotica_15",
+   "roomId": "sala-gotica",
+   "renderId": "r15",
+   "objectId": "estante_gotica",
+   "name": "Estante gótica",
+   "shape": "rect",
+   "coordinates": [
+    0.4792,
+    0.037,
+    0.6771,
+    0.6204
+   ],
+   "interactionType": "INSPECT",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Arcos pontiagudos abrigam pergaminhos, troncos de madeira e pequenos mecanismos.",
+   "enabled": true
+  },
+  {
+   "id": "h_engrenagens_15",
+   "roomId": "sala-gotica",
+   "renderId": "r15",
+   "objectId": "engrenagens",
+   "name": "Engrenagens e tubulações",
+   "shape": "rect",
+   "coordinates": [
+    0.7188,
+    0.0093,
+    0.8958,
+    0.2685
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Canos de bronze sobem pela parede até engrenagens que parecem aguardar um movimento.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixinhas_15",
+   "roomId": "sala-gotica",
+   "renderId": "r15",
+   "objectId": "caixinhas",
+   "name": "Caixinhas de bronze",
+   "shape": "rect",
+   "coordinates": [
+    0.6823,
+    0.2778,
+    0.8698,
+    0.4815
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Duas fileiras de caixinhas de bronze presas à parede, cada uma com um rosto esculpido.",
+   "enabled": true
+  },
+  {
+   "id": "h_teclas_15",
+   "roomId": "sala-gotica",
+   "renderId": "r15",
+   "objectId": "teclas",
+   "name": "Teclas de pedra",
+   "shape": "rect",
+   "coordinates": [
+    0.6562,
+    0.463,
+    0.7812,
+    0.5324
+   ],
+   "interactionType": "PUZZLE",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Seis placas de pedra gravadas, alinhadas como as teclas de um instrumento esquecido.",
+   "enabled": true
+  },
+  {
+   "id": "h_cama_15",
+   "roomId": "sala-gotica",
+   "renderId": "r15",
+   "objectId": "cama",
+   "name": "Cama de dossel",
+   "shape": "rect",
+   "coordinates": [
+    0.6354,
+    0.6019,
+    1.0,
+    1.0
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lençóis vinho e cortinas pesadas. Ninguém dorme aqui há muito tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_cama_16",
+   "roomId": "sala-gotica",
+   "renderId": "r16",
+   "objectId": "cama",
+   "name": "Cama de dossel",
+   "shape": "rect",
+   "coordinates": [
+    0.0208,
+    0.0926,
+    0.349,
+    0.5926
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lençóis vinho e cortinas pesadas. Ninguém dorme aqui há muito tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_bau_16",
+   "roomId": "sala-gotica",
+   "renderId": "r16",
+   "objectId": "bau",
+   "name": "Baú aos pés da cama",
+   "shape": "rect",
+   "coordinates": [
+    0.1458,
+    0.5926,
+    0.3229,
+    0.7963
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Madeira cintada de ferro e um grande fecho de latão. O que quer que esteja dentro, está bem guardado.",
+   "enabled": true
+  },
+  {
+   "id": "h_janela_16",
+   "roomId": "sala-gotica",
+   "renderId": "r16",
+   "objectId": "janela",
+   "name": "Janela gótica",
+   "shape": "rect",
+   "coordinates": [
+    0.3333,
+    0.0741,
+    0.4427,
+    0.4167
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Grades de ferro e escuridão do outro lado. Não há por onde sair.",
+   "enabled": true
+  },
+  {
+   "id": "h_esfera_16",
+   "roomId": "sala-gotica",
+   "renderId": "r16",
+   "objectId": "esfera",
+   "name": "Esfera de cristal",
+   "shape": "rect",
+   "coordinates": [
+    0.4583,
+    0.3148,
+    0.5052,
+    0.5093
+   ],
+   "interactionType": "DOOR",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "A esfera pulsa em tons de violeta sobre o pedestal. Parece reagir à sua presença.",
+   "enabled": true
+  },
+  {
+   "id": "h_estante_16",
+   "roomId": "sala-gotica",
+   "renderId": "r16",
+   "objectId": "estante",
+   "name": "Estante de livros",
+   "shape": "rect",
+   "coordinates": [
+    0.5078,
+    0.0694,
+    0.6484,
+    0.5926
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lombadas de couro, globos e um busto vigilante. Há anotações entre os volumes.",
+   "enabled": true
+  },
+  {
+   "id": "h_busto_16",
+   "roomId": "sala-gotica",
+   "renderId": "r16",
+   "objectId": "busto",
+   "name": "Busto de mármore",
+   "shape": "rect",
+   "coordinates": [
+    0.5781,
+    0.1759,
+    0.6094,
+    0.287
+   ],
+   "interactionType": "INSPECT",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "O mármore branco contrasta com a madeira escura. A base tem uma pequena gaveta.",
+   "enabled": true
+  },
+  {
+   "id": "h_quadro_16",
+   "roomId": "sala-gotica",
+   "renderId": "r16",
+   "objectId": "quadro",
+   "name": "Quadro da paisagem",
+   "shape": "rect",
+   "coordinates": [
+    0.6875,
+    0.0185,
+    0.8646,
+    0.287
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "marca",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma paisagem enluarada de picos pontiagudos. No canto da moldura, marcas foram riscadas às pressas.",
+   "enabled": true
+  },
+  {
+   "id": "h_vaso_16",
+   "roomId": "sala-gotica",
+   "renderId": "r16",
+   "objectId": "vaso",
+   "name": "Vaso de cerâmica",
+   "shape": "rect",
+   "coordinates": [
+    0.6667,
+    0.2731,
+    0.7005,
+    0.3519
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um vaso de cerâmica manchada. Está vazio.",
+   "enabled": true
+  },
+  {
+   "id": "h_caixa_16",
+   "roomId": "sala-gotica",
+   "renderId": "r16",
+   "objectId": "caixa",
+   "name": "Caixa de madeira e latão",
+   "shape": "rect",
+   "coordinates": [
+    0.7057,
+    0.3056,
+    0.7552,
+    0.3704
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma caixa pequena com uma alça no topo. Está fechada com firmeza.",
+   "enabled": true
+  },
+  {
+   "id": "h_armario_16",
+   "roomId": "sala-gotica",
+   "renderId": "r16",
+   "objectId": "armario",
+   "name": "Armário trancado",
+   "shape": "rect",
+   "coordinates": [
+    0.6406,
+    0.3426,
+    0.7969,
+    0.7083
+   ],
+   "interactionType": "LOCKED",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um armário de portas entalhadas com fechadura de latão. Ninguém o abre há muito tempo.",
+   "enabled": true
+  },
+  {
+   "id": "h_relogio_16",
+   "roomId": "sala-gotica",
+   "renderId": "r16",
+   "objectId": "relogio",
+   "name": "Relógio de pêndulo",
+   "shape": "rect",
+   "coordinates": [
+    0.9531,
+    0.0926,
+    1.0,
+    0.4444
+   ],
+   "interactionType": "OBJECT",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "O pêndulo balança sem pressa, mas os ponteiros marcam uma hora que não parece ser a verdadeira.",
+   "enabled": true
+  },
+  {
+   "id": "h_volante_16",
+   "roomId": "sala-gotica",
+   "renderId": "r16",
+   "objectId": "volante",
+   "name": "Volante de bronze",
+   "shape": "rect",
+   "coordinates": [
+    0.9271,
+    0.4907,
+    0.9948,
+    0.6019
+   ],
+   "interactionType": "OBJECT",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um pequeno volante de bronze, frio ao toque. Gira com dificuldade.",
+   "enabled": true
+  },
+  {
+   "id": "h_comoda_16",
+   "roomId": "sala-gotica",
+   "renderId": "r16",
+   "objectId": "comoda",
+   "name": "Cômoda de gavetas",
+   "shape": "rect",
+   "coordinates": [
+    0.8542,
+    0.5463,
+    1.0,
+    0.8241
+   ],
+   "interactionType": "CONTAINER",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma cômoda baixa, com puxadores gastos pelo uso.",
+   "enabled": true
+  },
+  {
+   "id": "h_escrivaninha_16",
+   "roomId": "sala-gotica",
+   "renderId": "r16",
+   "objectId": "escrivaninha",
+   "name": "Escrivaninha",
+   "shape": "rect",
+   "coordinates": [
+    0.4688,
+    0.7963,
+    0.8646,
+    1.0
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Uma escrivaninha de madeira escura, coberta de painéis, livros e pequenos mecanismos.",
+   "enabled": true
+  },
+  {
+   "id": "h_janela_14",
+   "roomId": "sala-gotica",
+   "renderId": "r14",
+   "objectId": "janela",
+   "name": "Janela gótica",
+   "shape": "rect",
+   "coordinates": [
+    0.0,
+    0.0,
+    0.3229,
+    0.8148
+   ],
+   "interactionType": "DECORATION",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Grades de ferro e escuridão do outro lado. Não há por onde sair.",
+   "enabled": true
+  },
+  {
+   "id": "h_estante_14",
+   "roomId": "sala-gotica",
+   "renderId": "r14",
+   "objectId": "estante",
+   "name": "Estante de livros",
+   "shape": "rect",
+   "coordinates": [
+    0.5885,
+    0.0,
+    1.0,
+    1.0
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "anotacao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Lombadas de couro, globos e um busto vigilante. Há anotações entre os volumes.",
+   "enabled": true
+  },
+  {
+   "id": "h_brasao_leao_14",
+   "roomId": "sala-gotica",
+   "renderId": "r14",
+   "objectId": "brasao_leao",
+   "name": "Brasão do leão",
+   "shape": "rect",
+   "coordinates": [
+    0.5,
+    0.0,
+    0.6042,
+    0.3704
+   ],
+   "interactionType": "CLUE",
+   "puzzleId": "",
+   "clueId": "inscricao",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "Um leão rampante bordado num estandarte de franjas desfiadas.",
+   "enabled": true
+  },
+  {
+   "id": "h_esfera_14",
+   "roomId": "sala-gotica",
+   "renderId": "r14",
+   "objectId": "esfera",
+   "name": "Esfera de cristal",
+   "shape": "poly",
+   "coordinates": [
+    [
+     0.4453,
+     0.3611
+    ],
+    [
+     0.4818,
+     0.3565
+    ],
+    [
+     0.5156,
+     0.3889
+    ],
+    [
+     0.5156,
+     0.463
+    ],
+    [
+     0.5,
+     0.5046
+    ],
+    [
+     0.5469,
+     0.5278
+    ],
+    [
+     0.5469,
+     0.8889
+    ],
+    [
+     0.4375,
+     0.8889
+    ],
+    [
+     0.4271,
+     0.5278
+    ],
+    [
+     0.4688,
+     0.5046
+    ],
+    [
+     0.4469,
+     0.463
+    ]
+   ],
+   "interactionType": "DOOR",
+   "puzzleId": "",
+   "clueId": "",
+   "initialState": "active",
+   "requiredState": "",
+   "description": "A esfera pulsa em tons de violeta sobre o pedestal. Parece reagir à sua presença.",
+   "enabled": true
+  }
+ ],
+ "mapa": {
+  "arquivo": "assets/renders/18.png"
+ }
+}

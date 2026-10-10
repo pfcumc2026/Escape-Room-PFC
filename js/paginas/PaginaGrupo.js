@@ -37,6 +37,7 @@ export class PaginaGrupo extends PaginaProtegida {
 
     this.presenca.iniciar(this.sessao.uid);
     this.acoes = this.el("acoes-grupo");
+    this.el("link-sala").href = `sala.html?id=${encodeURIComponent(this.idGrupo)}`;
     this.blocoConvites = this.el("bloco-convites");
     this.integrantes = new ListaIntegrantes(this.el("lista-integrantes"), {
       perfis: this.perfis,

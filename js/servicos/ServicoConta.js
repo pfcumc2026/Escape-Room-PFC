@@ -67,7 +67,7 @@ export class ServicoConta {
   }
 
   uriDoSegredo(segredo, rotulo) {
-    return segredo.generateQrCodeUrl(rotulo, "Placeholder");
+    return segredo.generateQrCodeUrl(rotulo, "Escape.py");
   }
 
   async ativarSegundoFator(segredo, codigo) {

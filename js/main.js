@@ -10,6 +10,8 @@ export class Aplicacao {
     perfil: "PaginaPerfil",
     dashboard: "PaginaDashboard",
     grupo: "PaginaGrupo",
+    sala: "PaginaSala",
+    "editor-sala": "PaginaEditorSala",
     entrar: "PaginaEntrar",
     configuracoes: "PaginaConfiguracoes",
     auditoria: "PaginaAuditoria",

@@ -12,7 +12,7 @@ export function iniciarPresenca(uid) {
     onDisconnect(meuStatus)
       .set({ state: "offline", lastChanged: serverTimestamp() })
       .then(() => set(meuStatus, { state: "online", lastChanged: serverTimestamp() }))
-      .catch((e) => console.warn("[Placeholder] presença", e));
+      .catch((e) => console.warn("[Escape.py] presença", e));
   });
 }
 

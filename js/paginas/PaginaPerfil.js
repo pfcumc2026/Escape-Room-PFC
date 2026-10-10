@@ -126,7 +126,7 @@ export class PaginaPerfil extends PaginaProtegida {
       const livre = await this.perfis.usernameLivre(valor.toLowerCase());
       this.#status(livre ? "Disponível." : "Este username já está em uso.", livre ? "var(--ph-ok)" : "var(--ph-danger)");
     } catch (e) {
-      console.warn("[Placeholder] checagem de username", e);
+      console.warn("[Escape.py] checagem de username", e);
     }
   }
 

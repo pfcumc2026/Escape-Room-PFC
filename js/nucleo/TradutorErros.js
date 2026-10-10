@@ -33,8 +33,8 @@ export class TradutorErros {
   static traduzir(erro, padrao = "Não foi possível concluir a operação.") {
     const codigo = erro && erro.code ? String(erro.code) : "";
     if (TradutorErros.MENSAGENS[codigo]) return TradutorErros.MENSAGENS[codigo];
-    if (codigo) console.warn("[Placeholder]", codigo, erro.message || "");
-    else console.warn("[Placeholder]", erro);
+    if (codigo) console.warn("[Escape.py]", codigo, erro.message || "");
+    else console.warn("[Escape.py]", erro);
     return padrao;
   }
 }

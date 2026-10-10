@@ -84,7 +84,7 @@ btnAtivar.addEventListener("click", async () => {
       sessao = await mfa.getSession();
     }
     segredo = await TotpMultiFactorGenerator.generateSecret(sessao);
-    const uri = segredo.generateQrCodeUrl(user.email || perfil.username, "Placeholder");
+    const uri = segredo.generateQrCodeUrl(user.email || perfil.username, "Escape.py");
     const alvo = document.getElementById("qr-2fa");
     alvo.textContent = "";
     if (window.QRCode) {

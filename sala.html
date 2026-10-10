@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sala · Escape.py</title>
+<script>try{document.documentElement.setAttribute('data-bs-theme',localStorage.getItem('ph-theme')||'dark')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link href="css/sala.css" rel="stylesheet">
+</head>
+<body class="ph-loading" data-pagina="sala">
+
+<div class="ph-loader">Carregando…</div>
+
+<header class="ph-top">
+  <button type="button" class="ph-theme-toggle" data-ph-theme-toggle aria-label="Alternar tema"></button>
+  <a class="ph-brand" href="dashboard.html">
+    <span class="ph-logo"><i data-lucide="door-open" aria-hidden="true"></i></span>
+    Escape.py <small>Escape Room</small>
+  </a>
+  <div class="ms-auto d-flex gap-2">
+    <button type="button" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2" id="btn-desistir" hidden>
+      <i data-lucide="flag" aria-hidden="true"></i> Encerrar partida
+    </button>
+    <a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2" id="link-grupo" href="dashboard.html">
+      <i data-lucide="arrow-left" aria-hidden="true"></i> Grupo
+    </a>
+  </div>
+</header>
+
+<main class="ph-shell ph-shell--sala ph-page">
+  <div class="sala-layout">
+    <div class="sala-principal">
+      <section id="vista-lobby" class="sala-lobby" hidden></section>
+
+      <section id="vista-jogo" hidden>
+        <div id="palco"></div>
+        <p class="sala-dica-uso">Explore os pontos de vista, examine o que parecer incomum e converse com a equipe no chat. Use as setas sobre a imagem para andar e o botão Mapa para ver onde você está.</p>
+      </section>
+
+      <section id="vista-resultado" hidden></section>
+    </div>
+
+    <aside class="sala-lateral" aria-label="Caderno e chat">
+      <div id="caderno" hidden></div>
+      <div id="chat-sala" class="sala-chat"></div>
+    </aside>
+  </div>
+</main>
+
+<footer class="ph-footer">
+  <div class="ph-footer__links">
+    <a href="termos.html"><i data-lucide="file-text" aria-hidden="true"></i> Termo de Aceite</a>
+    <a href="privacidade.html"><i data-lucide="shield-check" aria-hidden="true"></i> Política de Privacidade</a>
+  </div>
+  <p class="ph-footer__copy">Escape.py &middot; Projeto Final de Curso</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -305,6 +305,203 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    // Configuração das salas: leitura para jogadores, escrita apenas para administradores
+    match /rooms/{roomId} {
+      allow read: if autenticado();
+
+      allow create, update: if administrador()
+        && request.resource.data.keys().hasAll(['nome', 'descricao', 'renders', 'publicada', 'updatedAt'])
+        && request.resource.data.keys().hasOnly(['nome', 'descricao', 'renders', 'mapa', 'publicada', 'updatedAt'])
+        && request.resource.data.nome is string
+        && request.resource.data.nome.size() >= 1 && request.resource.data.nome.size() <= 60
+        && request.resource.data.descricao is string && request.resource.data.descricao.size() <= 300
+        && request.resource.data.renders is list && request.resource.data.renders.size() <= 40
+        && (request.resource.data.get('mapa', null) == null || request.resource.data.mapa is map)
+        && request.resource.data.publicada is bool
+        && request.resource.data.updatedAt == request.time;
+
+      allow delete: if administrador();
+
+      match /hotspots/{hid} {
+        function hotspotValido(d) {
+          return d.keys().hasAll(['id', 'roomId', 'renderId', 'objectId', 'name', 'shape', 'coordinates', 'interactionType', 'puzzleId', 'clueId', 'initialState', 'requiredState', 'description', 'enabled'])
+            && d.keys().hasOnly(['id', 'roomId', 'renderId', 'objectId', 'name', 'shape', 'coordinates', 'interactionType', 'puzzleId', 'clueId', 'initialState', 'requiredState', 'description', 'enabled'])
+            && d.id == hid
+            && d.roomId == roomId
+            && d.renderId is string && d.renderId.size() <= 40
+            && d.objectId is string && d.objectId.matches('^[A-Za-z0-9_-]{1,40}$')
+            && d.name is string && d.name.size() >= 1 && d.name.size() <= 60
+            && d.shape in ['rect', 'poly']
+            && d.coordinates is list
+            && (d.shape == 'rect' ? d.coordinates.size() == 4 : (d.coordinates.size() >= 6 && d.coordinates.size() <= 48))
+            && d.interactionType in ['INSPECT', 'CLUE', 'PUZZLE', 'OBJECT', 'LOCKED', 'DOOR', 'CONTAINER', 'DECORATION']
+            && d.puzzleId is string && d.puzzleId.size() <= 40
+            && d.clueId is string && d.clueId.size() <= 40
+            && d.initialState in ['active', 'locked', 'hidden']
+            && d.requiredState is string && d.requiredState.size() <= 40
+            && d.description is string && d.description.size() <= 400
+            && d.enabled is bool;
+        }
+
+        allow read: if autenticado();
+        allow create, update: if administrador() && hotspotValido(request.resource.data);
+        allow delete: if administrador();
+      }
+    }
+
+    // Partida do grupo (um documento por grupo). O estado só avança por transições válidas
+    match /games/{gid} {
+      function novo() { return request.resource.data; }
+      function antigo() { return resource.data; }
+      function soEstes(campos) { return novo().diff(antigo()).affectedKeys().hasOnly(campos); }
+      function donoDoGrupo() { return autenticado() && grupo(gid).ownerId == request.auth.uid; }
+      function membroDoGrupo() { return autenticado() && request.auth.uid in grupo(gid).members; }
+      function participante() { return autenticado() && request.auth.uid in antigo().players; }
+      function minutos(d) { return d == 'facil' ? 25 : (d == 'medio' ? 45 : 60); }
+      function totalEnigmas(d) { return d == 'facil' ? 3 : (d == 'medio' ? 4 : 5); }
+
+      function resolvido(ordem, i) {
+        return ordem.size() <= i
+          || existsAfter(/databases/$(database)/documents/games/$(gid)/solved/$(ordem[i]));
+      }
+
+      function todosResolvidos() {
+        let ordem = antigo().config.ordem;
+        return resolvido(ordem, 0) && resolvido(ordem, 1) && resolvido(ordem, 2) && resolvido(ordem, 3) && resolvido(ordem, 4);
+      }
+
+      function entrando() {
+        return membroDoGrupo()
+          && antigo().status == 'WAITING' && novo().status == 'WAITING'
+          && !(request.auth.uid in antigo().players)
+          && antigo().players.size() < 3
+          && novo().players == antigo().players.concat([request.auth.uid])
+          && soEstes(['players']);
+      }
+
+      function iniciando() {
+        return donoDoGrupo()
+          && antigo().status == 'WAITING' && novo().status == 'PLAYING'
+          && novo().startedAt == request.time
+          && novo().expiresAt > request.time + duration.value(minutos(antigo().difficulty) - 1, 'm')
+          && novo().expiresAt < request.time + duration.value(minutos(antigo().difficulty) + 1, 'm')
+          && soEstes(['status', 'startedAt', 'expiresAt']);
+      }
+
+      function concluindo() {
+        return participante()
+          && antigo().status == 'PLAYING' && novo().status == 'COMPLETED'
+          && request.time <= antigo().expiresAt
+          && novo().finishedAt == request.time
+          && novo().score is int && novo().score >= 0 && novo().score <= 5000
+          && todosResolvidos()
+          && soEstes(['status', 'finishedAt', 'score']);
+      }
+
+      function expirando() {
+        return membroDoGrupo()
+          && antigo().status == 'PLAYING' && novo().status == 'EXPIRED'
+          && request.time >= antigo().expiresAt
+          && novo().finishedAt == request.time
+          && soEstes(['status', 'finishedAt']);
+      }
+
+      function desistindo() {
+        return donoDoGrupo()
+          && antigo().status == 'PLAYING' && novo().status == 'FAILED'
+          && novo().finishedAt == request.time
+          && soEstes(['status', 'finishedAt']);
+      }
+
+      allow get: if membroDoGrupo();
+
+      allow create: if donoDoGrupo()
+        && novo().keys().hasAll(['groupId', 'ownerId', 'difficulty', 'seed', 'status', 'players', 'config', 'createdAt'])
+        && novo().keys().hasOnly(['groupId', 'ownerId', 'difficulty', 'seed', 'status', 'players', 'config', 'createdAt'])
+        && novo().groupId == gid
+        && novo().ownerId == request.auth.uid
+        && novo().difficulty in ['facil', 'medio', 'dificil']
+        && novo().seed is int && novo().seed >= 0 && novo().seed < 1000000000
+        && novo().status == 'WAITING'
+        && novo().players == [request.auth.uid]
+        && novo().createdAt == request.time
+        && novo().config.keys().hasOnly(['versao', 'ordem', 'enigmas', 'pistas'])
+        && novo().config.ordem is list
+        && novo().config.ordem.size() == totalEnigmas(novo().difficulty)
+        && novo().config.enigmas is map && novo().config.enigmas.size() == novo().config.ordem.size()
+        && novo().config.pistas is map;
+
+      allow update: if entrando() || iniciando() || concluindo() || expirando() || desistindo();
+
+      allow delete: if donoDoGrupo() && antigo().status != 'PLAYING';
+    }
+
+    // Pistas encontradas: a dependência de outro enigma é verificada aqui
+    match /games/{gid}/found/{objeto} {
+      function jogo() { return get(/databases/$(database)/documents/games/$(gid)).data; }
+      function requisito() { return jogo().config.pistas[objeto].requer; }
+
+      allow read: if autenticado() && request.auth.uid in grupo(gid).members;
+
+      allow create: if autenticado()
+        && request.auth.uid in jogo().players
+        && jogo().status == 'PLAYING'
+        && request.time < jogo().expiresAt
+        && objeto in jogo().config.pistas
+        && (requisito() == '' || exists(/databases/$(database)/documents/games/$(gid)/solved/$(requisito())))
+        && request.resource.data.keys().hasAll(['by', 'at'])
+        && request.resource.data.keys().hasOnly(['by', 'at'])
+        && request.resource.data.by == request.auth.uid
+        && request.resource.data.at == request.time;
+
+      allow update: if false;
+      allow delete: if autenticado() && grupo(gid).ownerId == request.auth.uid;
+    }
+
+    // Enigmas resolvidos: exige as pistas do enigma e, no desafio final, todos os demais enigmas
+    match /games/{gid}/solved/{chave} {
+      function jogo() { return get(/databases/$(database)/documents/games/$(gid)).data; }
+      function config() { return jogo().config; }
+
+      function achada(pistas, i) {
+        return pistas.size() <= i || exists(/databases/$(database)/documents/games/$(gid)/found/$(pistas[i]));
+      }
+
+      function feito(ordem, i) {
+        return ordem.size() <= i || ordem[i] == chave
+          || exists(/databases/$(database)/documents/games/$(gid)/solved/$(ordem[i]));
+      }
+
+      function pistasOk() {
+        let pistas = config().enigmas[chave].pistas;
+        return pistas.size() >= 1 && pistas.size() <= 2 && achada(pistas, 0) && achada(pistas, 1);
+      }
+
+      function ordemOk() {
+        let ordem = config().ordem;
+        return feito(ordem, 0) && feito(ordem, 1) && feito(ordem, 2) && feito(ordem, 3) && feito(ordem, 4);
+      }
+
+      allow read: if autenticado() && request.auth.uid in grupo(gid).members;
+
+      allow create: if autenticado()
+        && request.auth.uid in jogo().players
+        && jogo().status == 'PLAYING'
+        && request.time < jogo().expiresAt
+        && chave in config().enigmas
+        && pistasOk()
+        && (config().enigmas[chave].final != true || ordemOk())
+        && request.resource.data.keys().hasAll(['by', 'at', 'hints', 'attempts'])
+        && request.resource.data.keys().hasOnly(['by', 'at', 'hints', 'attempts'])
+        && request.resource.data.by == request.auth.uid
+        && request.resource.data.at == request.time
+        && request.resource.data.hints is int && request.resource.data.hints >= 0 && request.resource.data.hints <= 3
+        && request.resource.data.attempts is int && request.resource.data.attempts >= 0 && request.resource.data.attempts <= 1000;
+
+      allow update: if false;
+      allow delete: if autenticado() && grupo(gid).ownerId == request.auth.uid;
+    }
+
     // Nada além do que está declarado acima
     match /{documento=**} {
       allow read, write: if false;

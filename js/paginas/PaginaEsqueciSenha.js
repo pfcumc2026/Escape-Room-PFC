@@ -31,7 +31,7 @@ export class PaginaEsqueciSenha extends Pagina {
         Dom.ocupado(this.btn, false);
         return;
       }
-      console.warn("[Placeholder] recuperação solicitada para e-mail inexistente");
+      console.warn("[Escape.py] recuperação solicitada para e-mail inexistente");
     }
     Dom.ocupado(this.btn, false);
     notificador.sucesso("Se existir uma conta com esse e-mail, o link de redefinição foi enviado.", 7000);
