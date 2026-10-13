@@ -1,4 +1,4 @@
-// Configurações: tema, dados, 2FA (TOTP), senha e exclusão de conta
+// Configurações: tema, dados, senha e exclusão de conta
 
 import { PaginaProtegida } from "./PaginaProtegida.js";
 import { Dom } from "../nucleo/Dom.js";
@@ -7,7 +7,6 @@ import { ServicoConta } from "../servicos/ServicoConta.js";
 import { InterruptorTema } from "../componentes/InterruptorTema.js";
 import { ItemLista } from "../componentes/ItemLista.js";
 import { Lista } from "../componentes/Lista.js";
-import { PainelDoisFatores } from "../componentes/PainelDoisFatores.js";
 import { PainelExclusaoConta } from "../componentes/PainelExclusaoConta.js";
 
 export class PaginaConfiguracoes extends PaginaProtegida {
@@ -18,7 +17,6 @@ export class PaginaConfiguracoes extends PaginaProtegida {
     this.#montarDados();
     this.#montarSenha();
 
-    new PainelDoisFatores(this.conta, this.sessao.usuario.email || this.sessao.perfil.username).iniciar();
     new PainelExclusaoConta(this.conta, this.sessao.perfil).iniciar();
 
     this.el("btn-sair").addEventListener("click", () => this.controle.sair());

@@ -1,4 +1,4 @@
-// Perfil público do usuário (users/{uid})
+// Perfil público do usuário (GET /api/users/{uid})
 
 import { Avatar } from "../nucleo/Avatar.js";
 
@@ -14,8 +14,8 @@ export class Perfil {
     this.lastGroupAt = dados.lastGroupAt || null;
   }
 
-  static deSnapshot(snap) {
-    return snap.exists() ? new Perfil(snap.id, snap.data()) : null;
+  static deDados(dados) {
+    return dados ? new Perfil(dados.uid, dados) : null;
   }
 
   get completo() {

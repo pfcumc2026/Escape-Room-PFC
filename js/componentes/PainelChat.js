@@ -55,8 +55,7 @@ export class PainelChat {
       await this.servico.enviar(this.idGrupo, this.sessao.autor, texto);
       this.campo.value = "";
     } catch (e) {
-      if (e.code === "permission-denied") notificador.erro("Mensagem bloqueada pelo limite de envio.");
-      else notificador.falha(e, "Não foi possível enviar a mensagem.");
+      notificador.falha(e, "Não foi possível enviar a mensagem.");
     }
     Dom.ocupado(this.botao, false);
   }

@@ -1,4 +1,4 @@
-// Recuperação de senha pelo fluxo oficial do Firebase
+// Pedido de redefinição de senha: a resposta é a mesma exista ou não a conta
 
 import { Pagina } from "./Pagina.js";
 import { Dom } from "../nucleo/Dom.js";
@@ -24,17 +24,12 @@ export class PaginaEsqueciSenha extends Pagina {
 
     Dom.ocupado(this.btn, true, "Enviando...");
     try {
-      await this.autenticacao.enviarRedefinicaoSenha(email);
+      const { mensagem } = await this.autenticacao.enviarRedefinicaoSenha(email);
+      notificador.sucesso(mensagem, 7000);
+      this.form.reset();
     } catch (e) {
-      if (e.code !== "auth/user-not-found") {
-        notificador.falha(e, "Não foi possível enviar o e-mail.");
-        Dom.ocupado(this.btn, false);
-        return;
-      }
-      console.warn("[Escape.py] recuperação solicitada para e-mail inexistente");
+      notificador.falha(e, "Não foi possível enviar o e-mail.");
     }
     Dom.ocupado(this.btn, false);
-    notificador.sucesso("Se existir uma conta com esse e-mail, o link de redefinição foi enviado.", 7000);
-    this.form.reset();
   }
 }
