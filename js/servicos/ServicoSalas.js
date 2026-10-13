@@ -1,19 +1,12 @@
-// Configuração administrativa das salas (rooms/{id} e rooms/{id}/hotspots)
+// Configuração administrativa das salas (GET/PUT /api/rooms/{id})
 
-import { firebase } from "../nucleo/Firebase.js";
-import {
-  collection, doc, getDoc, getDocs, writeBatch, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { Api } from "../nucleo/Api.js";
 import { Sala } from "../modelos/Sala.js";
 import { Hotspot } from "../modelos/Hotspot.js";
 import { ErroApp } from "../nucleo/ErroApp.js";
 
 export class ServicoSalas {
   static SALA_INICIAL = "sala-gotica";
-
-  constructor(nucleo = firebase) {
-    this.db = nucleo.db;
-  }
 
   // Sala distribuída com o projeto: serve de ponto de partida e de alternativa
   async carregarPadrao(id) {
@@ -23,16 +16,18 @@ export class ServicoSalas {
   }
 
   async #carregarPublicada(id, { incluirRascunho }) {
-    const snap = await getDoc(doc(this.db, "rooms", id));
-    if (!snap.exists()) return null;
-    const dados = snap.data();
-    if (!dados.publicada && !incluirRascunho) return null;
+    let dados;
+    try {
+      dados = await Api.get(`/rooms/${encodeURIComponent(id)}${incluirRascunho ? "?draft=1" : ""}`);
+    } catch (e) {
+      if (e.status === 404) return null;
+      throw e;
+    }
     // Salas salvas antes da navegação por setas não têm ligações: vale a sala padrão
     if (!dados.renders?.some((r) => r.ligacoes?.length)) return null;
-    const lista = await getDocs(collection(this.db, "rooms", id, "hotspots"));
     return new Sala({
       id, nome: dados.nome, descricao: dados.descricao, renders: dados.renders, mapa: dados.mapa || null, publicada: !!dados.publicada,
-      hotspots: lista.docs.map((d) => Hotspot.deFirestore(d.data()))
+      hotspots: dados.hotspots.map((h) => new Hotspot(h))
     });
   }
 
@@ -56,22 +51,13 @@ export class ServicoSalas {
     return this.#maisRecente(await this.#carregarPublicada(id, { incluirRascunho: true }), id);
   }
 
-  async salvar(sala, idsRemovidos = []) {
+  // A sala é gravada inteira: hotspots removidos no editor deixam de existir no servidor
+  async salvar(sala) {
     const invalido = sala.validar();
     if (invalido) throw new ErroApp(invalido);
-
-    const lote = writeBatch(this.db);
-    lote.set(doc(this.db, "rooms", sala.id), {
+    await Api.put(`/rooms/${encodeURIComponent(sala.id)}`, {
       nome: sala.nome, descricao: sala.descricao, renders: sala.renders.map((r) => r.paraDados()),
-      mapa: sala.mapa, publicada: sala.publicada, updatedAt: serverTimestamp()
+      mapa: sala.mapa, publicada: sala.publicada, hotspots: sala.hotspots.map((h) => h.paraDados())
     });
-    idsRemovidos.forEach((id) => lote.delete(doc(this.db, "rooms", sala.id, "hotspots", id)));
-    sala.hotspots.forEach((h) => lote.set(doc(this.db, "rooms", sala.id, "hotspots", h.id), h.paraFirestore()));
-    await lote.commit();
-  }
-
-  async idsSalvos(id) {
-    const lista = await getDocs(collection(this.db, "rooms", id, "hotspots"));
-    return lista.docs.map((d) => d.id);
   }
 }

@@ -1,76 +1,63 @@
-// Autenticação por e-mail/senha, Google e segundo fator (TOTP)
+// Autenticação pela API própria: e-mail/senha, verificação de e-mail e recuperação de senha
 
-import { firebase } from "../nucleo/Firebase.js";
-import {
-  onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut,
-  createUserWithEmailAndPassword, updateProfile, sendEmailVerification,
-  sendPasswordResetEmail, getMultiFactorResolver, TotpMultiFactorGenerator, getAdditionalUserInfo
-} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { ServicoAuditoria } from "./ServicoAuditoria.js";
+import { Api } from "../nucleo/Api.js";
+import { Usuario } from "../modelos/Usuario.js";
 
 export class ServicoAutenticacao {
-  constructor(nucleo = firebase, auditoria = new ServicoAuditoria(nucleo)) {
-    this.auth = nucleo.auth;
-    this.provedorGoogle = nucleo.googleProvider;
-    this.auditoria = auditoria;
-  }
+  static #atual = null;
 
-  usuarioAtual() {
-    return new Promise((resolve) => {
-      const cancelar = onAuthStateChanged(this.auth, (u) => { cancelar(); resolve(u); });
-    });
+  usuarioAtual({ recarregar = false } = {}) {
+    if (!Api.token) return Promise.resolve(null);
+    if (recarregar || !ServicoAutenticacao.#atual) {
+      ServicoAutenticacao.#atual = Api.get("/users/me")
+        .then((dados) => new Usuario(dados))
+        .catch((e) => {
+          ServicoAutenticacao.#atual = null;
+          if (e.status === 401) { Api.esquecerToken(); return null; }
+          throw e;
+        });
+    }
+    return ServicoAutenticacao.#atual;
   }
 
   async entrarComSenha(email, senha) {
-    const cred = await signInWithEmailAndPassword(this.auth, email, senha);
-    await this.auditoria.registrar("login", "E-mail e senha");
-    return cred;
-  }
-
-  async entrarComGoogle() {
-    const cred = await signInWithPopup(this.auth, this.provedorGoogle);
-    await this.auditoria.registrar(getAdditionalUserInfo(cred)?.isNewUser ? "cadastro" : "login", "Google");
-    return cred;
+    const resposta = await Api.post("/auth/login", { email, password: senha });
+    Api.guardarToken(resposta.token);
+    ServicoAutenticacao.#atual = null;
+    return new Usuario(resposta.usuario);
   }
 
   async criarConta(nome, email, senha) {
-    const cred = await createUserWithEmailAndPassword(this.auth, email, senha);
-    await updateProfile(cred.user, { displayName: nome });
-    await sendEmailVerification(cred.user);
-    await this.auditoria.registrar("cadastro", "E-mail e senha");
-    return cred;
+    const resposta = await Api.post("/auth/register", { name: nome, email, password: senha, acceptTerms: true });
+    Api.guardarToken(resposta.token);
+    ServicoAutenticacao.#atual = null;
+    return resposta;
   }
 
-  enviarVerificacao(usuario) {
-    return sendEmailVerification(usuario);
+  enviarVerificacao() {
+    return Api.post("/auth/email/resend");
+  }
+
+  confirmarEmail(token) {
+    return Api.post("/auth/email/verify", { token });
   }
 
   enviarRedefinicaoSenha(email) {
-    return sendPasswordResetEmail(this.auth, email);
+    return Api.post("/auth/password/forgot", { email });
+  }
+
+  redefinirSenha(token, senha) {
+    return Api.post("/auth/password/reset", { token, password: senha });
   }
 
   async sair() {
-    await this.auditoria.registrar("logout");
-    await signOut(this.auth);
-  }
-
-  exigeSegundoFator(excecao) {
-    return excecao.code === "auth/multi-factor-auth-required";
-  }
-
-  resolvedor(excecao) {
-    return getMultiFactorResolver(this.auth, excecao);
-  }
-
-  async concluirSegundoFator(resolvedor, codigo) {
-    const fator = resolvedor.hints.find((h) => h.factorId === TotpMultiFactorGenerator.FACTOR_ID) || resolvedor.hints[0];
-    const cred = await resolvedor.resolveSignIn(TotpMultiFactorGenerator.assertionForSignIn(fator.uid, codigo));
-    await this.auditoria.registrar("login", "Verificação em duas etapas");
-    return cred;
-  }
-
-  async atualizarToken(usuario) {
-    const res = await usuario.getIdTokenResult();
-    if (usuario.emailVerified && res.claims.email_verified !== true) await usuario.getIdToken(true);
+    try {
+      if (Api.token) await Api.post("/auth/logout");
+    } catch {
+      // A sessão local é encerrada mesmo sem resposta do servidor
+    } finally {
+      Api.esquecerToken();
+      ServicoAutenticacao.#atual = null;
+    }
   }
 }
