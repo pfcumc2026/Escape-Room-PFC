@@ -50,6 +50,8 @@ Navegador (front-end estático)  ──HTTPS/JSON──▶  API REST (Node.js + 
 | `cors` | origens autorizadas do front-end |
 | `express-rate-limit` | limite de tentativas nas rotas sensíveis |
 | `dotenv` | variáveis de ambiente do `.env` |
+| `jose` | validação da assinatura do `id_token` do Google (OpenID Connect) |
+| `otpauth` | geração e validação dos códigos TOTP do 2FA |
 | `mongodb-memory-server` (dev) | MongoDB temporário para os testes automatizados |
 
 O envio de e-mails usa a API HTTP do **Brevo** (com `fetch`, sem biblioteca extra). O plano gratuito do Render bloqueia as portas SMTP desde setembro de 2025.
@@ -118,6 +120,7 @@ Os arquivos soltos em `js/` (`login.js`, `guard.js`, `firebase.js`, `grupo.js`..
 * Node.js 20.19 ou superior (o Render usa a versão definida em `render.yaml`).
 * Uma conta no MongoDB Atlas (plano gratuito M0).
 * Para cadastro e recuperação de senha: uma conta no Brevo (plano gratuito) com um remetente verificado.
+* Para o login com Google: um OAuth Client do tipo "Aplicativo da Web" no Google Cloud Console.
 
 ### 1. Configurar o MongoDB Atlas
 
@@ -142,9 +145,11 @@ Preencha o `.env` seguindo os comentários do `.env.example`:
 | `MONGODB_URI`, `MONGODB_DB_NAME` | sim | conexão com o Atlas |
 | `JWT_SECRET` | sim | segredo do JWT (mínimo 32 caracteres) |
 | `JWT_EXPIRES_IN` | não | validade da sessão (padrão `8h`) |
+| `TOTP_ENCRYPTION_KEY` | sim | chave AES-256 que cifra os segredos do 2FA (32 bytes em base64) |
 | `FRONTEND_URL` | sim | origens do front-end aceitas no CORS, separadas por vírgula; a primeira é usada nos links dos e-mails |
 | `PORT`, `NODE_ENV` | não | porta (padrão 3000) e ambiente |
 | `BREVO_API_KEY`, `EMAIL_FROM`, `EMAIL_FROM_NAME` | para cadastro e recuperação | envio de e-mails |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI` | para login com Google | OAuth 2.0 / OpenID Connect |
 | `FIREBASE_API_KEY`, `FIREBASE_PROJECT_ID` | para migrar contas antigas | consulta das contas do Firebase |
 
 Sem as variáveis opcionais, o servidor sobe e avisa no console quais recursos ficarão indisponíveis. Ele não simula esses recursos.
@@ -161,6 +166,15 @@ A API sobe em `http://localhost:3000`; teste com `GET http://localhost:3000/api/
 
 Sirva a pasta do front em `http://localhost:5500` com qualquer servidor estático (por exemplo, a extensão Live Server do VS Code ou `npx http-server -p 5500` na pasta `placeholder`). Em `localhost`, o `js/config.js` aponta automaticamente para `http://localhost:3000/api`.
 
+### Login com Google
+
+No Google Cloud Console, crie um **OAuth Client ID** do tipo "Aplicativo da Web" e cadastre em **URIs de redirecionamento autorizados** o mesmo valor de `GOOGLE_REDIRECT_URI`:
+
+* local: `http://localhost:3000/api/auth/google/callback`
+* produção: `https://<seu-servico>.onrender.com/api/auth/google/callback`
+
+Para migrar contas antigas que entravam com Google, crie esse client no mesmo projeto do Google Cloud do Firebase (`pfc-2026-f8fb8`). Se ele estiver em outro projeto, adicione o Client ID em Firebase Console > Authentication > Google > "Lista de permissões de IDs de clientes de projetos externos".
+
 ## Principais endpoints
 
 Todas as rotas começam com `/api`. Rotas marcadas com 🔒 exigem `Authorization: Bearer <JWT>`; as de jogo também exigem e-mail verificado e perfil completo.
@@ -170,10 +184,15 @@ Todas as rotas começam com `/api`. Rotas marcadas com 🔒 exigem `Authorizatio
 | `GET /health` | saúde da API e do banco |
 | `GET /time` | relógio do servidor (sincroniza o cronômetro) |
 | `POST /auth/register` | cadastro (`name`, `email`, `password`, `acceptTerms`) |
-| `POST /auth/login` | login com e-mail e senha; responde com o JWT da sessão |
+| `POST /auth/login` | login; responde com a sessão ou com a próxima etapa (`2fa`, `2fa-legado`, `configurar-2fa`) |
 | `POST /auth/logout` 🔒 | registra a saída |
 | `POST /auth/email/verify`, `POST /auth/email/resend` 🔒 | confirmação de e-mail |
 | `POST /auth/password/forgot`, `POST /auth/password/reset` | recuperação de senha com token de uso único |
+| `POST /auth/2fa/verify` | segundo fator no login (código TOTP ou código de recuperação) |
+| `POST /auth/2fa/setup`, `/enable`, `/disable` 🔒 | ativar e desativar o 2FA |
+| `POST /auth/2fa/recovery-codes` 🔒 | novos códigos de recuperação (senha + código do aplicativo; os antigos deixam de valer) |
+| `POST /auth/2fa/legacy/verify`, `/2fa/migration/setup`, `/2fa/migration/enable` | migração de contas que tinham 2FA no Firebase |
+| `GET /auth/google`, `GET /auth/google/callback`, `POST /auth/google/exchange` | login com Google (Authorization Code + PKCE) |
 | `GET /users/me`, `PATCH /users/me`, `DELETE /users/me` 🔒 | conta própria (o PATCH aceita só `username`, `avatarStyle`, `avatarSeed` e `name`) |
 | `GET /users/:uid`, `GET /users/:uid/presence`, `GET /users/username-available/:username` 🔒 | perfil público, presença e disponibilidade de username |
 | `GET/POST /groups`, `GET/DELETE /groups/:id` 🔒 | grupos |
@@ -190,6 +209,8 @@ Todas as rotas começam com `/api`. Rotas marcadas com 🔒 exigem `Authorizatio
 * Senhas com bcrypt (custo 12); o JWT leva só o id e a versão da sessão, e papel e permissões são lidos do banco a cada requisição. Redefinir a senha invalida as sessões anteriores.
 * O JWT fica no `localStorage`, porque front e back estão em domínios diferentes e cookies de terceiros são bloqueados por vários navegadores. Para reduzir o risco de XSS, a sessão expira em poucas horas e todo conteúdo dos usuários é inserido com `textContent`.
 * Tokens de e-mail, de redefinição e das etapas do login são aleatórios, de uso único, guardados como hash e apagados automaticamente ao expirar (índice TTL).
+* 2FA: segredo TOTP cifrado com AES-256-GCM, código de uso único (não pode ser reaproveitado), 5 tentativas por desafio e 10 códigos de recuperação guardados como hash. A sessão só é emitida depois de todos os fatores.
+* Google: `state` ligado ao navegador por cookie, `nonce`, PKCE e validação da assinatura, emissor e audiência do `id_token`. Uma conta já vinculada a outra conta Google não é sobrescrita.
 * Entradas validadas no servidor e consultas montadas só com valores primitivos validados. As chaves da partida que viram caminhos de campo seguem um formato rígido.
 * CORS restrito às origens de `FRONTEND_URL`; ele não substitui a autenticação das rotas.
 
@@ -200,9 +221,9 @@ cd backend
 npm test
 ```
 
-São 60 testes com `node:test` sobre a API real e um MongoDB em memória. Na primeira execução, o `mongodb-memory-server` baixa o binário do MongoDB. E-mail e Firebase são substituídos por dublês que registram as chamadas.
+São 84 testes com `node:test` sobre a API real e um MongoDB em memória. Na primeira execução, o `mongodb-memory-server` baixa o binário do MongoDB. E-mail, Google e Firebase são substituídos por dublês que registram as chamadas. A validação do `id_token` é testada com chaves RSA geradas no próprio teste.
 
-Os testes cobrem: saúde, CORS, cadastro (válido, duplicado, simultâneo, inválido, campos privilegiados), verificação de e-mail, login correto e incorreto, rotas protegidas com token ausente, inválido e válido, senha nunca armazenada em texto, perfil, recuperação de senha, limite de tentativas, migração de contas antigas, grupos, convites, chat, partida, salas, tempo real, auditoria e exclusão de conta.
+Os testes cobrem: saúde, CORS, cadastro (válido, duplicado, simultâneo, inválido, campos privilegiados), verificação de e-mail, login correto e incorreto, rotas protegidas com token ausente, inválido e válido, senha nunca armazenada em texto, perfil, recuperação de senha, 2FA completo, limite de tentativas, Google, migração de contas antigas (inclusive com a migração desligada), grupos, convites, chat, partida, salas, tempo real, auditoria e exclusão de conta.
 
 ## Deploy no Render
 
@@ -219,11 +240,13 @@ Limitações do plano gratuito do Render: o serviço hiberna após cerca de 15 m
 | --- | --- |
 | Cadastro, login, sessão | API própria (bcrypt + JWT) |
 | Verificação de e-mail e recuperação de senha | API própria + Brevo |
+| 2FA (TOTP) | API própria |
+| Login com Google | OIDC direto com o Google, validado pela API |
 | Perfil, grupos, convites, chat, partida, salas, auditoria | MongoDB Atlas, via API |
 | Presença online | API (conexões SSE) |
 | Hospedagem do front | continua podendo usar o Firebase Hosting (apenas arquivos estáticos) |
 
-**Contas antigas:** nada foi apagado do Firebase. Quando uma conta que ainda não existe no MongoDB entra com e-mail e senha, a API confere a senha **uma vez** na API REST do Firebase Authentication, cria a conta com o hash bcrypt e copia o perfil (username e avatar) do Firestore. Contas que tinham verificação em duas etapas no Firebase ainda não são migradas (o login responde `MIGRACAO_2FA_PENDENTE`). Quem esqueceu a senha de uma conta ainda não migrada recebe o e-mail de redefinição do próprio Firebase e migra no login seguinte. Contas antigas que entravam só com Google ainda não têm acesso nesta versão: o login com Google entra na próxima etapa.
+**Contas antigas:** nada foi apagado do Firebase. Quando uma conta que ainda não existe no MongoDB entra com e-mail e senha, a API confere a senha **uma vez** na API REST do Firebase Authentication, cria a conta com o hash bcrypt e copia o perfil (username e avatar) do Firestore. Se a conta tinha 2FA, o código do autenticador antigo é conferido pelo Firebase, e a conta continua usando esse fluxo até cadastrar um novo autenticador no sistema próprio. O segredo TOTP não pode ser exportado do Firebase. Quem esqueceu a senha de uma conta ainda não migrada recebe o e-mail de redefinição do próprio Firebase e migra no login seguinte. Contas antigas que entravam com Google migram no primeiro login com Google.
 
 **Ainda dependem do Firebase:** somente a consulta das contas antigas durante a migração (variáveis `FIREBASE_*`). Grupos, convites e partidas antigos que ficaram no Firestore **não** foram copiados; os grupos precisam ser recriados. As regras `firestore.rules` e `database.rules.json` continuam no repositório porque o projeto Firebase segue ativo, mas não são mais usadas pelo jogo.
 

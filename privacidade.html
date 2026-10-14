@@ -50,19 +50,21 @@
     <h2>2. Dados pessoais coletados</h2>
     <ul>
       <li><strong>Cadastro por e-mail:</strong> nome, e-mail e senha. A senha é guardada no banco de dados do projeto apenas na forma de hash (bcrypt) — nem a equipe tem acesso a ela.</li>
+      <li><strong>Login com Google:</strong> nome, e-mail e o identificador da conta Google, fornecidos pelo próprio Google ao final do login (OpenID Connect).</li>
       <li><strong>Perfil de jogador:</strong> username, estilo e semente do avatar e data de criação do perfil.</li>
+      <li><strong>Verificação em duas etapas (opcional):</strong> a chave secreta do aplicativo autenticador, guardada cifrada (AES-256-GCM), e os códigos de recuperação, guardados apenas como hash.</li>
       <li><strong>Grupos e convites:</strong> grupos de que você participa, quem é o proprietário, convites enviados e recebidos, com status e datas.</li>
       <li><strong>Chat do grupo:</strong> texto das mensagens, autor e horário de envio.</li>
       <li><strong>Presença:</strong> se você está online ou offline, calculado enquanto o site está aberto (não é armazenado).</li>
       <li><strong>Logs de auditoria:</strong> identificador da conta (uid), e-mail, ação realizada, detalhe da ação e data/hora do servidor. O conteúdo das mensagens do chat não entra nos logs.</li>
-      <li><strong>Dados no seu navegador:</strong> a preferência de tema claro/escuro e o token de sessão do login (localStorage), que expira em poucas horas. Não usamos cookies de publicidade nem ferramentas de rastreamento.</li>
+      <li><strong>Dados no seu navegador:</strong> a preferência de tema claro/escuro e o token de sessão do login (localStorage), que expira em poucas horas; durante o login com Google, um cookie técnico temporário protege o retorno do Google. Não usamos cookies de publicidade nem ferramentas de rastreamento.</li>
     </ul>
 
     <h2>3. Finalidades e bases legais</h2>
     <ul>
       <li><strong>Criar a conta, autenticar e manter você conectado</strong> — execução do serviço solicitado por você (art. 7º, V).</li>
       <li><strong>Identificar você para os outros jogadores</strong> pelo username e avatar, formar grupos de até 4 jogadores, enviar convites e permitir o chat — execução do serviço (art. 7º, V).</li>
-      <li><strong>Proteger a conta e o sistema</strong> (verificação de e-mail, limite de envio de mensagens e de criação de grupos) — legítimo interesse e segurança (art. 7º, IX, e art. 46).</li>
+      <li><strong>Proteger a conta e o sistema</strong> (verificação de e-mail, 2FA, limite de envio de mensagens e de criação de grupos) — legítimo interesse e segurança (art. 7º, IX, e art. 46).</li>
       <li><strong>Registrar logs de auditoria</strong> para rastrear ações, investigar incidentes e comprovar o aceite dos termos — legítimo interesse (art. 7º, IX, e art. 10).</li>
       <li><strong>Aceite do Termo de Aceite e desta política</strong> — consentimento registrado no cadastro (art. 7º, I, e art. 8º).</li>
     </ul>
@@ -81,7 +83,8 @@
     <ul>
       <li><strong>MongoDB Atlas</strong> (banco de dados) e <strong>Render</strong> (servidor da API): operadores que armazenam e processam os dados em nome do projeto. Os servidores podem ficar fora do Brasil; a transferência internacional ocorre com as garantias contratuais desses provedores (art. 33).</li>
       <li><strong>Brevo</strong> (envio de e-mails): recebe seu nome e e-mail para entregar as mensagens de verificação e de redefinição de senha.</li>
-      <li><strong>Google Firebase</strong>: guarda as contas criadas antes da migração para o servidor próprio. Ele é consultado somente até a conta antiga ser migrada, no login, para conferir a senha e copiar o perfil.</li>
+      <li><strong>Google</strong>: somente se você escolher entrar com o Google, para confirmar sua identidade.</li>
+      <li><strong>Google Firebase</strong>: guarda as contas criadas antes da migração para o servidor próprio. Ele é consultado somente até a conta antiga ser migrada, no login, para conferir a senha (e o segundo fator, se houver) e copiar o perfil.</li>
       <li><strong>DiceBear API</strong> (avatares): recebe apenas o estilo e uma semente aleatória. Nenhum dado pessoal é enviado.</li>
       <li><strong>CDNs</strong> (jsDelivr, unpkg e Google Fonts): recebem, como em qualquer acesso à web, o endereço IP e dados técnicos do navegador ao carregar bibliotecas e fontes.</li>
     </ul>
@@ -107,7 +110,7 @@
       <li>Toda a comunicação com o sistema é criptografada por HTTPS/TLS.</li>
       <li>As senhas são guardadas apenas com hash (bcrypt); a senha original nunca é armazenada.</li>
       <li>O MongoDB Atlas criptografa os dados armazenados em repouso.</li>
-      <li>O acesso exige e-mail verificado.</li>
+      <li>O acesso exige e-mail verificado, e a verificação em duas etapas pode ser ativada.</li>
       <li>As permissões de leitura e escrita são validadas no servidor, conforme o perfil de cada usuário.</li>
     </ul>
 
