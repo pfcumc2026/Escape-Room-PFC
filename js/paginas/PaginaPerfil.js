@@ -138,19 +138,11 @@ export class PaginaPerfil extends PaginaProtegida {
 
     Dom.ocupado(this.btnSalvar, true, "Salvando...");
     try {
-      await this.perfis.salvar({
-        uid: this.sessao.uid,
-        username: valor,
-        estilo: this.estilo,
-        semente: this.semente,
-        perfil: this.sessao.perfil,
-        nomeExibicao: this.sessao.usuario.displayName || valor
-      });
+      await this.perfis.salvar({ username: valor, estilo: this.estilo, semente: this.semente });
       notificador.sucesso("Perfil salvo.");
       setTimeout(() => location.replace("dashboard.html"), 600);
     } catch (e) {
-      if (e.code === "permission-denied") notificador.erro("Este username já está em uso ou é inválido.");
-      else notificador.falha(e, "Não foi possível salvar o perfil.");
+      notificador.falha(e, "Não foi possível salvar o perfil.");
       Dom.ocupado(this.btnSalvar, false);
     }
   }

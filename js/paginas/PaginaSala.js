@@ -69,8 +69,7 @@ export class PaginaSala extends PaginaProtegida {
     this.partida.assinar((estado) => this.#desenhar(estado));
     this.chat.iniciar();
     await this.partida.observar((e) => {
-      if (e.code === "permission-denied") notificador.erro("Sem permissão para acessar a partida. Confira se as regras do Firestore foram publicadas.", 9000);
-      else notificador.falha(e, "Não foi possível acompanhar a partida.");
+      notificador.falha(e, "Não foi possível acompanhar a partida.");
     });
   }
 
@@ -145,8 +144,7 @@ export class PaginaSala extends PaginaProtegida {
     try {
       await this.partida.criar(this.dificuldadeEscolhida);
     } catch (e) {
-      if (e.code === "permission-denied") notificador.erro("Não foi possível criar a partida. Existe uma partida anterior deste grupo?");
-      else notificador.falha(e, "Não foi possível criar a partida.");
+      notificador.falha(e, "Não foi possível criar a partida.");
       Dom.ocupado(botao, false);
     }
   }

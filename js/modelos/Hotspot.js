@@ -45,23 +45,6 @@ export class Hotspot {
     return this.shape === "poly" ? this.coordinates.map((p) => p.map(r)) : this.coordinates.map(r);
   }
 
-  // O Firestore não aceita listas aninhadas: os polígonos viajam como lista plana [x1, y1, x2, y2, ...]
-  paraFirestore() {
-    const dados = this.paraDados();
-    if (this.shape === "poly") dados.coordinates = dados.coordinates.flat();
-    return dados;
-  }
-
-  static deFirestore(dados) {
-    const copia = { ...dados };
-    if (copia.shape === "poly" && copia.coordinates.length && !Array.isArray(copia.coordinates[0])) {
-      const plano = copia.coordinates;
-      copia.coordinates = [];
-      for (let i = 0; i + 1 < plano.length; i += 2) copia.coordinates.push([plano[i], plano[i + 1]]);
-    }
-    return new Hotspot(copia);
-  }
-
   get pontos() {
     if (this.shape === "poly") return this.coordinates;
     const [x1, y1, x2, y2] = this.coordinates;

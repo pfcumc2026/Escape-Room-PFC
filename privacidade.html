@@ -49,15 +49,15 @@
 
     <h2>2. Dados pessoais coletados</h2>
     <ul>
-      <li><strong>Cadastro por e-mail:</strong> nome, e-mail e senha. A senha é guardada pelo Firebase Authentication apenas na forma de hash — nem a equipe tem acesso a ela.</li>
-      <li><strong>Login com Google:</strong> nome, e-mail e o identificador da conta Google, fornecidos pelo próprio Google.</li>
+      <li><strong>Cadastro por e-mail:</strong> nome, e-mail e senha. A senha é guardada no banco de dados do projeto apenas na forma de hash (bcrypt) — nem a equipe tem acesso a ela.</li>
+      <li><strong>Login com Google:</strong> nome, e-mail e o identificador da conta Google, fornecidos pelo próprio Google ao final do login (OpenID Connect).</li>
       <li><strong>Perfil de jogador:</strong> username, estilo e semente do avatar e data de criação do perfil.</li>
-      <li><strong>Verificação em duas etapas (opcional):</strong> a chave secreta do aplicativo autenticador, guardada pelo Firebase Authentication.</li>
+      <li><strong>Verificação em duas etapas (opcional):</strong> a chave secreta do aplicativo autenticador, guardada cifrada (AES-256-GCM), e os códigos de recuperação, guardados apenas como hash.</li>
       <li><strong>Grupos e convites:</strong> grupos de que você participa, quem é o proprietário, convites enviados e recebidos, com status e datas.</li>
       <li><strong>Chat do grupo:</strong> texto das mensagens, autor e horário de envio.</li>
-      <li><strong>Presença:</strong> se você está online ou offline e o horário da última mudança.</li>
+      <li><strong>Presença:</strong> se você está online ou offline, calculado enquanto o site está aberto (não é armazenado).</li>
       <li><strong>Logs de auditoria:</strong> identificador da conta (uid), e-mail, ação realizada, detalhe da ação e data/hora do servidor. O conteúdo das mensagens do chat não entra nos logs.</li>
-      <li><strong>Dados no seu navegador:</strong> a preferência de tema claro/escuro (localStorage) e a sessão de login do Firebase. Não usamos cookies de publicidade nem ferramentas de rastreamento.</li>
+      <li><strong>Dados no seu navegador:</strong> a preferência de tema claro/escuro e o token de sessão do login (localStorage), que expira em poucas horas; durante o login com Google, um cookie técnico temporário protege o retorno do Google. Não usamos cookies de publicidade nem ferramentas de rastreamento.</li>
     </ul>
 
     <h2>3. Finalidades e bases legais</h2>
@@ -77,11 +77,14 @@
       <li><strong>Somente você:</strong> seu nome e seu e-mail, exibidos em Configurações.</li>
       <li><strong>Administradores do sistema:</strong> os logs de auditoria, que incluem uid e e-mail.</li>
     </ul>
-    <p>Essas regras são aplicadas no servidor pelas Security Rules do Firebase, e não apenas na interface.</p>
+    <p>Essas regras são aplicadas no servidor (API do projeto), e não apenas na interface.</p>
 
     <h2>5. Compartilhamento com terceiros</h2>
     <ul>
-      <li><strong>Google Firebase</strong> (Authentication, Firestore, Realtime Database e Hosting): operador que armazena e processa os dados em nome do projeto. Os servidores podem ficar fora do Brasil; a transferência internacional ocorre com as garantias contratuais do Google Cloud (art. 33).</li>
+      <li><strong>MongoDB Atlas</strong> (banco de dados) e <strong>Render</strong> (servidor da API): operadores que armazenam e processam os dados em nome do projeto. Os servidores podem ficar fora do Brasil; a transferência internacional ocorre com as garantias contratuais desses provedores (art. 33).</li>
+      <li><strong>Brevo</strong> (envio de e-mails): recebe seu nome e e-mail para entregar as mensagens de verificação e de redefinição de senha.</li>
+      <li><strong>Google</strong>: somente se você escolher entrar com o Google, para confirmar sua identidade.</li>
+      <li><strong>Google Firebase</strong>: guarda as contas criadas antes da migração para o servidor próprio. Ele é consultado somente até a conta antiga ser migrada, no login, para conferir a senha (e o segundo fator, se houver) e copiar o perfil.</li>
       <li><strong>DiceBear API</strong> (avatares): recebe apenas o estilo e uma semente aleatória. Nenhum dado pessoal é enviado.</li>
       <li><strong>CDNs</strong> (jsDelivr, unpkg e Google Fonts): recebem, como em qualquer acesso à web, o endereço IP e dados técnicos do navegador ao carregar bibliotecas e fontes.</li>
     </ul>
@@ -97,7 +100,7 @@
     <ul>
       <li><strong>Confirmação e acesso:</strong> veja seus dados em <a href="configuracoes.html">Configurações → Seus dados</a>.</li>
       <li><strong>Correção:</strong> altere username e avatar em <a href="perfil.html">Perfil</a>; troque a senha em Configurações.</li>
-      <li><strong>Eliminação e revogação do consentimento:</strong> use <strong>Excluir minha conta</strong> em Configurações. Isso apaga perfil, nome, username, convites, presença e participação nos grupos, e remove a conta do Firebase Authentication.</li>
+      <li><strong>Eliminação e revogação do consentimento:</strong> use <strong>Excluir minha conta</strong> em Configurações. Isso apaga a conta, o perfil, o username, os convites e a participação nos grupos.</li>
       <li><strong>Portabilidade, informação sobre compartilhamento, oposição e revisão:</strong> pelo contato da seção 1.</li>
       <li>Você também pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD).</li>
     </ul>
@@ -105,8 +108,8 @@
     <h2>8. Segurança e criptografia</h2>
     <ul>
       <li>Toda a comunicação com o sistema é criptografada por HTTPS/TLS.</li>
-      <li>As senhas são guardadas pelo Firebase Authentication com hash (algoritmo scrypt) e nunca são copiadas para o banco de dados.</li>
-      <li>Os dados armazenados pelo Google Cloud são criptografados em repouso (AES-256).</li>
+      <li>As senhas são guardadas apenas com hash (bcrypt); a senha original nunca é armazenada.</li>
+      <li>O MongoDB Atlas criptografa os dados armazenados em repouso.</li>
       <li>O acesso exige e-mail verificado, e a verificação em duas etapas pode ser ativada.</li>
       <li>As permissões de leitura e escrita são validadas no servidor, conforme o perfil de cada usuário.</li>
     </ul>

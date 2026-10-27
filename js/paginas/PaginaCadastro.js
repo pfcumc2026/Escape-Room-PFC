@@ -6,22 +6,18 @@ import { Texto } from "../nucleo/Texto.js";
 import { Limites } from "../nucleo/Limites.js";
 import { notificador } from "../nucleo/Notificador.js";
 import { ServicoAutenticacao } from "../servicos/ServicoAutenticacao.js";
-import { ServicoAuditoria } from "../servicos/ServicoAuditoria.js";
 
 export class PaginaCadastro extends PaginaConvidado {
-  static VERSAO_TERMOS = "1.0";
-
   constructor() {
     super();
     this.autenticacao = new ServicoAutenticacao();
-    this.auditoria = new ServicoAuditoria();
   }
 
   async montar() {
     this.form = this.el("form-cadastro");
     this.btn = this.el("btn-cadastrar");
     this.form.addEventListener("submit", (ev) => this.#cadastrar(ev));
-    this.el("btn-google").addEventListener("click", () => this.#entrarComGoogle());
+    this.el("btn-google").addEventListener("click", () => { if (this.#aceitou()) this.autenticacao.entrarComGoogle("cadastro"); });
   }
 
   #validar(nome, email, senha, senha2) {
@@ -44,9 +40,8 @@ export class PaginaCadastro extends PaginaConvidado {
 
     Dom.ocupado(this.btn, true, "Criando conta...");
     try {
-      await this.autenticacao.criarConta(nome, email, senha);
-      await this.#registrarAceite();
-      location.replace("verificar-email.html");
+      const { emailEnviado } = await this.autenticacao.criarConta(nome, email, senha);
+      location.replace(emailEnviado ? "verificar-email.html" : "verificar-email.html?falha=1");
     } catch (e) {
       notificador.falha(e, "Não foi possível criar a conta.");
       Dom.ocupado(this.btn, false);
@@ -57,20 +52,5 @@ export class PaginaCadastro extends PaginaConvidado {
     if (this.el("aceite").checked) return true;
     notificador.erro("Para criar a conta, aceite o Termo de Aceite e a Política de Privacidade.");
     return false;
-  }
-
-  #registrarAceite() {
-    return this.auditoria.registrar("termos_aceitos", `Termo de Aceite e Política de Privacidade v${PaginaCadastro.VERSAO_TERMOS}`);
-  }
-
-  async #entrarComGoogle() {
-    if (!this.#aceitou()) return;
-    try {
-      const cred = await this.autenticacao.entrarComGoogle();
-      await this.#registrarAceite();
-      await this.controle.rotearAposLogin(cred.user);
-    } catch (e) {
-      notificador.falha(e, "Não foi possível entrar com o Google.");
-    }
   }
 }

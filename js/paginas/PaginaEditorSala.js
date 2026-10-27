@@ -34,7 +34,6 @@ export class PaginaEditorSala extends PaginaProtegida {
     super({ exigirAdmin: true });
     this.salas = new ServicoSalas();
     this.sala = null;
-    this.persistidos = new Set();
     this.sujo = false;
     this.preview = null;
   }
@@ -42,7 +41,6 @@ export class PaginaEditorSala extends PaginaProtegida {
   async montar() {
     try {
       this.sala = await this.salas.carregarParaEdicao(ServicoSalas.SALA_INICIAL);
-      this.persistidos = new Set(await this.salas.idsSalvos(this.sala.id).catch(() => []));
     } catch (e) {
       notificador.falha(e, "Não foi possível carregar a sala.");
       return;
@@ -98,14 +96,11 @@ export class PaginaEditorSala extends PaginaProtegida {
   async #salvar(botao) {
     Dom.ocupado(botao, true, "Salvando…");
     try {
-      const atuais = new Set(this.sala.hotspots.map((h) => h.id));
-      await this.salas.salvar(this.sala, [...this.persistidos].filter((id) => !atuais.has(id)));
-      this.persistidos = atuais;
+      await this.salas.salvar(this.sala);
       this.#marcarSujo(false);
       notificador.sucesso(this.sala.publicada ? "Sala salva e publicada." : "Rascunho salvo. Jogadores ainda veem a versão padrão.");
     } catch (e) {
-      if (e.code === "permission-denied") notificador.erro("Sem permissão para salvar. Confira se seu usuário está em admins/ e se as regras foram publicadas.", 8000);
-      else notificador.falha(e, "Não foi possível salvar a sala.");
+      notificador.falha(e, "Não foi possível salvar a sala.");
     }
     Dom.ocupado(botao, false);
   }

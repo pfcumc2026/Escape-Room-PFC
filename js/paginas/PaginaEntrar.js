@@ -70,7 +70,7 @@ export class PaginaEntrar extends Pagina {
       await this.grupos.entrarComCodigo(this.idGrupo, this.usuario.uid, this.codigo);
       location.replace(`grupo.html?id=${encodeURIComponent(this.idGrupo)}`);
     } catch (e) {
-      if (e.code === "permission-denied") {
+      if (e.code === "CONVITE_INVALIDO") {
         Dom.texto("#estado", "Não foi possível entrar: o grupo pode estar cheio ou o código do convite mudou.");
         notificador.erro("Convite inválido ou grupo cheio.");
       } else {

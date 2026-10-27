@@ -1,1 +1,18 @@
-readme 
+# Segredos e dependências
+.env
+.env.*
+!.env.example
+node_modules/
+
+# Cache do Firebase Hosting e logs
+.firebase/
+firebase-debug.log*
+*-debug.log
+
+# Chaves de contas de serviço
+*service-account*.json
+serviceAccountKey*.json
+
+# Sistema
+.DS_Store
+Thumbs.db

@@ -1,4 +1,4 @@
-// Mensagem do chat (groups/{gid}/messages/{mid})
+// Mensagem do chat do grupo (GET /api/groups/{id}/messages)
 
 import { Texto } from "../nucleo/Texto.js";
 
@@ -11,16 +11,16 @@ export class Mensagem {
     this.expiresAt = dados.expiresAt || null;
   }
 
-  static deSnapshot(snap) {
-    return new Mensagem(snap.data());
+  static deDados(dados) {
+    return new Mensagem(dados);
   }
 
   get data() {
-    return this.createdAt ? this.createdAt.toDate() : new Date();
+    return this.createdAt ? new Date(this.createdAt) : new Date();
   }
 
   valida(agora) {
-    return !!this.expiresAt && this.expiresAt.toMillis() > agora;
+    return !!this.expiresAt && this.expiresAt > agora;
   }
 
   recente(agora) {

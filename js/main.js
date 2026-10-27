@@ -6,6 +6,7 @@ export class Aplicacao {
     login: "PaginaLogin",
     cadastro: "PaginaCadastro",
     "esqueci-senha": "PaginaEsqueciSenha",
+    "redefinir-senha": "PaginaRedefinirSenha",
     "verificar-email": "PaginaVerificarEmail",
     perfil: "PaginaPerfil",
     dashboard: "PaginaDashboard",

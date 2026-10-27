@@ -1,4 +1,4 @@
-// Estado compartilhado da partida (games/{gid} + subcoleções found e solved)
+// Estado compartilhado da partida (GET /api/games/{gid}: partida, pistas encontradas e enigmas resolvidos)
 
 import { Dificuldade } from "./Dificuldade.js";
 
@@ -39,13 +39,11 @@ export class EstadoPartida {
     this.resolvidas = dados.resolvidas || {};
   }
 
-  // Converte Timestamp do Firestore em milissegundos
   static ms(valor) {
-    if (valor == null) return null;
-    return typeof valor.toMillis === "function" ? valor.toMillis() : Number(valor);
+    return valor == null ? null : Number(valor);
   }
 
-  static deFirestore(id, principal, achadas = {}, resolvidas = {}) {
+  static deDados(id, principal, achadas = {}, resolvidas = {}) {
     return new EstadoPartida({
       id,
       groupId: principal.groupId,
