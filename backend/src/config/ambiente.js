@@ -21,12 +21,14 @@ export function lerAmbiente(env = process.env) {
     throw new ErroConfiguracao("TOTP_ENCRYPTION_KEY precisa ter exatamente 32 bytes codificados em base64.");
   }
 
-  const origens = lista(env.FRONTEND_URL);
+  // A primeira URL pode ter caminho (site de projeto no GitHub Pages); o CORS compara só a origem
+  const urls = lista(env.FRONTEND_URL);
+  const origens = urls.map((u) => new URL(u).origin);
   return {
     producao: env.NODE_ENV === "production",
     porta: Number(env.PORT) || 3000,
     origens,
-    frontendUrl: origens[0],
+    frontendUrl: urls[0],
     mongo: { uri: env.MONGODB_URI, banco: env.MONGODB_DB_NAME },
     jwt: { segredo: env.JWT_SECRET, validade: env.JWT_EXPIRES_IN || "8h" },
     chaveTotp,
