@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import { conflito, muitasTentativas, naoEncontrado, proibido, requisicaoInvalida } from "../utils/erros.js";
 import { LIMITES, objectId, texto } from "../utils/validacao.js";
 import { registrarAuditoria } from "./auditoria.js";
+import { arquivarPartidaDoGrupo } from "./historico.js";
 
 export const MAX_INTEGRANTES = 4;
 const ALFABETO = "abcdefghijkmnpqrstuvwxyz23456789";
@@ -122,6 +123,7 @@ export async function removerMembro(ctx, usuario, id, alvo) {
 
 export async function apagarGrupo(ctx, grupo) {
   const id = String(grupo._id);
+  await arquivarPartidaDoGrupo(ctx, id);
   await Promise.all([
     ctx.db.collection("messages").deleteMany({ groupId: id }),
     ctx.db.collection("invites").deleteMany({ groupId: id }),

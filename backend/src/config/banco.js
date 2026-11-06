@@ -25,6 +25,9 @@ export async function criarIndices(db) {
     db.collection("invites").createIndex({ toUid: 1, status: 1 }),
     db.collection("invites").createIndex({ fromUid: 1 }),
     db.collection("invites").createIndex({ groupId: 1 }),
+    db.collection("games").createIndex({ players: 1, status: 1 }),
+    db.collection("gameHistory").createIndex({ players: 1, finishedAt: -1 }),
+    db.collection("gameHistory").createIndex({ groupId: 1, createdAt: 1 }, { unique: true }),
     db.collection("messages").createIndex({ groupId: 1, createdAt: -1 }),
     db.collection("messages").createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 }),
     db.collection("auditLogs").createIndex({ at: -1 })

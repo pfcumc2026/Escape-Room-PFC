@@ -96,6 +96,30 @@
       </section>
     </div>
   </div>
+
+  <section class="ph-card mt-3" id="painel-desempenho">
+    <p class="ph-eyebrow mb-1">Estatísticas</p>
+    <h2 class="ph-title">Meu desempenho</h2>
+    <div class="row g-2 mb-3">
+      <div class="col-6 col-md"><div class="ph-kpi"><span class="ph-kpi__valor" data-kpi="concluidas">0</span><span class="ph-kpi__rotulo">Partidas concluídas</span></div></div>
+      <div class="col-6 col-md"><div class="ph-kpi"><span class="ph-kpi__valor" data-kpi="andamento">0</span><span class="ph-kpi__rotulo">Em andamento</span></div></div>
+      <div class="col-6 col-md"><div class="ph-kpi"><span class="ph-kpi__valor" data-kpi="enigmas">0</span><span class="ph-kpi__rotulo">Enigmas resolvidos</span></div></div>
+      <div class="col-6 col-md"><div class="ph-kpi"><span class="ph-kpi__valor" data-kpi="taxa">—</span><span class="ph-kpi__rotulo">Taxa de conclusão</span></div></div>
+      <div class="col-12 col-md"><div class="ph-kpi"><span class="ph-kpi__valor" data-kpi="tempo">—</span><span class="ph-kpi__rotulo">Tempo médio</span></div></div>
+    </div>
+    <p class="ph-muted mb-0" data-vazio>Você ainda não jogou nenhuma partida. Abra um grupo e entre na sala para começar.</p>
+    <p class="text-danger mb-0 d-none" data-erro>Não foi possível carregar suas estatísticas.</p>
+    <div class="row g-3 d-none" data-graficos>
+      <div class="col-md-6">
+        <p class="ph-eyebrow mb-2">Concluídas por semana</p>
+        <div class="ph-grafico"><canvas data-grafico="semanas"></canvas></div>
+      </div>
+      <div class="col-md-6">
+        <p class="ph-eyebrow mb-2">Por dificuldade</p>
+        <div class="ph-grafico"><canvas data-grafico="dificuldade"></canvas></div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer class="ph-footer">
@@ -154,6 +178,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 <script type="module" src="js/main.js"></script>
 </body>

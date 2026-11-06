@@ -1,4 +1,5 @@
 import * as contas from "../services/contas.js";
+import { estatisticasDoJogador } from "../services/estatisticas.js";
 import { naoEncontrado } from "../utils/erros.js";
 import { buscarPorId, dadosProprios, perfilPublico } from "../services/usuarios.js";
 
@@ -27,4 +28,8 @@ export async function perfil(req, res) {
 
 export function presenca(req, res) {
   res.json({ online: req.ctx.tempoReal.online(req.params.uid) });
+}
+
+export async function estatisticas(req, res) {
+  res.json(await estatisticasDoJogador(req.ctx, String(req.usuario._id)));
 }

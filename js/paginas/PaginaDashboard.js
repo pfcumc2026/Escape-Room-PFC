@@ -11,6 +11,8 @@ import { InterruptorTema } from "../componentes/InterruptorTema.js";
 import { ListaGrupos } from "../componentes/ListaGrupos.js";
 import { ListaConvites } from "../componentes/ListaConvites.js";
 import { ListaConvitesEnviados } from "../componentes/ListaConvitesEnviados.js";
+import { PainelDesempenho } from "../componentes/PainelDesempenho.js";
+import { ServicoEstatisticas } from "../servicos/ServicoEstatisticas.js";
 
 export class PaginaDashboard extends PaginaProtegida {
   constructor() {
@@ -26,6 +28,7 @@ export class PaginaDashboard extends PaginaProtegida {
     this.#observarGrupos();
     this.#montarCriacaoDeGrupo();
     this.#observarConvites();
+    this.#montarDesempenho();
   }
 
   #montarCabecalho() {
@@ -42,6 +45,11 @@ export class PaginaDashboard extends PaginaProtegida {
     this.el("btn-sair").addEventListener("click", () => this.controle.sair());
     this.el("btn-sair-modal").addEventListener("click", () => this.controle.sair());
     document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => new bootstrap.Tooltip(el));
+  }
+
+  #montarDesempenho() {
+    const painel = new PainelDesempenho(this.el("painel-desempenho"));
+    new ServicoEstatisticas().obter().then((d) => painel.renderizar(d), () => painel.falhar());
   }
 
   #observarGrupos() {

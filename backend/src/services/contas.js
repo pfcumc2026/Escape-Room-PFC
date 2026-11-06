@@ -3,6 +3,7 @@ import { ESTILOS_AVATAR, LIMITES, texto, validarUsername } from "../utils/valida
 import { registrarAuditoria } from "./auditoria.js";
 import { confirmarIdentidade } from "./autenticacao.js";
 import { apagarGrupo, avisarGrupo } from "./grupos.js";
+import { removerJogadorDoHistorico } from "./historico.js";
 import { buscarPorId, dadosProprios } from "./usuarios.js";
 
 const EDITAVEIS = ["username", "avatarStyle", "avatarSeed", "name"];
@@ -67,6 +68,7 @@ export async function excluirConta(ctx, usuario, corpo, sessaoEmitidaEm) {
   await ctx.db.collection("invites").deleteMany({ $or: [{ toUid: uid }, { fromUid: uid }] });
   ctx.tempoReal.notificar(convites.flatMap((c) => [c.toUid, c.fromUid]), "convites");
 
+  await removerJogadorDoHistorico(ctx, uid);
   await registrarAuditoria(ctx, usuario, "conta_excluida", `username: ${usuario.username || ""}`);
   await ctx.db.collection("authTokens").deleteMany({ userId: usuario._id });
   await ctx.db.collection("users").deleteOne({ _id: usuario._id });

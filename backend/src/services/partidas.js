@@ -1,6 +1,9 @@
 import { conflito, naoEncontrado, requisicaoInvalida } from "../utils/erros.js";
 import { ID_CHAVE, ehObjetoSimples, inteiro } from "../utils/validacao.js";
 import { avisarGrupo, grupoComoDono, grupoComoMembro } from "./grupos.js";
+import { registrarAuditoria } from "./auditoria.js";
+import { arquivarPartidaDoGrupo } from "./historico.js";
+import { PONTUACAO_MAXIMA, calcularPontuacao, somarUso } from "./pontuacao.js";
 
 export const DIFICULDADES = {
   facil: { minutos: 25, enigmas: 3 },
@@ -115,6 +118,7 @@ export async function iniciarPartida(ctx, usuario, gid) {
     { $set: { status: "PLAYING", startedAt: agora, expiresAt: fim } }
   );
   if (!r.modifiedCount) throw conflito("A partida já foi iniciada.", "PARTIDA_JA_INICIADA");
+  await registrarAuditoria(ctx, usuario, "partida_iniciada", `grupo ${gid}, ${partida.difficulty}`);
   avisar(ctx, grupo, gid);
 }
 
@@ -154,11 +158,17 @@ export async function registrarEnigma(ctx, usuario, gid, chave, corpo) {
   const enigma = partida.config.enigmas[chave];
   const filtro = { ...filtroEmAndamento(gid, uid), [`solved.${chave}`]: { $exists: false } };
   enigma.pistas.forEach((o) => { filtro[`found.${o}`] = { $exists: true }; });
-  const $set = { [`solved.${chave}`]: { by: uid, at: new Date(), hints: dicas, attempts: tentativas } };
+  const agora = new Date();
+  const $set = { [`solved.${chave}`]: { by: uid, at: agora, hints: dicas, attempts: tentativas } };
 
   if (enigma.final) {
+    if (corpo.score !== undefined) inteiro(corpo.score, "pontuação", 0, PONTUACAO_MAXIMA);
     partida.config.ordem.filter((k) => k !== chave).forEach((k) => { filtro[`solved.${k}`] = { $exists: true }; });
-    Object.assign($set, { status: "COMPLETED", finishedAt: new Date(), score: inteiro(corpo.score, "pontuação", 0, 5000) });
+    const uso = somarUso({ ...partida.solved, [chave]: { hints: dicas, attempts: tentativas } });
+    const score = calcularPontuacao({
+      dificuldade: partida.difficulty, resolvidos: partida.config.ordem.length, ...uso, restanteMs: partida.expiresAt - agora
+    });
+    Object.assign($set, { status: "COMPLETED", finishedAt: agora, score });
   }
 
   const r = await ctx.db.collection("games").updateOne(filtro, { $set });
@@ -166,6 +176,10 @@ export async function registrarEnigma(ctx, usuario, gid, chave, corpo) {
     const atual = await carregarPartida(ctx, gid);
     if (atual.solved?.[chave]) throw conflito("Este enigma já foi resolvido.", "ENIGMA_JA_RESOLVIDO");
     throw conflito("Este enigma ainda não pode ser resolvido.", "ENIGMA_BLOQUEADO");
+  }
+  if (enigma.final) {
+    await arquivarPartidaDoGrupo(ctx, gid);
+    await registrarAuditoria(ctx, usuario, "partida_concluida", `grupo ${gid}, ${partida.difficulty}, ${$set.score} pontos`);
   }
   avisar(ctx, grupo, gid);
 }
@@ -185,6 +199,8 @@ export async function encerrarPartida(ctx, usuario, gid, corpo) {
   }
   const r = await ctx.db.collection("games").updateOne(filtro, { $set: { status: corpo.status, finishedAt: new Date() } });
   if (!r.modifiedCount) throw conflito("A partida não pode ser encerrada agora.", "ENCERRAMENTO_RECUSADO");
+  await arquivarPartidaDoGrupo(ctx, gid);
+  await registrarAuditoria(ctx, usuario, corpo.status === "FAILED" ? "partida_desistencia" : "partida_expirada", `grupo ${gid}`);
   avisar(ctx, grupo, gid);
 }
 
