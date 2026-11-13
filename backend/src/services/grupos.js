@@ -3,6 +3,7 @@ import { conflito, muitasTentativas, naoEncontrado, proibido, requisicaoInvalida
 import { LIMITES, objectId, texto } from "../utils/validacao.js";
 import { registrarAuditoria } from "./auditoria.js";
 import { arquivarPartidaDoGrupo } from "./historico.js";
+import { buscarPorId } from "./usuarios.js";
 
 export const MAX_INTEGRANTES = 4;
 const ALFABETO = "abcdefghijkmnpqrstuvwxyz23456789";
@@ -21,6 +22,7 @@ export function formatarGrupo(g) {
     memberCount: g.members.length,
     maxMembers: g.maxMembers,
     inviteCode: g.inviteCode,
+    demo: !!g.demo,
     createdAt: g.createdAt.getTime()
   };
 }
@@ -35,12 +37,13 @@ export async function carregarGrupo(ctx, id) {
 export async function grupoComoMembro(ctx, id, uid) {
   const grupo = await carregarGrupo(ctx, id);
   if (!grupo.members.includes(uid)) throw proibido("Você não faz parte deste grupo.", "NAO_MEMBRO");
+  if (grupo.demo && (await buscarPorId(ctx, uid))?.role !== "admin") throw proibido("Você não faz parte deste grupo.", "NAO_MEMBRO");
   return grupo;
 }
 
 export async function grupoComoDono(ctx, id, uid) {
   const grupo = await grupoComoMembro(ctx, id, uid);
-  if (grupo.ownerId !== uid) throw proibido("Somente o proprietário do grupo pode fazer isso.", "SOMENTE_DONO");
+  if (grupo.ownerId !== uid && !grupo.demo) throw proibido("Somente o proprietário do grupo pode fazer isso.", "SOMENTE_DONO");
   return grupo;
 }
 
@@ -48,14 +51,38 @@ export function avisarGrupo(ctx, grupo, canal, extras = []) {
   ctx.tempoReal.notificar([...grupo.members, ...extras], canal);
 }
 
-export async function listarGrupos(ctx, uid) {
-  const grupos = await ctx.db.collection("groups").find({ members: uid }).sort({ createdAt: -1 }).toArray();
+async function garantirGrupoDemo(ctx, usuario) {
+  const uid = String(usuario._id);
+  const grupos = ctx.db.collection("groups");
+  const demo = await grupos.findOne({ demo: true });
+  if (demo) {
+    if (demo.members.includes(uid)) return;
+    const atualizado = await adicionarMembro(ctx, demo._id, uid);
+    if (atualizado) avisarGrupo(ctx, atualizado, `grupo:${demo._id}`);
+    return;
+  }
+  try {
+    const grupo = { name: "DEMO", demo: true, ownerId: uid, members: [uid], maxMembers: MAX_INTEGRANTES, inviteCode: novoCodigo(), createdAt: new Date() };
+    await grupos.insertOne(grupo);
+    await registrarAuditoria(ctx, usuario, "grupo_demo_criado", `grupo ${grupo._id}`);
+  } catch (e) {
+    if (e.code !== 11000) throw e;
+  }
+}
+
+export async function listarGrupos(ctx, usuario) {
+  const uid = String(usuario._id);
+  const admin = usuario.role === "admin";
+  if (admin) await garantirGrupoDemo(ctx, usuario);
+  const filtro = admin ? { members: uid } : { members: uid, demo: { $ne: true } };
+  const grupos = await ctx.db.collection("groups").find(filtro).sort({ createdAt: -1 }).toArray();
   return grupos.map(formatarGrupo);
 }
 
 export async function criarGrupo(ctx, usuario, corpo) {
   const nome = texto(corpo.name, "o nome do grupo", { max: LIMITES.grupoMax });
   if (nome.length < LIMITES.grupoMin) throw requisicaoInvalida("O nome do grupo precisa ter ao menos 3 caracteres.");
+  if (nome.toLowerCase() === "demo") throw requisicaoInvalida("Este nome de grupo é reservado.", "NOME_RESERVADO");
 
   // Reserva atômica do intervalo mínimo entre criações de grupo
   const agora = new Date();
@@ -95,6 +122,7 @@ export async function entrarComCodigo(ctx, usuario, id, corpo) {
   const uid = String(usuario._id);
   const grupo = await carregarGrupo(ctx, id);
   if (grupo.members.includes(uid)) return formatarGrupo(grupo);
+  if (grupo.demo && usuario.role !== "admin") throw proibido("Você não pode entrar neste grupo.", "SOMENTE_ADMIN");
   const codigo = typeof corpo.code === "string" ? corpo.code : "";
   if (!/^[a-z0-9]{8}$/.test(codigo)) throw requisicaoInvalida("Código de convite inválido.", "CODIGO_CONVITE_INVALIDO");
 

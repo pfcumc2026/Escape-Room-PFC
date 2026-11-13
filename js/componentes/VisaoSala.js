@@ -8,10 +8,11 @@ const TECLAS = { ArrowUp: "frente", ArrowLeft: "esquerda", ArrowDown: "tras", Ar
 
 export class VisaoSala {
   // navegacao: false desliga setas, mapa, teclado e animações (usado pelo editor)
-  constructor(elemento, { aoEscolher = () => {}, aoTrocar = () => {}, navegacao = true } = {}) {
+  constructor(elemento, { aoEscolher = () => {}, aoTrocar = () => {}, aoAbrirEditor = null, navegacao = true } = {}) {
     this.elemento = elemento;
     this.aoEscolher = aoEscolher;
     this.aoTrocar = aoTrocar;
+    this.aoAbrirEditor = aoAbrirEditor;
     this.navegacao = navegacao;
     this.sala = null;
     this.renderId = null;
@@ -41,6 +42,7 @@ export class VisaoSala {
         <div class="sala-rotulo" hidden></div>
         <div class="sala-barra" hidden>
           <button type="button" class="sala-botao" data-acao="mapa">Mapa</button>
+          <button type="button" class="sala-botao" data-acao="editor" hidden>Editor de código</button>
           <button type="button" class="sala-botao" data-acao="voltar">Voltar</button>
         </div>
       </div>
@@ -66,6 +68,11 @@ export class VisaoSala {
       this.botaoVoltar = this.barra.querySelector('[data-acao="voltar"]');
       this.botaoMapa.addEventListener("click", () => this.mapa?.alternar());
       this.botaoVoltar.addEventListener("click", () => this.voltar());
+      if (this.aoAbrirEditor) {
+        const botaoEditor = this.barra.querySelector('[data-acao="editor"]');
+        botaoEditor.hidden = false;
+        botaoEditor.addEventListener("click", () => this.aoAbrirEditor());
+      }
       this.mapa = new MapaSala(this.palco, { aoEscolher: (id) => this.mostrar(id) });
     }
   }

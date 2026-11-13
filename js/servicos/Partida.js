@@ -8,17 +8,20 @@ import { Dificuldade } from "../modelos/Dificuldade.js";
 import { Cronometro } from "../nucleo/Cronometro.js";
 import { Aleatorio } from "../nucleo/Aleatorio.js";
 import { GeradorProcedural } from "../nucleo/GeradorProcedural.js";
+import { ConfigDemo } from "../modelos/ConfigDemo.js";
 import { ErroApp } from "../nucleo/ErroApp.js";
 import { GerenciadorEnigmas } from "./GerenciadorEnigmas.js";
 
 export class Partida {
   static MAX_DICAS = 3;
+  static REALCE_PISTAS_MS = { facil: 0, medio: 4 * 60 * 1000, dificil: Infinity };
 
-  constructor({ gid, sala, servico, uid, gerenciador = new GerenciadorEnigmas() }) {
+  constructor({ gid, sala, servico, uid, demo = false, gerenciador = new GerenciadorEnigmas() }) {
     this.gid = gid;
     this.sala = sala;
     this.servico = servico;
     this.uid = uid;
+    this.demo = demo;
     this.gerenciador = gerenciador;
 
     this.estado = null;
@@ -98,7 +101,7 @@ export class Partida {
   }
 
   get ehProprietario() {
-    return !!this.estado && this.estado.ownerId === this.uid;
+    return !!this.estado && (this.demo || this.estado.ownerId === this.uid);
   }
 
   get participa() {
@@ -108,6 +111,11 @@ export class Partida {
   // Ciclo de vida
 
   async criar(dificuldade) {
+    if (this.demo) {
+      const { DIFICULDADE: dificuldadeDemo, SEMENTE: sementeDemo, CONFIG: config } = ConfigDemo;
+      await this.servico.criar(this.gid, { uid: this.uid, dificuldade: dificuldadeDemo, semente: sementeDemo, config });
+      return;
+    }
     if (!Dificuldade.valida(dificuldade)) throw new ErroApp("Escolha uma dificuldade.");
     const semente = Aleatorio.novaSemente();
     const { config } = GeradorProcedural.gerar({ sala: this.sala, dificuldade, semente });
@@ -145,6 +153,17 @@ export class Partida {
       const objeto = this.sala.objeto(h.objectId);
       return !(objeto.estadoInicial === "hidden" && !this.estado.objetoLiberado(objeto));
     });
+  }
+
+  // Pistas ainda não lidas que brilham na sala: sempre no fácil, só depois de um tempo parado no médio
+  pistasEmDestaque() {
+    const e = this.estado;
+    if (!e?.emAndamento || !this.participa) return [];
+    const espera = Partida.REALCE_PISTAS_MS[e.dificuldade];
+    const ultimo = Math.max(e.iniciadaEm, ...Object.values(e.achadas).map((a) => a.at || 0));
+    if (Date.now() + this.deslocamentoMs - ultimo < espera) return [];
+    return Object.keys(e.config.pistas)
+      .filter((id) => !e.pistaEncontrada(id) && e.objetoLiberado(this.sala.objeto(id)));
   }
 
   enigmaDoObjeto(objetoId) {
@@ -230,6 +249,10 @@ export class Partida {
 
   async executar(chave, codigo) {
     return this.gerenciador.executar(this.enigmas.get(chave), codigo);
+  }
+
+  executarRascunho(codigo) {
+    return this.gerenciador.executarRascunho(codigo);
   }
 
   // Valida o código e, se aprovado, registra a resolução e eventualmente a conclusão da partida

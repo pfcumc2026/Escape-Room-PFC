@@ -5,7 +5,7 @@ import * as chat from "../services/chat.js";
 const uid = (req) => String(req.usuario._id);
 
 export async function listar(req, res) {
-  res.json(await grupos.listarGrupos(req.ctx, uid(req)));
+  res.json(await grupos.listarGrupos(req.ctx, req.usuario));
 }
 
 export async function criar(req, res) {

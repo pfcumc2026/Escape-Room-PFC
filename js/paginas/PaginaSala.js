@@ -65,7 +65,7 @@ export class PaginaSala extends PaginaProtegida {
     this.grupo = grupo;
     if (this.partida) { this.#desenhar(this.partida.estado); return; }
 
-    this.partida = new Partida({ gid: this.idGrupo, sala: this.sala, servico: this.servicoPartida, uid: this.sessao.uid });
+    this.partida = new Partida({ gid: this.idGrupo, sala: this.sala, servico: this.servicoPartida, uid: this.sessao.uid, demo: grupo.demo });
     this.partida.assinar((estado) => this.#desenhar(estado));
     this.chat.iniciar();
     await this.partida.observar((e) => {
@@ -101,10 +101,14 @@ export class PaginaSala extends PaginaProtegida {
     this.#desmontarMesa();
     const no = this.#cartaoLobby();
 
-    if (this.grupo.ownerId !== this.sessao.uid) {
+    if (this.grupo.ownerId !== this.sessao.uid && !this.grupo.demo) {
       no.appendChild(this.#paragrafo("Aguardando o proprietário do grupo criar a partida. Enquanto isso, combinem a estratégia no chat.", "sala-texto__destaque"));
     } else {
-      no.appendChild(this.#seletorDeDificuldade());
+      if (this.grupo.demo) {
+        no.appendChild(this.#paragrafo("Partida de demonstração: enigmas e pistas fixos, sempre iguais.", "sala-texto__destaque"));
+      } else {
+        no.appendChild(this.#seletorDeDificuldade());
+      }
       const criar = this.#botao("Criar partida", "btn-primary", (b) => this.#criarPartida(b));
       criar.classList.add("mt-3");
       no.appendChild(criar);

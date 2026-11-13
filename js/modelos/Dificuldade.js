@@ -2,7 +2,7 @@
 
 export class Dificuldade {
   static NIVEIS = {
-    facil: { id: "facil", nome: "Fácil", minutos: 25, enigmas: 3, bonusPorSegundo: 0.15, foco: "Variáveis, aritmética, strings e condições simples." },
+    facil: { id: "facil", nome: "Fácil", minutos: 25, enigmas: 3, bonusPorSegundo: 0.15, foco: "Variáveis, condições simples e laços for e while básicos." },
     medio: { id: "medio", nome: "Médio", minutos: 45, enigmas: 4, bonusPorSegundo: 0.1, foco: "Laços, listas, strings e funções, com pistas indiretas." },
     dificil: { id: "dificil", nome: "Difícil", minutos: 60, enigmas: 5, bonusPorSegundo: 0.08, foco: "Lógica aninhada, algoritmos e uma cadeia de dependências." }
   };

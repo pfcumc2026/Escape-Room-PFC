@@ -27,8 +27,8 @@ export class GeradorProcedural {
     const total = Dificuldade.de(dificuldade).enigmas;
     const regulares = total - 1;
     const objetos = sala.objetosAtivos;
-    const candidatosEnigma = rng.embaralhar(objetos.filter((o) => o.candidatoAEnigma));
-    const candidatosPista = rng.embaralhar(objetos.filter((o) => o.candidatoAPista));
+    const candidatosEnigma = GeradorProcedural.#ordenarPorAcesso(sala, rng.embaralhar(objetos.filter((o) => o.candidatoAEnigma)), dificuldade, rng);
+    const candidatosPista = GeradorProcedural.#ordenarPorAcesso(sala, rng.embaralhar(objetos.filter((o) => o.candidatoAPista)), dificuldade, rng);
     const finais = objetos.filter((o) => o.ehFinal);
 
     if (!finais.length) throw new ErroApp("A sala não tem um objeto de saída (tipo DOOR).");
@@ -65,6 +65,35 @@ export class GeradorProcedural {
     return config;
   }
 
+  // Quantas vistas mostram o objeto menos os passos desde o início: fácil usa os mais acessíveis, difícil os mais escondidos
+  static acesso(sala, objeto, distancias = GeradorProcedural.distancias(sala)) {
+    const vistas = new Set(objeto.hotspots.map((h) => h.renderId));
+    const passos = Math.min(...[...vistas].map((r) => distancias.get(r) ?? 9));
+    return vistas.size - 2 * passos;
+  }
+
+  static distancias(sala) {
+    const distancias = new Map([[sala.inicio, 0]]);
+    const fila = [sala.inicio];
+    while (fila.length) {
+      const id = fila.shift();
+      sala.render(id).ligacoes.forEach((l) => {
+        if (distancias.has(l.destino) || !sala.render(l.destino)) return;
+        distancias.set(l.destino, distancias.get(id) + 1);
+        fila.push(l.destino);
+      });
+    }
+    return distancias;
+  }
+
+  static #ordenarPorAcesso(sala, objetos, dificuldade, rng) {
+    if (dificuldade === "medio") return objetos;
+    const distancias = GeradorProcedural.distancias(sala);
+    const nota = new Map(objetos.map((o) => [o.id, GeradorProcedural.acesso(sala, o, distancias) + rng.inteiro(0, 2)]));
+    const sinal = dificuldade === "facil" ? -1 : 1;
+    return [...objetos].sort((a, b) => sinal * (nota.get(a.id) - nota.get(b.id)));
+  }
+
   static #sortearModelos(objetosEnigma, dificuldade, rng) {
     const pool = rng.embaralhar(ModelosEnigma.paraDificuldade(dificuldade));
     const usados = new Set();
@@ -88,11 +117,11 @@ export class GeradorProcedural {
     return Math.max(1, Math.min(desejado, folga));
   }
 
-  // Médio: dependência ocasional; difícil: cadeia sequencial
+  // Médio: dependência ocasional; difícil: toda pista só aparece depois do enigma anterior
   static #requisito(dificuldade, anterior, indice, rng) {
     if (!anterior || dificuldade === "facil") return "";
     if (dificuldade === "medio") return rng.chance(0.5) ? anterior : "";
-    return indice === 0 ? anterior : "";
+    return anterior;
   }
 
   // Retorna a descrição do problema ou "" quando a configuração é válida e resolvível

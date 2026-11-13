@@ -22,6 +22,7 @@ export async function criarIndices(db) {
     db.collection("authTokens").createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 }),
 
     db.collection("groups").createIndex({ members: 1 }),
+    db.collection("groups").createIndex({ demo: 1 }, { unique: true, partialFilterExpression: { demo: true } }),
     db.collection("invites").createIndex({ toUid: 1, status: 1 }),
     db.collection("invites").createIndex({ fromUid: 1 }),
     db.collection("invites").createIndex({ groupId: 1 }),

@@ -50,11 +50,18 @@ export class PainelEnigma extends Dialogo {
         <ol class="sala-enigma__lista-dicas"></ol>
       </div>`;
 
-    no.querySelector(".sala-eyebrow").textContent = `${enigma.final ? "Desafio final" : "Enigma"} · ${enigma.conceito}`;
-    no.querySelector(".sala-titulo").textContent = enigma.titulo;
-    no.querySelector(".sala-enigma__historia").textContent = enigma.historia;
+    const livre = !enigma;
+    no.querySelector(".sala-eyebrow").textContent = livre ? "Editor de código" : `${enigma.final ? "Desafio final" : "Enigma"} · ${enigma.conceito}`;
+    no.querySelector(".sala-titulo").textContent = livre ? "Rascunho livre" : enigma.titulo;
+    no.querySelector(".sala-enigma__historia").textContent = livre
+      ? "Nenhum mecanismo está liberado ainda. Use este espaço para testar seu código; quando as pistas de um enigma forem encontradas, abra o editor de novo para enviar a resposta."
+      : enigma.historia;
+    if (livre) {
+      ["sala-enigma__pistas", "sala-enigma__codigo", "sala-enigma__dicas"].forEach((c) => { no.querySelector(`.${c}`).hidden = true; });
+      no.querySelector('[data-acao="validar"]').hidden = true;
+    }
     const listaPistas = no.querySelector(".sala-enigma__pistas ul");
-    pistas.forEach((t) => {
+    (pistas || []).forEach((t) => {
       const li = document.createElement("li");
       li.textContent = t;
       listaPistas.appendChild(li);
@@ -80,10 +87,12 @@ export class PainelEnigma extends Dialogo {
     this.botaoValidar.addEventListener("click", () => this.#validar());
     this.botaoDica.addEventListener("click", () => this.#pedirDica());
 
-    for (let i = 0; i < contador.dicas; i++) this.#exibirDica(enigma.dicas[i], i);
-    this.#atualizarBotaoDica();
+    if (!livre) {
+      for (let i = 0; i < contador.dicas; i++) this.#exibirDica(enigma.dicas[i], i);
+      this.#atualizarBotaoDica();
+    }
 
-    this.abrir(no, { largo: true, rotulo: enigma.titulo, aoFechar: contexto.aoFechar });
+    this.abrir(no, { largo: true, rotulo: livre ? "Editor de código" : enigma.titulo, aoFechar: contexto.aoFechar });
     this.editor.focus();
   }
 

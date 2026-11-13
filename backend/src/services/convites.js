@@ -45,7 +45,7 @@ export async function enviarConvite(ctx, usuario, grupoId, corpo) {
   if (grupo.members.length >= MAX_INTEGRANTES) throw conflito("O grupo já está cheio.", "GRUPO_CHEIO");
 
   const convidado = await ctx.db.collection("users").findOne({ usernameLower: alvo, profileComplete: true });
-  if (!convidado) throw naoEncontrado("Usuário não encontrado.", "USUARIO_INEXISTENTE");
+  if (!convidado || (grupo.demo && convidado.role !== "admin")) throw naoEncontrado("Usuário não encontrado.", "USUARIO_INEXISTENTE");
   const uidAlvo = String(convidado._id);
   if (uidAlvo === uid) throw conflito("Você já faz parte do grupo.", "JA_MEMBRO");
   if (grupo.members.includes(uidAlvo)) throw conflito("Este usuário já está no grupo.", "JA_MEMBRO");

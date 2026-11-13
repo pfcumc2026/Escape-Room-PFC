@@ -14,12 +14,15 @@ export class MesaDeJogo {
     this.renderInicial = renderInicial;
     this.visao = new VisaoSala(palco, {
       aoEscolher: (h) => this.#interagir(h),
+      aoAbrirEditor: () => this.#abrirEditor(),
       aoTrocar: () => this.#desenharHotspots()
     });
     this.caderno = new PainelCaderno(caderno);
     this.dialogo = new Dialogo();
     this.painel = new PainelEnigma();
     this.chaveAberta = null;
+    this.ultimaChave = null;
+    this.realceAtual = "";
     this.vistos = { achadas: new Set(), resolvidas: new Set() };
     this.ocupado = false;
     this.jaAvisou = false;
@@ -44,7 +47,7 @@ export class MesaDeJogo {
         "Ande clicando nas setas sobre a imagem (ou com as setas do teclado). O botão Mapa mostra onde você está e leva direto a outro ponto.",
         "Clique nos objetos para se aproximar e examiná-los. Cada pista encontrada vai para o caderno da equipe.",
         "Com as pistas de um enigma, procure o mecanismo correspondente: cadeados, baús, engrenagens, teclas. Ele abre o editor de Python.",
-        "Escreva a função, use Testar e abrir e digite o código do mecanismo. Resolvam todos e abram a esfera de cristal antes do tempo acabar."
+        "Escreva o código, use Testar e abrir e digite o código do mecanismo. Resolvam todos e abram a esfera de cristal antes do tempo acabar."
       ],
       rotuloBotao: "Começar",
       aoFechar: () => this.dialogo.fechar()
@@ -62,6 +65,7 @@ export class MesaDeJogo {
   #tique() {
     if (this.partida.estado?.emAndamento) this.caderno.atualizarTempo(this.partida.restanteMs);
     else this.caderno.esconderTempo();
+    if (this.partida.pistasEmDestaque().join() !== this.realceAtual) this.#desenharHotspots();
   }
 
   #aoMudar(estado) {
@@ -84,7 +88,9 @@ export class MesaDeJogo {
 
   #desenharHotspots() {
     if (!this.visao.renderId) return;
-    const prontos = new Set(this.partida.enigmasLiberados.map((e) => e.objeto));
+    const destaques = this.partida.pistasEmDestaque();
+    this.realceAtual = destaques.join();
+    const prontos = new Set([...this.partida.enigmasLiberados.map((e) => e.objeto), ...destaques]);
     this.visao.desenhar(this.partida.hotspotsVisiveis(this.visao.renderId), prontos);
   }
 
@@ -126,8 +132,30 @@ export class MesaDeJogo {
     }), { rotulo: r.titulo });
   }
 
+  #abrirEditor() {
+    if (!this.partida.participa || !this.partida.estado?.emAndamento) {
+      notificador.info("O editor fica disponível para quem está jogando a partida.");
+      return;
+    }
+    const liberados = this.partida.enigmasLiberados;
+    const enigma = liberados.find((e) => e.chave === this.ultimaChave) || liberados[0];
+    if (enigma) this.#abrirEnigma({ enigma, pistas: this.partida.pecasEncontradas(enigma.chave).map((p) => p.texto) });
+    else this.#abrirRascunho();
+  }
+
+  #abrirRascunho() {
+    this.partida.preparar();
+    this.painel.mostrar({
+      enigma: null,
+      contador: this.partida.contador("livre", "# Rascunho livre: teste seu código aqui\n"),
+      aoExecutar: (codigo) => this.partida.executarRascunho(codigo),
+      aoFechar: () => {}
+    });
+  }
+
   #abrirEnigma({ enigma, pistas }) {
     this.chaveAberta = enigma.chave;
+    this.ultimaChave = enigma.chave;
     const contador = this.partida.contador(enigma.chave, enigma.codigoInicial);
     this.partida.preparar();
     this.painel.mostrar({

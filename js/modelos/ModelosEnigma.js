@@ -25,35 +25,35 @@ export class ModelosEnigma {
   static TODOS = [
     // Fácil: variáveis, aritmética, strings e condições
     new ModeloEnigma({
-      id: "chave-numerica", nivel: "facil", conceito: "Variáveis e aritmética",
+      id: "chave-numerica", nivel: "facil", semDef: true, conceito: "Variáveis e aritmética",
       titulo: "A chave do cadeado", nomeFuncao: "gerar_chave", parametros: ["id"],
       sortear: (r) => ({ a: r.inteiro(3, 9), b: r.inteiro(1, 9) }),
       f: (p, id) => id * p.a - p.b,
       casos: () => [[10], [0], [-5], [7], [100], [1]],
       entrada: (p, r) => [r.inteiro(11, 40)],
-      historia: (p) => `A fechadura antiga aceita um número de identificação, mas ele precisa ser transformado na chave correta. Complete a função gerar_chave(id): multiplique o identificador por ${p.a} e depois subtraia ${p.b}.`,
+      historia: (p) => `A fechadura antiga aceita um número de identificação, mas ele precisa virar a chave correta. A variável id já tem o número. Multiplique id por ${p.a}, subtraia ${p.b} e guarde o resultado na variável resultado.`,
       dicas: (p) => [
-        "A fechadura exige duas operações matemáticas.",
+        "São duas contas: uma multiplicação e uma subtração.",
         "A multiplicação acontece antes da subtração.",
-        `Tente algo como: return id * ${p.a} - ${p.b}`
+        `Tente: resultado = id * ${p.a} - ${p.b}`
       ]
     }),
     new ModeloEnigma({
-      id: "area-livre", nivel: "facil", conceito: "Variáveis e aritmética",
+      id: "area-livre", nivel: "facil", semDef: true, conceito: "Variáveis e aritmética",
       titulo: "O tapete manchado", nomeFuncao: "area_livre", parametros: ["largura", "comprimento"],
       sortear: (r) => ({ mancha: r.inteiro(2, 9) }),
       f: (p, l, c) => l * c - p.mancha,
       casos: () => [[4, 5], [10, 10], [3, 3], [1, 20], [7, 6], [12, 2]],
       entrada: (p, r) => [r.inteiro(6, 15), r.inteiro(6, 15)],
-      historia: (p) => `Um tapete retangular guarda uma mensagem sob uma mancha de ${p.mancha} unidades de área. Complete area_livre(largura, comprimento) para devolver a área do tapete descontada a mancha.`,
+      historia: (p) => `Um tapete retangular tem uma mancha de ${p.mancha} unidades de área. As variáveis largura e comprimento já têm os valores. Calcule a área do tapete, tire a mancha e guarde na variável resultado.`,
       dicas: (p) => [
         "A área de um retângulo é largura vezes comprimento.",
         "Depois de calcular a área, desconte a mancha.",
-        `Tente: return largura * comprimento - ${p.mancha}`
+        `Tente: resultado = largura * comprimento - ${p.mancha}`
       ]
     }),
     new ModeloEnigma({
-      id: "selo-de-nome", nivel: "facil", conceito: "Strings",
+      id: "selo-de-nome", nivel: "medio", conceito: "Strings",
       titulo: "O selo do nome", nomeFuncao: "selo", parametros: ["nome"],
       sortear: () => ({}),
       f: (p, nome) => nome.toUpperCase() + String(nome.length),
@@ -67,17 +67,17 @@ export class ModelosEnigma {
       ]
     }),
     new ModeloEnigma({
-      id: "balanca-da-porta", nivel: "facil", conceito: "Condições (if / else)",
+      id: "balanca-da-porta", nivel: "facil", semDef: true, conceito: "Condições (if / else)",
       titulo: "A balança da porta", nomeFuncao: "ajustar", parametros: ["peso"],
       sortear: (r) => ({ limite: r.inteiro(10, 30), bonus: r.inteiro(2, 9) }),
       f: (p, peso) => (peso >= p.limite ? peso * 2 : peso + p.bonus),
       casos: (p) => [[p.limite], [p.limite - 1], [p.limite + 5], [0], [1], [p.limite * 2]],
       entrada: (p, r) => [Math.max(1, r.inteiro(p.limite - 8, p.limite + 12))],
-      historia: (p) => `Uma balança mágica ajusta o peso colocado sobre ela. Se o peso for maior ou igual a ${p.limite}, o ajuste é o dobro do peso. Caso contrário, é o peso somado a ${p.bonus}. Complete ajustar(peso).`,
+      historia: (p) => `Uma balança mágica ajusta o peso colocado sobre ela. Se o peso for maior ou igual a ${p.limite}, o ajuste é o dobro do peso. Caso contrário, é o peso somado a ${p.bonus}. A variável peso já tem o valor. Guarde o ajuste na variável resultado.`,
       dicas: (p) => [
         "O resultado depende de uma comparação: use if e else.",
         `A condição é 'peso maior ou igual a ${p.limite}'.`,
-        `Tente: if peso >= ${p.limite}: return peso * 2  e, no caso contrário, return peso + ${p.bonus}`
+        `Tente: if peso >= ${p.limite}:  (linha de baixo, com espaços)  resultado = peso * 2  e depois else:  resultado = peso + ${p.bonus}`
       ]
     }),
 
@@ -111,7 +111,7 @@ export class ModelosEnigma {
       ]
     }),
     new ModeloEnigma({
-      id: "cifra-de-cesar", nivel: "medio", conceito: "Strings e laços",
+      id: "cifra-de-cesar", nivel: "dificil", conceito: "Strings e laços",
       titulo: "A cifra do escriba", nomeFuncao: "cifrar", parametros: ["mensagem", "deslocamento"],
       sortear: () => ({}),
       f: (p, msg, k) => [...msg].map((c) => (c >= "a" && c <= "z" ? String.fromCharCode(((c.charCodeAt(0) - 97 + k) % 26) + 97) : c)).join(""),
@@ -121,7 +121,7 @@ export class ModelosEnigma {
       dicas: () => [
         "Percorra a mensagem caractere por caractere.",
         "ord() converte uma letra em número e chr() faz o caminho inverso. Use % 26 para dar a volta no alfabeto.",
-        "chr((ord(c) - ord('a') + deslocamento) % 26 + ord('a')) desloca uma letra minúscula."
+        "Converta a letra em posição (0 a 25), desloque, use o resto da divisão por 26 e converta de volta."
       ]
     }),
     new ModeloEnigma({
@@ -165,7 +165,7 @@ export class ModelosEnigma {
       dicas: () => [
         "São duas camadas de lista: você precisa de um laço dentro de outro.",
         "O laço externo percorre as linhas e o interno percorre os valores de cada linha.",
-        "for linha in matriz: for v in linha: if v > limite: total += v"
+        "Só os valores maiores que o limite entram na soma."
       ]
     }),
     new ModeloEnigma({
@@ -182,7 +182,7 @@ export class ModelosEnigma {
       dicas: () => [
         "Valores repetidos não contam duas vezes. Pense em como eliminá-los.",
         "Descubra o maior valor, remova-o e procure o maior entre os que restam, ignorando repetições do maior.",
-        "Uma saída: sorted(set(numeros))[-2] ordena os valores únicos e pega o penúltimo."
+        "Há estruturas de Python que guardam só valores únicos e funções que ordenam."
       ]
     }),
     new ModeloEnigma({
@@ -196,7 +196,7 @@ export class ModelosEnigma {
       dicas: () => [
         "Um número primo só é divisível por 1 e por ele mesmo.",
         "Para cada candidato de 2 até n, teste se algum divisor entre 2 e candidato - 1 divide exatamente.",
-        "Crie uma função auxiliar eh_primo(x) e conte quantos candidatos passam no teste."
+        "Separar o teste de primalidade em uma função auxiliar ajuda."
       ]
     }),
     new ModeloEnigma({
@@ -214,8 +214,8 @@ export class ModelosEnigma {
       historia: () => "Um pergaminho foi comprimido: cada letra é seguida por um dígito (de 1 a 9) que diz quantas vezes ela se repete. Complete descomprimir(texto). Exemplo: descomprimir('a3b2') devolve 'aaabb'.",
       dicas: () => [
         "O texto é formado por pares: uma letra e um dígito.",
-        "Percorra de 2 em 2 posições (range(0, len(texto), 2)) e leia letra e dígito.",
-        "int(dígito) converte o caractere em número; letra * quantidade repete a letra."
+        "Percorra o texto de 2 em 2 posições, lendo letra e dígito.",
+        "O dígito é um caractere: converta-o em número antes de repetir a letra."
       ]
     }),
     new ModeloEnigma({
@@ -229,7 +229,7 @@ export class ModelosEnigma {
       dicas: () => [
         "Guarde os dois últimos termos em variáveis e atualize-os a cada passo.",
         "Trate n == 1 e n == 2 separadamente; para os demais, repita a soma n - 2 vezes.",
-        "No laço: a, b = b, a + b. No fim, b é o n-ésimo termo (para n >= 2)."
+        "Cuidado para não sobrescrever uma variável antes de usá-la na soma."
       ]
     }),
     new ModeloEnigma({
@@ -243,28 +243,27 @@ export class ModelosEnigma {
       dicas: () => [
         "Você não sabe de antemão quantas repetições serão necessárias: pense em while.",
         "Enquanto n for diferente de 1, aplique a regra de par/ímpar e conte um passo.",
-        "Use n // 2 para a metade inteira e 3 * n + 1 para o caso ímpar."
+        "Use divisão inteira para a metade, assim n continua sendo um inteiro."
       ]
     }),
 
     // Novos enigmas: fácil
     new ModeloEnigma({
-      id: "perimetro-corrigido", nivel: "facil", conceito: "Corrigir o erro",
+      id: "perimetro-corrigido", nivel: "facil", semDef: true, conceito: "Variáveis e aritmética",
       titulo: "O perímetro do salão", nomeFuncao: "perimetro", parametros: ["largura", "altura"],
       sortear: () => ({}),
       f: (p, l, a) => 2 * (l + a),
       casos: () => [[4, 5], [10, 10], [1, 1], [3, 8], [7, 2], [0, 5]],
       entrada: (p, r) => [r.inteiro(6, 20), r.inteiro(6, 20)],
-      codigoInicial: () => "def perimetro(largura, altura):\n    # este código tem um erro: encontre e corrija\n    return largura + altura * 2\n",
-      historia: () => "O escriba mediu o salão, mas errou a fórmula. O perímetro de um retângulo é a soma dos quatro lados. O código abaixo já existe e está errado: corrija perimetro(largura, altura).",
+      historia: () => "O escriba precisa saber a volta completa do salão. As variáveis largura e altura já têm os valores. Some as duas, multiplique por 2 e guarde na variável resultado.",
       dicas: () => [
-        "Execute o código com alguns números e compare com a conta feita à mão.",
-        "O perímetro soma os dois lados de largura e os dois de altura.",
-        "Tente: return 2 * (largura + altura)"
+        "Guarde a conta em resultado com o sinal de =.",
+        "Some largura + altura e multiplique por 2. Use parênteses para somar primeiro.",
+        "Tente: resultado = 2 * (largura + altura)"
       ]
     }),
     new ModeloEnigma({
-      id: "moedas-do-mercador", nivel: "facil", conceito: "Condições e aritmética",
+      id: "moedas-do-mercador", nivel: "medio", conceito: "Condições e aritmética",
       titulo: "As moedas do mercador", nomeFuncao: "total_a_pagar", parametros: ["quantidade", "preco"],
       sortear: (r) => ({ limite: r.inteiro(3, 6), desconto: r.inteiro(5, 15) }),
       f: (p, q, preco) => (q >= p.limite ? q * preco - p.desconto : q * preco),
@@ -275,6 +274,35 @@ export class ModelosEnigma {
         "Primeiro calcule o total sem desconto: quantidade vezes preço.",
         `O desconto só vale quando quantidade >= ${p.limite}.`,
         `Tente: total = quantidade * preco; if quantidade >= ${p.limite}: total = total - ${p.desconto}; return total`
+      ]
+    }),
+
+    new ModeloEnigma({
+      id: "degraus-da-torre", nivel: "facil", semDef: true, conceito: "Laço for",
+      titulo: "Os degraus da torre", nomeFuncao: "somar_degraus", parametros: ["degraus"],
+      sortear: (r) => ({ extra: r.inteiro(1, 9) }),
+      f: (p, degraus) => { let total = 0; for (let i = 1; i <= degraus; i++) total += i; return total + p.extra; },
+      casos: () => [[1], [2], [3], [5], [10], [0]],
+      entrada: (p, r) => [r.inteiro(5, 12)],
+      historia: (p) => `Os degraus de uma torre são numerados de 1 até degraus. Some os números de todos os degraus e depois some mais ${p.extra}. A variável degraus já tem o valor. Guarde a soma na variável resultado.`,
+      dicas: (p) => [
+        "Você precisa repetir uma soma para cada degrau: use um laço for.",
+        "range(1, degraus + 1) percorre os números de 1 até degraus.",
+        `Tente: resultado = 0; for i in range(1, degraus + 1): resultado = resultado + i; e depois some ${p.extra}.`
+      ]
+    }),
+    new ModeloEnigma({
+      id: "pulsos-da-esfera", nivel: "facil", semDef: true, conceito: "Laço while",
+      titulo: "Os pulsos da esfera", nomeFuncao: "contar_pulsos", parametros: ["energia"],
+      sortear: (r) => ({ gasto: r.inteiro(2, 4) }),
+      f: (p, energia) => { let pulsos = 0; while (energia > 0) { energia -= p.gasto; pulsos++; } return pulsos; },
+      casos: (p) => [[p.gasto], [0], [1], [20], [33], [7]],
+      entrada: (p, r) => [r.inteiro(12, 40)],
+      historia: (p) => `A esfera gasta ${p.gasto} de energia a cada pulso e para quando a energia chega a zero ou menos. A variável energia já tem o valor. Conte quantos pulsos acontecem e guarde na variável resultado.`,
+      dicas: (p) => [
+        "Você não sabe de antemão quantos pulsos serão: use um laço while.",
+        "Enquanto a energia for maior que zero, gaste energia e conte um pulso.",
+        `Tente: resultado = 0; while energia > 0: energia = energia - ${p.gasto}; resultado = resultado + 1`
       ]
     }),
 
@@ -367,7 +395,7 @@ export class ModelosEnigma {
 
     // Novos enigmas: difícil
     new ModeloEnigma({
-      id: "contar-palindromos", nivel: "dificil", conceito: "Listas e strings",
+      id: "contar-palindromos", nivel: "medio", conceito: "Listas e strings",
       titulo: "As palavras espelhadas", nomeFuncao: "contar_palindromos", parametros: ["palavras"],
       sortear: () => ({}),
       f: (p, palavras) => palavras.filter((w) => w === [...w].reverse().join("")).length,
@@ -391,7 +419,7 @@ export class ModelosEnigma {
       dicas: () => [
         "Divida n por 2 repetidamente: os restos, lidos de trás para a frente, formam o binário.",
         "Trate n == 0 separadamente, devolvendo '0'.",
-        "while n > 0: texto = str(n % 2) + texto; n = n // 2"
+        "Cada resto deve entrar à esquerda do texto já montado."
       ]
     }),
     new ModeloEnigma({
@@ -405,7 +433,7 @@ export class ModelosEnigma {
       dicas: () => [
         "O algoritmo repete a mesma troca até o segundo número chegar a zero.",
         "while b != 0: troque a por b e b pelo resto da divisão de a por b.",
-        "while b != 0: a, b = b, a % b   e depois return a"
+        "Quando b chegar a zero, a resposta está em a."
       ]
     }),
     new ModeloEnigma({
@@ -419,7 +447,7 @@ export class ModelosEnigma {
       dicas: () => [
         "Você precisa comparar cada número com todos os que vêm depois dele.",
         "Use dois laços: o externo para i e o interno começando em i + 1.",
-        "for i in range(len(numeros)): for j in range(i + 1, len(numeros)): if numeros[i] + numeros[j] == alvo: conte"
+        "Cada par deve ser contado uma única vez."
       ]
     }),
     new ModeloEnigma({

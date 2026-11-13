@@ -13,6 +13,7 @@ export class Grupo {
     this.memberCount = dados.memberCount || 0;
     this.maxMembers = dados.maxMembers || Limites.maxIntegrantes;
     this.inviteCode = dados.inviteCode || "";
+    this.demo = !!dados.demo;
     this.createdAt = dados.createdAt || null;
   }
 

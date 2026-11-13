@@ -37,7 +37,11 @@ export class Enigma {
   get historia() { return this.modelo.historia(this.parametrosSorteados); }
   get dicas() { return this.modelo.dicas(this.parametrosSorteados); }
 
+  // Enigmas fáceis: o jogador escreve só o corpo e guarda a resposta em "resultado"
+  get semDef() { return !!this.modelo.semDef; }
+
   get codigoInicial() {
+    if (this.semDef) return `# Os valores da pista viram variáveis: ${this.parametros.join(", ")}\n# Guarde a resposta na variável resultado\nresultado = 0\n`;
     if (this.modelo.codigoInicial) return this.modelo.codigoInicial(this.parametrosSorteados);
     return `def ${this.nomeFuncao}(${this.parametros.join(", ")}):\n    # escreva seu código aqui\n    return\n`;
   }
