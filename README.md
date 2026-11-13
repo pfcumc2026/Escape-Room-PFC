@@ -194,6 +194,7 @@ Todas as rotas começam com `/api`. Rotas marcadas com 🔒 exigem `Authorizatio
 | `POST /auth/2fa/legacy/verify`, `/2fa/migration/setup`, `/2fa/migration/enable` | migração de contas que tinham 2FA no Firebase |
 | `GET /auth/google`, `GET /auth/google/callback`, `POST /auth/google/exchange` | login com Google (Authorization Code + PKCE) |
 | `GET /users/me`, `PATCH /users/me`, `DELETE /users/me` 🔒 | conta própria (o PATCH aceita só `username`, `avatarStyle`, `avatarSeed` e `name`) |
+| `GET /users/me/stats` 🔒 | estatísticas de desempenho do jogador |
 | `GET /users/:uid`, `GET /users/:uid/presence`, `GET /users/username-available/:username` 🔒 | perfil público, presença e disponibilidade de username |
 | `GET/POST /groups`, `GET/DELETE /groups/:id` 🔒 | grupos |
 | `POST /groups/:id/join`, `POST /groups/:id/invite-code`, `DELETE /groups/:id/members/:uid` 🔒 | entrada por link/QR Code, novo código, saída e remoção |
@@ -221,7 +222,7 @@ cd backend
 npm test
 ```
 
-São 84 testes com `node:test` sobre a API real e um MongoDB em memória. Na primeira execução, o `mongodb-memory-server` baixa o binário do MongoDB. E-mail, Google e Firebase são substituídos por dublês que registram as chamadas. A validação do `id_token` é testada com chaves RSA geradas no próprio teste.
+São 104 testes com `node:test` sobre a API real e um MongoDB em memória. Na primeira execução, o `mongodb-memory-server` baixa o binário do MongoDB. E-mail, Google e Firebase são substituídos por dublês que registram as chamadas. A validação do `id_token` é testada com chaves RSA geradas no próprio teste.
 
 Os testes cobrem: saúde, CORS, cadastro (válido, duplicado, simultâneo, inválido, campos privilegiados), verificação de e-mail, login correto e incorreto, rotas protegidas com token ausente, inválido e válido, senha nunca armazenada em texto, perfil, recuperação de senha, 2FA completo, limite de tentativas, Google, migração de contas antigas (inclusive com a migração desligada), grupos, convites, chat, partida, salas, tempo real, auditoria e exclusão de conta.
 
