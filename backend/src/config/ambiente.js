@@ -21,7 +21,7 @@ export function lerAmbiente(env = process.env) {
     throw new ErroConfiguracao("TOTP_ENCRYPTION_KEY precisa ter exatamente 32 bytes codificados em base64.");
   }
 
-  // A URL pode ter caminho (site de projeto no GitHub Pages); o CORS compara só a origem
+  // A primeira URL pode ter caminho (site de projeto no GitHub Pages); o CORS compara só a origem
   const urls = lista(env.FRONTEND_URL);
   const origens = urls.map((u) => new URL(u).origin);
   return {
