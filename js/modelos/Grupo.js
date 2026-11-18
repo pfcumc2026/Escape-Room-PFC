@@ -1,4 +1,4 @@
-// Grupo de jogadores (groups/{gid})
+// Grupo de jogadores (GET /api/groups)
 
 import { Limites } from "../nucleo/Limites.js";
 
@@ -13,11 +13,12 @@ export class Grupo {
     this.memberCount = dados.memberCount || 0;
     this.maxMembers = dados.maxMembers || Limites.maxIntegrantes;
     this.inviteCode = dados.inviteCode || "";
+    this.demo = !!dados.demo;
     this.createdAt = dados.createdAt || null;
   }
 
-  static deSnapshot(snap) {
-    return snap.exists() ? new Grupo(snap.id, snap.data()) : null;
+  static deDados(dados) {
+    return dados ? new Grupo(dados.id, dados) : null;
   }
 
   static novoCodigo() {
@@ -34,7 +35,7 @@ export class Grupo {
   }
 
   get criadoEm() {
-    return this.createdAt?.seconds || 0;
+    return this.createdAt || 0;
   }
 
   get cheio() {

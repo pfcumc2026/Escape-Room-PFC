@@ -1,4 +1,4 @@
-// Convite para um grupo (invites/{gid}_{uid})
+// Convite para um grupo (GET /api/invites)
 
 export class Convite {
   static ROTULOS = { pending: "aguardando resposta", accepted: "aceito", declined: "recusado" };
@@ -14,8 +14,8 @@ export class Convite {
     this.status = dados.status || "";
   }
 
-  static deSnapshot(snap) {
-    return new Convite(snap.id, snap.data());
+  static deDados(dados) {
+    return new Convite(dados.id, dados);
   }
 
   static idPara(idGrupo, uid) {

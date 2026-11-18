@@ -4,7 +4,6 @@ import { PaginaProtegida } from "./PaginaProtegida.js";
 import { Dom } from "../nucleo/Dom.js";
 import { Texto } from "../nucleo/Texto.js";
 import { notificador } from "../nucleo/Notificador.js";
-import { ServicoPerfil } from "../servicos/ServicoPerfil.js";
 import { ServicoGrupos } from "../servicos/ServicoGrupos.js";
 import { ServicoConvites } from "../servicos/ServicoConvites.js";
 import { ServicoPresenca } from "../servicos/ServicoPresenca.js";
@@ -12,11 +11,12 @@ import { InterruptorTema } from "../componentes/InterruptorTema.js";
 import { ListaGrupos } from "../componentes/ListaGrupos.js";
 import { ListaConvites } from "../componentes/ListaConvites.js";
 import { ListaConvitesEnviados } from "../componentes/ListaConvitesEnviados.js";
+import { PainelDesempenho } from "../componentes/PainelDesempenho.js";
+import { ServicoEstatisticas } from "../servicos/ServicoEstatisticas.js";
 
 export class PaginaDashboard extends PaginaProtegida {
   constructor() {
     super();
-    this.perfis = new ServicoPerfil();
     this.grupos = new ServicoGrupos();
     this.convites = new ServicoConvites();
     this.presenca = new ServicoPresenca();
@@ -28,23 +28,28 @@ export class PaginaDashboard extends PaginaProtegida {
     this.#observarGrupos();
     this.#montarCriacaoDeGrupo();
     this.#observarConvites();
+    this.#montarDesempenho();
   }
 
   #montarCabecalho() {
     const perfil = this.sessao.perfil;
     this.el("avatar").src = perfil.avatar.url;
     Dom.texto("#username", perfil.username);
-    this.perfis.nomePrivado(this.sessao.uid)
-      .then((nome) => Dom.texto("#nome", nome))
-      .catch(() => {});
-    this.perfis.ehAdministrador(this.sessao.uid)
-      .then((admin) => { if (admin) this.el("link-auditoria").classList.replace("d-none", "d-inline-flex"); })
-      .catch(() => {});
+    Dom.texto("#nome", this.sessao.usuario.nome);
+    if (this.sessao.usuario.admin) {
+      this.el("link-auditoria").classList.replace("d-none", "d-inline-flex");
+      this.el("link-editor").classList.replace("d-none", "d-inline-flex");
+    }
 
     new InterruptorTema(this.el("switch-tema"));
     this.el("btn-sair").addEventListener("click", () => this.controle.sair());
     this.el("btn-sair-modal").addEventListener("click", () => this.controle.sair());
     document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => new bootstrap.Tooltip(el));
+  }
+
+  #montarDesempenho() {
+    const painel = new PainelDesempenho(this.el("painel-desempenho"));
+    new ServicoEstatisticas().obter().then((d) => painel.renderizar(d), () => painel.falhar());
   }
 
   #observarGrupos() {
@@ -74,8 +79,7 @@ export class PaginaDashboard extends PaginaProtegida {
       this.formGrupo.reset();
       location.href = `grupo.html?id=${encodeURIComponent(id)}`;
     } catch (e) {
-      if (e.code === "permission-denied") notificador.erro("Aguarde alguns segundos antes de criar outro grupo.");
-      else notificador.falha(e, "Não foi possível criar o grupo.");
+      notificador.falha(e, "Não foi possível criar o grupo.");
       Dom.ocupado(this.btnCriar, false);
     }
   }
@@ -102,8 +106,7 @@ export class PaginaDashboard extends PaginaProtegida {
       if (aceitar) location.href = `grupo.html?id=${encodeURIComponent(convite.groupId)}`;
       else notificador.info("Convite recusado.");
     } catch (e) {
-      if (e.code === "permission-denied") notificador.erro("O grupo está cheio ou o convite não é mais válido.");
-      else notificador.falha(e, "Não foi possível responder ao convite.");
+      notificador.falha(e, "Não foi possível responder ao convite.");
       Dom.ocupado(botao, false);
     }
   }

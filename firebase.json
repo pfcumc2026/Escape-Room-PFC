@@ -7,8 +7,21 @@
       "firestore.indexes.json",
       "database.rules.json",
       "README.md",
+      "backend/**",
+      "render.yaml",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(html|js|css|json)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      }
     ]
   },
   "firestore": {

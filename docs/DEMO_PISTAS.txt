@@ -1,0 +1,32 @@
+GRUPO DEMO - PISTAS E RESPOSTAS (referencia dos administradores)
+Ordem de jogo sugerida: p1 -> p2 -> pf. O desafio final so abre depois dos outros dois.
+
+========================================================================
+DESAFIO 1 - A chave do cadeado
+========================================================================
+Pista em: Livro aberto (id livro)
+  Aparece nas vistas: Entrada do estúdio; Relógio e quadros; Mesa de trabalho; Escrivaninha vista do alto
+  Texto da pista: Entre as páginas, uma anotação em tinta desbotada: «id = 17».
+  Disponivel: desde o inicio
+Mecanismo: Painel de placas (id painel) - vistas: Entrada do estúdio; Relógio e quadros; Mesa de trabalho; Escrivaninha vista do alto
+Resposta (codigo do mecanismo): 49
+
+========================================================================
+DESAFIO 2 - A balança da porta
+========================================================================
+Pista em: Brasão de flor-de-lis (id brasao_flor)
+  Aparece nas vistas: Entrada do estúdio; Relógio e quadros; Mesa de trabalho; Da cama para a mesa; Canto da cama
+  Texto da pista: Uma inscrição gravada com cuidado no material: «peso = 6».
+  Disponivel: somente depois de resolver p1
+Mecanismo: Cadeado da escrivaninha (id cadeado) - vistas: Entrada do estúdio; Mesa de trabalho
+Resposta (codigo do mecanismo): 9
+
+========================================================================
+DESAFIO FINAL - Os pulsos da esfera
+========================================================================
+Pista em: Rolos de pergaminho (id pergaminhos)
+  Aparece nas vistas: Entrada do estúdio; Parede de mecanismos; Mesa de trabalho
+  Texto da pista: Um pergaminho amarelado traz uma nota curta: «energia = 18».
+  Disponivel: desde o inicio
+Mecanismo: Esfera de cristal (id esfera) - vistas: Estante e esfera de cristal; Canto da esfera; Cama e estante; Janela e pedestal
+Resposta (codigo do mecanismo): 9

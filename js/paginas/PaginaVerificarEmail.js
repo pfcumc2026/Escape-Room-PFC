@@ -1,4 +1,4 @@
-// Tela de verificação de e-mail
+// Tela de verificação de e-mail; o link enviado por e-mail traz o token em ?token=
 
 import { Pagina } from "./Pagina.js";
 import { Dom } from "../nucleo/Dom.js";
@@ -11,11 +11,25 @@ export class PaginaVerificarEmail extends Pagina {
     super();
     this.autenticacao = new ServicoAutenticacao();
     this.usuario = null;
+    this.erroToken = null;
   }
 
   async preparar() {
-    this.usuario = await this.autenticacao.usuarioAtual();
-    if (!this.usuario) { location.replace("login.html"); return false; }
+    const parametros = new URLSearchParams(location.search);
+    const token = parametros.get("token");
+    this.falhaNoEnvio = parametros.has("falha");
+    if (token || this.falhaNoEnvio) history.replaceState(null, "", "verificar-email.html");
+    if (token) {
+      try {
+        await this.autenticacao.confirmarEmail(token);
+      } catch (e) {
+        this.erroToken = e;
+      }
+    }
+
+    // O link pode ser aberto em outro aparelho, sem sessão: basta entrar depois
+    this.usuario = await this.autenticacao.usuarioAtual({ recarregar: true });
+    if (!this.usuario) { location.replace(token && !this.erroToken ? "login.html?verificado=1" : "login.html"); return false; }
     if (this.usuario.emailVerified) { await this.controle.rotearAposLogin(this.usuario); return false; }
     Dom.pronto();
     Icones.renderizar();
@@ -30,14 +44,17 @@ export class PaginaVerificarEmail extends Pagina {
     this.btnVerificar.addEventListener("click", () => this.#verificar());
     this.btnReenviar.addEventListener("click", () => this.#reenviar());
     this.el("btn-sair").addEventListener("click", () => this.controle.sair());
+
+    if (this.erroToken) notificador.falha(this.erroToken, "Link de verificação inválido ou expirado.");
+    if (this.falhaNoEnvio) notificador.erro("A conta foi criada, mas o e-mail de verificação não pôde ser enviado. Use o botão para reenviar.", 8000);
   }
 
   async #verificar() {
     Dom.ocupado(this.btnVerificar, true, "Verificando...");
     try {
-      await this.usuario.reload();
+      this.usuario = await this.autenticacao.usuarioAtual({ recarregar: true });
+      if (!this.usuario) { location.replace("login.html"); return; }
       if (this.usuario.emailVerified) {
-        await this.usuario.getIdToken(true);
         notificador.sucesso("E-mail verificado.");
         await this.controle.rotearAposLogin(this.usuario);
       } else {
@@ -52,7 +69,7 @@ export class PaginaVerificarEmail extends Pagina {
   async #reenviar() {
     Dom.ocupado(this.btnReenviar, true, "Enviando...");
     try {
-      await this.autenticacao.enviarVerificacao(this.usuario);
+      await this.autenticacao.enviarVerificacao();
       notificador.sucesso("Novo e-mail de verificação enviado.");
     } catch (e) {
       notificador.falha(e, "Não foi possível reenviar o e-mail.");

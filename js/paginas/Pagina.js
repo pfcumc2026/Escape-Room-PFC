@@ -3,6 +3,7 @@
 import { tema } from "../nucleo/Tema.js";
 import { Dom } from "../nucleo/Dom.js";
 import { Icones } from "../nucleo/Icones.js";
+import { notificador } from "../nucleo/Notificador.js";
 import { ControleAcesso } from "../servicos/ControleAcesso.js";
 
 export class Pagina {
@@ -13,7 +14,14 @@ export class Pagina {
 
   async iniciar() {
     this.tema.iniciar();
-    if (!await this.preparar()) return;
+    try {
+      if (!await this.preparar()) return;
+    } catch (e) {
+      // Servidor fora do ar ou ainda iniciando (o plano gratuito do Render hiberna sem uso)
+      Dom.pronto();
+      notificador.falha(e, "Não foi possível conectar ao servidor. Tente novamente em instantes.");
+      return;
+    }
     await this.montar();
     Icones.renderizar();
   }

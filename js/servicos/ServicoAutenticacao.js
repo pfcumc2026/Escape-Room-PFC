@@ -1,76 +1,101 @@
-// Autenticação por e-mail/senha, Google e segundo fator (TOTP)
+// Autenticação pela API própria: e-mail/senha, Google (OIDC), verificação de e-mail e segundo fator (TOTP)
 
-import { firebase } from "../nucleo/Firebase.js";
-import {
-  onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut,
-  createUserWithEmailAndPassword, updateProfile, sendEmailVerification,
-  sendPasswordResetEmail, getMultiFactorResolver, TotpMultiFactorGenerator, getAdditionalUserInfo
-} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { ServicoAuditoria } from "./ServicoAuditoria.js";
+import { Api } from "../nucleo/Api.js";
+import { Usuario } from "../modelos/Usuario.js";
 
 export class ServicoAutenticacao {
-  constructor(nucleo = firebase, auditoria = new ServicoAuditoria(nucleo)) {
-    this.auth = nucleo.auth;
-    this.provedorGoogle = nucleo.googleProvider;
-    this.auditoria = auditoria;
+  static #atual = null;
+
+  // Etapas devolvidas pelo login: "concluido" traz a sessão; as demais pedem mais um passo
+  static ETAPAS = { CONCLUIDO: "concluido", SEGUNDO_FATOR: "2fa", SEGUNDO_FATOR_LEGADO: "2fa-legado", CONFIGURAR_2FA: "configurar-2fa" };
+
+  usuarioAtual({ recarregar = false } = {}) {
+    if (!Api.token) return Promise.resolve(null);
+    if (recarregar || !ServicoAutenticacao.#atual) {
+      ServicoAutenticacao.#atual = Api.get("/users/me")
+        .then((dados) => new Usuario(dados))
+        .catch((e) => {
+          ServicoAutenticacao.#atual = null;
+          if (e.status === 401) { Api.esquecerToken(); return null; }
+          throw e;
+        });
+    }
+    return ServicoAutenticacao.#atual;
   }
 
-  usuarioAtual() {
-    return new Promise((resolve) => {
-      const cancelar = onAuthStateChanged(this.auth, (u) => { cancelar(); resolve(u); });
-    });
+  #resultado(resposta) {
+    if (resposta.etapa !== ServicoAutenticacao.ETAPAS.CONCLUIDO) return { etapa: resposta.etapa, desafio: resposta.desafio };
+    Api.guardarToken(resposta.token);
+    ServicoAutenticacao.#atual = null;
+    return { etapa: resposta.etapa, usuario: new Usuario(resposta.usuario), codigosRecuperacao: resposta.recoveryCodes || null };
   }
 
   async entrarComSenha(email, senha) {
-    const cred = await signInWithEmailAndPassword(this.auth, email, senha);
-    await this.auditoria.registrar("login", "E-mail e senha");
-    return cred;
+    return this.#resultado(await Api.post("/auth/login", { email, password: senha }));
   }
 
-  async entrarComGoogle() {
-    const cred = await signInWithPopup(this.auth, this.provedorGoogle);
-    await this.auditoria.registrar(getAdditionalUserInfo(cred)?.isNewUser ? "cadastro" : "login", "Google");
-    return cred;
+  // O login com Google acontece no back-end; ao final ele volta para login.html com um código de uso único
+  entrarComGoogle(origem = "login") {
+    const url = new URL(Api.url("/auth/google"));
+    url.searchParams.set("origem", origem);
+    const proximo = new URLSearchParams(location.search).get("proximo");
+    if (proximo) url.searchParams.set("proximo", proximo);
+    location.assign(url.href);
+  }
+
+  async concluirGoogle(codigo) {
+    return this.#resultado(await Api.post("/auth/google/exchange", { code: codigo }));
+  }
+
+  // Aceita o código do aplicativo (6 dígitos) ou um código de recuperação
+  async concluirSegundoFator(desafio, codigo) {
+    const corpo = /^\d{6}$/.test(codigo) ? { code: codigo } : { recoveryCode: codigo };
+    return this.#resultado(await Api.post("/auth/2fa/verify", { challenge: desafio, ...corpo }));
+  }
+
+  async concluirSegundoFatorLegado(desafio, codigo) {
+    return this.#resultado(await Api.post("/auth/2fa/legacy/verify", { challenge: desafio, code: codigo }));
+  }
+
+  prepararNovoAutenticador(desafio) {
+    return Api.post("/auth/2fa/migration/setup", { challenge: desafio });
+  }
+
+  async ativarNovoAutenticador(desafio, codigo) {
+    return this.#resultado(await Api.post("/auth/2fa/migration/enable", { challenge: desafio, code: codigo }));
   }
 
   async criarConta(nome, email, senha) {
-    const cred = await createUserWithEmailAndPassword(this.auth, email, senha);
-    await updateProfile(cred.user, { displayName: nome });
-    await sendEmailVerification(cred.user);
-    await this.auditoria.registrar("cadastro", "E-mail e senha");
-    return cred;
+    const resposta = await Api.post("/auth/register", { name: nome, email, password: senha, acceptTerms: true });
+    Api.guardarToken(resposta.token);
+    ServicoAutenticacao.#atual = null;
+    return resposta;
   }
 
-  enviarVerificacao(usuario) {
-    return sendEmailVerification(usuario);
+  enviarVerificacao() {
+    return Api.post("/auth/email/resend");
+  }
+
+  confirmarEmail(token) {
+    return Api.post("/auth/email/verify", { token });
   }
 
   enviarRedefinicaoSenha(email) {
-    return sendPasswordResetEmail(this.auth, email);
+    return Api.post("/auth/password/forgot", { email });
+  }
+
+  redefinirSenha(token, senha) {
+    return Api.post("/auth/password/reset", { token, password: senha });
   }
 
   async sair() {
-    await this.auditoria.registrar("logout");
-    await signOut(this.auth);
-  }
-
-  exigeSegundoFator(excecao) {
-    return excecao.code === "auth/multi-factor-auth-required";
-  }
-
-  resolvedor(excecao) {
-    return getMultiFactorResolver(this.auth, excecao);
-  }
-
-  async concluirSegundoFator(resolvedor, codigo) {
-    const fator = resolvedor.hints.find((h) => h.factorId === TotpMultiFactorGenerator.FACTOR_ID) || resolvedor.hints[0];
-    const cred = await resolvedor.resolveSignIn(TotpMultiFactorGenerator.assertionForSignIn(fator.uid, codigo));
-    await this.auditoria.registrar("login", "Verificação em duas etapas");
-    return cred;
-  }
-
-  async atualizarToken(usuario) {
-    const res = await usuario.getIdTokenResult();
-    if (usuario.emailVerified && res.claims.email_verified !== true) await usuario.getIdToken(true);
+    try {
+      if (Api.token) await Api.post("/auth/logout");
+    } catch {
+      // A sessão local é encerrada mesmo sem resposta do servidor
+    } finally {
+      Api.esquecerToken();
+      ServicoAutenticacao.#atual = null;
+    }
   }
 }

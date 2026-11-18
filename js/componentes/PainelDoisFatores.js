@@ -14,6 +14,7 @@ export class PainelDoisFatores {
     this.fluxo = Dom.porId("fluxo-2fa");
     this.btnAtivar = Dom.porId("btn-ativar-2fa");
     this.btnDesativar = Dom.porId("btn-desativar-2fa");
+    this.btnCodigos = Dom.porId("btn-codigos-2fa");
     this.campoCodigo = Dom.porId("codigo-2fa");
     this.qr = new QrCode(Dom.porId("qr-2fa"));
   }
@@ -22,8 +23,10 @@ export class PainelDoisFatores {
     this.#atualizarEstado();
     this.btnAtivar.addEventListener("click", () => this.#ativar());
     this.btnDesativar.addEventListener("click", () => this.#desativar());
+    this.btnCodigos.addEventListener("click", () => this.#gerarNovosCodigos());
     Dom.porId("btn-confirmar-2fa").addEventListener("click", (ev) => this.#confirmar(ev.currentTarget));
     Dom.porId("btn-cancelar-2fa").addEventListener("click", () => this.#cancelar());
+    Dom.porId("btn-fechar-codigos").addEventListener("click", () => Dom.porId("codigos-2fa").classList.add("d-none"));
   }
 
   #atualizarEstado() {
@@ -31,10 +34,11 @@ export class PainelDoisFatores {
     Dom.porId("dot-2fa").classList.toggle("ph-dot--on", ativo);
     Dom.texto("#titulo-2fa", ativo ? "2FA ativo" : "2FA desativado");
     Dom.texto("#detalhe-2fa", ativo
-      ? "O login pedirá um código do aplicativo autenticador."
+      ? `O login pedirá um código do aplicativo autenticador. Códigos de recuperação restantes: ${this.conta.usuario.codigosRestantes}.`
       : "Sua conta é protegida apenas pela senha.");
     this.btnAtivar.classList.toggle("d-none", ativo);
     this.btnDesativar.classList.toggle("d-none", !ativo);
+    this.btnCodigos.classList.toggle("d-none", !ativo);
   }
 
   async #ativar() {
@@ -42,7 +46,7 @@ export class PainelDoisFatores {
     try {
       this.segredo = await this.conta.gerarSegredo();
       this.qr.desenhar(this.conta.uriDoSegredo(this.segredo, this.rotulo));
-      Dom.texto("#chave-2fa", this.segredo.secretKey);
+      Dom.texto("#chave-2fa", this.segredo.secret);
       this.fluxo.classList.remove("d-none");
     } catch (e) {
       if (e.message !== ServicoConta.CANCELADO) notificador.falha(e, "Não foi possível iniciar a ativação do 2FA.");
@@ -57,16 +61,41 @@ export class PainelDoisFatores {
 
     Dom.ocupado(botao, true, "Confirmando...");
     try {
-      await this.conta.ativarSegundoFator(this.segredo, codigo);
+      const codigos = await this.conta.ativarSegundoFator(this.segredo, codigo);
       this.segredo = null;
       this.fluxo.classList.add("d-none");
       this.campoCodigo.value = "";
       this.#atualizarEstado();
+      this.#mostrarCodigos(codigos);
       notificador.sucesso("2FA ativado.");
     } catch (e) {
       notificador.falha(e, "Código inválido. Tente novamente.");
     }
     Dom.ocupado(botao, false);
+  }
+
+  #mostrarCodigos(codigos) {
+    const lista = Dom.porId("lista-codigos-2fa");
+    lista.textContent = "";
+    codigos.forEach((codigo) => {
+      const item = document.createElement("li");
+      item.textContent = codigo;
+      lista.appendChild(item);
+    });
+    Dom.porId("codigos-2fa").classList.remove("d-none");
+  }
+
+  async #gerarNovosCodigos() {
+    if (!confirm("Gerar novos códigos de recuperação? Os códigos atuais deixarão de funcionar.")) return;
+    Dom.ocupado(this.btnCodigos, true, "Gerando...");
+    try {
+      this.#mostrarCodigos(await this.conta.gerarNovosCodigos());
+      this.#atualizarEstado();
+      notificador.sucesso("Novos códigos gerados.");
+    } catch (e) {
+      if (e.message !== ServicoConta.CANCELADO) notificador.falha(e, "Não foi possível gerar novos códigos.");
+    }
+    Dom.ocupado(this.btnCodigos, false);
   }
 
   #cancelar() {

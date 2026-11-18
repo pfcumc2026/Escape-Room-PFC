@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nova senha · Escape.py</title>
+<script>try{document.documentElement.setAttribute('data-bs-theme',localStorage.getItem('ph-theme')||'dark')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+</head>
+<body class="ph-loading" data-pagina="redefinir-senha">
+
+<div class="ph-loader">Carregando…</div>
+
+<header class="ph-top">
+  <button type="button" class="ph-theme-toggle" data-ph-theme-toggle aria-label="Alternar tema"></button>
+  <a class="ph-brand" href="index.html">
+    <span class="ph-logo"><i data-lucide="door-open" aria-hidden="true"></i></span>
+    Escape.py <small>Escape Room</small>
+  </a>
+</header>
+
+<main class="ph-shell ph-shell--narrow ph-page">
+  <section class="ph-card ph-card--accent">
+    <p class="ph-eyebrow">Recuperação</p>
+    <h1 class="ph-title">Definir nova senha</h1>
+    <p class="ph-sub">Escolha uma nova senha. Ao salvar, as sessões abertas em outros aparelhos são encerradas.</p>
+
+    <hr class="ph-sep">
+
+    <form id="form-redefinir" novalidate>
+      <div class="mb-3">
+        <label class="form-label" for="senha">Nova senha</label>
+        <input class="form-control" type="password" id="senha" autocomplete="new-password" required>
+        <div class="form-text">Mínimo de 8 caracteres, com letras e números.</div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="senha2">Confirmar nova senha</label>
+        <input class="form-control" type="password" id="senha2" autocomplete="new-password" required>
+      </div>
+      <button class="btn btn-primary w-100" type="submit" id="btn-redefinir">Salvar nova senha</button>
+    </form>
+
+    <hr class="ph-sep">
+    <a href="login.html" style="font-size:.88rem">Voltar para o login</a>
+  </section>
+</main>
+
+<footer class="ph-footer">
+  <div class="ph-footer__links">
+    <a href="termos.html"><i data-lucide="file-text" aria-hidden="true"></i> Termo de Aceite</a>
+    <a href="privacidade.html"><i data-lucide="shield-check" aria-hidden="true"></i> Política de Privacidade</a>
+  </div>
+  <p class="ph-footer__copy">Escape.py &middot; Projeto Final de Curso</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

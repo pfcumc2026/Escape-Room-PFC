@@ -104,7 +104,7 @@ campoUsername.addEventListener("blur", async () => {
     statusUsername.textContent = livre ? "Disponível." : "Este username já está em uso.";
     statusUsername.style.color = livre ? "var(--ph-ok)" : "var(--ph-danger)";
   } catch (e) {
-    console.warn("[Placeholder] checagem de username", e);
+    console.warn("[Escape.py] checagem de username", e);
   }
 });
 

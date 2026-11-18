@@ -25,7 +25,7 @@ form.addEventListener("submit", async (ev) => {
       carregando(btn, false);
       return;
     }
-    console.warn("[Placeholder] recuperação solicitada para e-mail inexistente");
+    console.warn("[Escape.py] recuperação solicitada para e-mail inexistente");
   }
   carregando(btn, false);
   toast("Se existir uma conta com esse e-mail, o link de redefinição foi enviado.", "ok", 7000);

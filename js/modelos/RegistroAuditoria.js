@@ -1,10 +1,15 @@
-// Registro de auditoria (auditLogs/{id})
+// Registro de auditoria (GET /api/audit)
 
 export class RegistroAuditoria {
   static ROTULOS = {
     cadastro: "Cadastro de conta",
     termos_aceitos: "Aceite dos termos",
     login: "Login",
+    email_verificado: "E-mail verificado",
+    conta_migrada: "Conta migrada do Firebase",
+    google_vinculado: "Google vinculado",
+    senha_redefinida: "Senha redefinida",
+    sala_salva: "Sala salva",
     logout: "Logout",
     perfil_criado: "Perfil criado",
     perfil_atualizado: "Perfil atualizado",
@@ -20,7 +25,7 @@ export class RegistroAuditoria {
     convite_cancelado: "Convite cancelado",
     "2fa_ativado": "2FA ativado",
     "2fa_desativado": "2FA desativado",
-    troca_senha: "Troca de senha solicitada",
+    troca_senha: "Redefinição de senha solicitada",
     conta_excluida: "Conta excluída"
   };
 
@@ -32,8 +37,8 @@ export class RegistroAuditoria {
     this.at = dados.at || null;
   }
 
-  static deSnapshot(snap) {
-    return new RegistroAuditoria(snap.data());
+  static deDados(dados) {
+    return new RegistroAuditoria(dados);
   }
 
   get rotulo() {
@@ -41,7 +46,7 @@ export class RegistroAuditoria {
   }
 
   get dataFormatada() {
-    return this.at ? this.at.toDate().toLocaleString("pt-BR") : "—";
+    return this.at ? new Date(this.at).toLocaleString("pt-BR") : "—";
   }
 
   contem(termo) {

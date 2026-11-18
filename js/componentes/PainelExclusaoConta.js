@@ -27,7 +27,7 @@ export class PainelExclusaoConta {
 
     Dom.ocupado(botao, true, "Excluindo...");
     try {
-      await this.conta.excluir(this.perfil);
+      await this.conta.excluir();
       location.replace("login.html");
     } catch (e) {
       if (e.message !== ServicoConta.CANCELADO) notificador.falha(e, "Não foi possível excluir a conta.");

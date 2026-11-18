@@ -37,6 +37,7 @@ export class PaginaGrupo extends PaginaProtegida {
 
     this.presenca.iniciar(this.sessao.uid);
     this.acoes = this.el("acoes-grupo");
+    this.el("link-sala").href = `sala.html?id=${encodeURIComponent(this.idGrupo)}`;
     this.blocoConvites = this.el("bloco-convites");
     this.integrantes = new ListaIntegrantes(this.el("lista-integrantes"), {
       perfis: this.perfis,
@@ -152,8 +153,7 @@ export class PaginaGrupo extends PaginaProtegida {
       campo.value = "";
       notificador.sucesso("Convite enviado.");
     } catch (e) {
-      if (e.code === "permission-denied") notificador.erro("Convite não permitido: verifique o limite de jogadores.");
-      else notificador.falha(e, "Não foi possível enviar o convite.");
+      notificador.falha(e, "Não foi possível enviar o convite.");
     }
     Dom.ocupado(btn, false);
   }
@@ -229,8 +229,7 @@ export class PaginaGrupo extends PaginaProtegida {
       await this.chat.enviar(this.idGrupo, this.sessao.autor, texto);
       this.campoMsg.value = "";
     } catch (e) {
-      if (e.code === "permission-denied") notificador.erro("Mensagem bloqueada pelo limite de envio.");
-      else notificador.falha(e, "Não foi possível enviar a mensagem.");
+      notificador.falha(e, "Não foi possível enviar a mensagem.");
     }
     Dom.ocupado(btn, false);
   }
